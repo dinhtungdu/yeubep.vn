@@ -34,10 +34,13 @@ require('./config/passport')(passport);
 app.set('port', process.env.PORT || 3000);
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-//app.use(passport.initialize());
-app.use(session({ secret: 'tungdeptraisieucapvodich' })); // session secret
+app.use(session({
+	secret: 'tungdeptraisieucapvodich',
+	resave: true,
+	saveUninitialized: true
+})); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 

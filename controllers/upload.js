@@ -13,11 +13,16 @@ Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
 
 exports.create = function( req, res, cb ) {
-	var busboy = new Busboy({ headers : req.headers });
-	var fileId = new mongoose.Types.ObjectId();
-
+	var busboy = new Busboy({
+		headers : req.headers,
+		limits: {
+			files: 1
+		}
+	});
+	var fileId = '';
 	busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
 		console.log('got file', filename, mimetype, encoding);
+		fileId = new mongoose.Types.ObjectId();
 		var writeStream = gfs.createWriteStream({
 			_id: fileId,
 			filename: filename,
@@ -27,12 +32,13 @@ exports.create = function( req, res, cb ) {
 		file.pipe(writeStream);
 	}).on('finish', function() {
 		// show a link to the uploaded file
-		res.writeHead(200, {'content-type': 'text/html'});
-		res.end(fileId.toString());
+		//res.writeHead(200, {'content-type': 'text/html'});
+		//res.end(fileId.toString());
 		cb(fileId.toString());
 	});
 
 	req.pipe(busboy);
+	return fileId.toString();
 };
 
 exports.createFromUrl = function (url) {
@@ -53,12 +59,8 @@ exports.createFromUrl = function (url) {
 		console.log(file.filename + ' Written To DB');
 	});
 	return fileId.toString();
-	//return 'hellocanyouhereme';
 };
 
-exports.test = function() {
-	return 'Hello';
-}
 
 exports.read = function( req, res ) {
 	gfs.findOne({ _id: req.params.id }, function (err, file) {

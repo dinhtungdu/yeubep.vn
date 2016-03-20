@@ -4,10 +4,9 @@ var hotpotSchema = mongoose.Schema({
 	userId: String,
 	type: String,
 	visible: String,
-	timeCreated: { type: Date, default: Date.now },
-	timeUpdated: Date,
-	loveCount: Number,
+	love: [],
 	recipe: {
+		category: String,
 		prepTime: Number,
 		cookTime: Number,
 		title: String,
@@ -15,7 +14,10 @@ var hotpotSchema = mongoose.Schema({
 		description: String,
 		directions: String,
 		ingredients: String
-	}
+	},
+	mainPhoto: String
+}, {
+	timestamps: true
 });
 
 module.exports = mongoose.model('Hotpot', hotpotSchema);

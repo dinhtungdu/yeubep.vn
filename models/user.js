@@ -7,6 +7,8 @@ var userSchema = mongoose.Schema({
 	avatarId: String,
 	provider: String,
 	facebook: {}
+}, {
+	timestamps: true
 });
 
 module.exports = mongoose.model('User', userSchema);
