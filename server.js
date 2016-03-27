@@ -48,6 +48,7 @@ app.use(passport.session()); // persistent login sessions
 require('./api/auth')(app, passport);
 require('./api/recipe')(app, passport);
 require('./api/file')(app, passport);
+require('./api/love')(app, passport);
 
 // React Routes
 app.use(function(req, res) {

@@ -1,10 +1,12 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+	Schema = mongoose.Schema;
 
 var hotpotSchema = mongoose.Schema({
 	userId: String,
 	type: String,
 	visible: String,
-	love: [],
+	loves: [{ type: Schema.Types.ObjectId, ref: 'User'}],
+	comments: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
 	recipe: {
 		category: String,
 		prepTime: Number,

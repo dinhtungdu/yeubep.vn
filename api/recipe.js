@@ -75,7 +75,7 @@ module.exports = function(app, passport) {
 		}
 	);
 
-	app.del('/api/recipes/:id',
+	app.delete('/api/recipes/:id',
 		helpers.isLoggedIn,
 		function(req, res, next) {
 			Hotpot.findOne({
