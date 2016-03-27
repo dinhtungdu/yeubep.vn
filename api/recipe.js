@@ -79,8 +79,8 @@ module.exports = function(app, passport) {
 		helpers.isLoggedIn,
 		function(req, res, next) {
 			Hotpot.findOne({
-				id: req.params.id,
-				user: req.user._id
+				_id: req.params.id,
+				userId: req.user._id
 			})
 			.remove()
 			.exec();
@@ -94,7 +94,7 @@ module.exports = function(app, passport) {
 				if(err) {
 					res.send(err);
 				}
-				if( hotpot.userId != req.user._id ) {
+				if( hotpot.userId !== req.user._id ) {
 					res.send('Cheating, uh?');
 				}
 				async.waterfall([

@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var commentSchema = mongoose.Schema({
 	body: String,
-	parentId: String,
-	hotpotId: String
+	hotpotId: { type: Schema.Types.ObjectId, ref: 'Hotpot' },
+	userId: { type: Schema.Types.ObjectId, ref: 'User' }
 }, {
 	timestamps: true
 });
