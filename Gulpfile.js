@@ -32,7 +32,17 @@ var dependencies = [
 gulp.task('vendor', function() {
 	return gulp.src([
 		'bower_components/jquery/dist/jquery.js',
-		'bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
+		'bower_components/bootstrap/js/dist/util.js',
+		'bower_components/bootstrap/js/dist/alert.js',
+		'bower_components/bootstrap/js/dist/button.js',
+		//'bower_components/bootstrap/js/dist/carousel.js',
+		'bower_components/bootstrap/js/dist/collapse.js',
+		'bower_components/bootstrap/js/dist/dropdown.js',
+		//'bower_components/bootstrap/js/dist/modal.js',
+		//'bower_components/bootstrap/js/dist/scrollspy.js',
+		//'bower_components/bootstrap/js/dist/tab.js',
+		//'bower_components/bootstrap/js/dist/tooltip.js',
+		//'bower_components/bootstrap/js/dist/popover.js',
 		'bower_components/magnific-popup/dist/jquery.magnific-popup.js',
 		'bower_components/toastr/toastr.js'
 	]).pipe(concat('vendor.js'))
@@ -112,6 +122,8 @@ gulp.task('styles', function() {
 		.pipe(plumber())
 		.pipe(sass())
 		.pipe(autoprefixer())
+		.pipe(sourcemaps.init({ loadMaps: true }))
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulpif(production, cssmin()))
 		.pipe(gulp.dest('public/css'));
 });

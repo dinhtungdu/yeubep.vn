@@ -8,7 +8,7 @@ var hotpotSchema = mongoose.Schema({
 	loves: [{ type: Schema.Types.ObjectId, ref: 'User'}],
 	comments: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
 	recipe: {
-		category: String,
+		category: { type: Schema.Types.ObjectId, ref: 'Category'},
 		prepTime: Number,
 		cookTime: Number,
 		title: String,

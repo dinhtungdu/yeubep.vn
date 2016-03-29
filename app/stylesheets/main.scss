@@ -1,2 +1,18 @@
-@import '../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap';
+@import '../../bower_components/bootstrap/scss/bootstrap.scss';
 @import '../../bower_components/toastr/toastr.scss';
+@import '../../bower_components/font-awesome/scss/font-awesome';
+
+#app {
+  padding-top: 50px;
+}
+
+// Navbar
+.navbar {
+  .userblock.logged-in a {
+    padding-top: 3px;
+    padding-bottom: 0;
+    img {
+      border-radius: 100%;
+    }
+  }
+}

@@ -12,7 +12,6 @@ class Home extends React.Component {
 
 	componentDidMount() {
 		HomeStore.listen(this.onChange);
-		HomeActions.getLoginState();
 	}
 
 	componentWillUnmount() {
@@ -24,17 +23,8 @@ class Home extends React.Component {
 	}
 
 	render() {
-		var loginState = this.state.loginState;
-		if( this.state.loginState === 'loggedIn' ) {
-			loginState = 'Logout';
-		} else {
-			loginState = 'Login';
-		}
 		return (
 			<div className='alert'>
-				{loginState}
-				<br/>
-				<a href="/auth/facebook">Login</a>
 			</div>
 		);
 	}
