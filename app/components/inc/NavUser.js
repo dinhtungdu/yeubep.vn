@@ -8,20 +8,29 @@ class NavUser extends React.Component {
 		super(props);
 	}
 
+	facebookLogin() {
+		var url = '/auth/facebook',
+			width = 400,
+			height = 500,
+			top = (window.outerHeight - height) / 2,
+			left = (window.outerWidth - width) / 2;
+		window.open(url, 'facebook_login', 'width=' + width + ',height=' + height + ',scrollbars=0,top=' + top + ',left=' + left);
+	}
+
 	render() {
 		if( this.props.userLoggedIn ) {
 			return(
 			<li className='nav-item userblock logged-in'>
-				<a className="nav-link" href={this.props.userLink}>
+				<Link className="nav-link" to={this.props.userLink}>
 					<img src={this.props.avatarLink} with="35" height="35" />
-				</a>
+				</Link>
 			</li>
 			);
 		}
 		else {
 			return(
 				<li className='nav-item userblock'>
-					<a className="nav-link" href={this.props.userLink}>
+					<a className="nav-link" href="#" onClick={this.facebookLogin}>
 						Đăng nhập
 					</a>
 				</li>

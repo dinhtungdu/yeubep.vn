@@ -28,12 +28,15 @@ exports.create = function( req, res, cb ) {
 			filename: filename,
 			mode: 'w',
 			content_type: mimetype,
+			metadata: {
+				userId: req.user._id,
+			}
 		});
 		file.pipe(writeStream);
 	}).on('finish', function() {
 		// show a link to the uploaded file
 		//res.writeHead(200, {'content-type': 'text/html'});
-		//res.end(fileId.toString());
+		res.send(fileId.toString());
 		cb(fileId.toString());
 	});
 
@@ -41,13 +44,14 @@ exports.create = function( req, res, cb ) {
 	return fileId.toString();
 };
 
-exports.createFromUrl = function (url) {
+exports.createFromUrl = function (url, userId) {
 	var fileId = new mongoose.Types.ObjectId();
 	var fileName = url.split('/').pop();
 	fileName = fileName.split('?').shift();
 
 	var writestream = gfs.createWriteStream({
 		_id: fileId,
+		userId: userId,
 		filename: fileName,
 		mode: 'w'
 	});

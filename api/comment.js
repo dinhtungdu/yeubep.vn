@@ -41,7 +41,7 @@ module.exports = function(app, passport) {
 		function (req, res, next) {
 			Comment.findById(req.params.id, function(err, comment) {
 				if(err) return next(err);
-				if(!hotpot) {
+				if(!comment) {
 					return res.sendStatus(404).send({message: 'Comment not found.'});
 				}
 				// Check for comment of private post

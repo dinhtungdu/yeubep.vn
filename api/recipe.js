@@ -3,7 +3,8 @@ var Hotpot = require('../models/hotpot');
 var helpers = require('../helpers');
 var upload = require('../controllers/upload');
 var async = require('async');
-var Busboy = require('busboy');
+//var Busboy = require('busboy');
+//var validator = require('validator');
 
 module.exports = function(app, passport) {
 	app.post('/api/recipes',
@@ -11,33 +12,32 @@ module.exports = function(app, passport) {
 		function(req, res, next) {
 			async.waterfall([
 				function(cb) {
-					var busboy = new Busboy({ headers: req.headers });
-					var recipeVar = {};
-					busboy.on('field', function(fieldname, val) {
-						recipeVar[fieldname] = val;
-					});
-					upload.create(req, res, function(fileId) {
-						recipeVar.mainPhoto = fileId;
-					});
-					req.pipe(busboy);
-					cb(null, recipeVar);
-				},
-				function(recipeVar, cb) {
-					console.log(recipeVar);
 					var recipeInfo = {
-						userId : recipeVar.userId,
-						visible : recipeVar.visible,
+						userId: req.user._id,
+						visible : req.body.visible,
 						recipe : {
-							prepTime: recipeVar.prepTime,
-							cookTime: recipeVar.cookTime,
-							title: recipeVar.title,
-							numberOfServings: recipeVar.numberOfServings,
-							description: recipeVar.description,
-							directions: recipeVar.directions,
-							ingredients: recipeVar.ingredients
+							prepTime: req.body.prepTime,
+							cookTime: req.body.cookTime,
+							title: req.body.title,
+							numberOfServings: req.body.numberOfServings,
+							description: req.body.description,
+							directions: req.body.directions,
+							note: req.body.note,
+							ingredients: req.body.ingredients,
+							category: req.body.category
 						},
-						mainPhoto: recipeVar.mainPhoto
+						mainPhoto: req.body.mainPhoto
 					};
+					cb(null, recipeInfo);
+				},
+				function(recipeInfo, cb) {
+					console.log(recipeInfo);
+					recipeInfo.recipe.title = recipeInfo.recipe.title.trim().replace(/<(?:.|\n)*?>/gm, '');
+					recipeInfo.recipe.directions = recipeInfo.recipe.directions.trim().replace(/<(?:.|\n)*?>/gm, '');
+					recipeInfo.recipe.ingredients = recipeInfo.recipe.ingredients.trim().replace(/<(?:.|\n)*?>/gm, '');
+					recipeInfo.recipe.description = recipeInfo.recipe.description.trim().replace(/<(?:.|\n)*?>/gm, '');
+					recipeInfo.recipe.note = recipeInfo.recipe.note.trim().replace(/<(?:.|\n)*?>/gm, '');
+
 					cb(null, recipeInfo);
 				},
 				function(recipeInfo) {
@@ -51,7 +51,10 @@ module.exports = function(app, passport) {
 					hotpot.save(function(err, hotpot) {
 						if(err) return next(err);
 						console.log('Recipe ' + hotpot.id + ' was added successfully!');
-						res.end('Success');
+						res.send({
+							status: 'success',
+							id: hotpot.id
+						});
 					});
 				}
 			]);
@@ -113,9 +116,11 @@ module.exports = function(app, passport) {
 						hotpot.recipe.cookTime = recipeVar.cookTime;
 						hotpot.recipe.title = recipeVar.title;
 						hotpot.recipe.numberOfServings = recipeVar.numberOfServings;
+						hotpot.recipe.preparation = recipeVar.preparation;
 						hotpot.recipe.description = recipeVar.description;
 						hotpot.recipe.directions = recipeVar.directions;
 						hotpot.recipe.ingredients = recipeVar.ingredients;
+						hotpot.recipe.note = recipeVar.note;
 						cb(null, hotpot);
 					},
 					function(hotpot) {

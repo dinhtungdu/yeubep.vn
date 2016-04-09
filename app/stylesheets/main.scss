@@ -1,18 +1,170 @@
+@import "variables";
 @import '../../bower_components/bootstrap/scss/bootstrap.scss';
 @import '../../bower_components/toastr/toastr.scss';
 @import '../../bower_components/font-awesome/scss/font-awesome';
+@import '../../bower_components/dropzone/dist/dropzone';
+@import "animated-radio";
+@import './react-select/default';
+@import "mixins";
 
 #app {
   padding-top: 50px;
+  background: #F1F1F1;
 }
 
 // Navbar
 .navbar {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  background: #fff;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.22);
+
   .userblock.logged-in a {
-    padding-top: 3px;
+    padding-top: 1px;
     padding-bottom: 0;
     img {
       border-radius: 100%;
+    }
+  }
+}
+
+.user-cover-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  min-height: rem(200);
+  padding-bottom:4rem;
+  padding-top: 5rem;
+  overflow: hidden;
+  @include gradient-vertical(transparent, #000);
+  margin-top: -3rem;
+
+  .user-cover {
+    position: absolute;
+    background-size: cover;
+    background-position: center;
+    -webkit-filter: blur(30px);
+    filter: blur(30px);
+    top: -30px;
+    bottom: -30px;
+    right: -30px;
+    left: -30px;
+    background-color: #295b84;
+  }
+
+  .dark-cover {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    @include gradient-horizontal(transparent, #000);
+    opacity: 0.5;
+    background-blend-mode: multiply;
+  }
+
+  .container {
+    z-index: 999;
+    text-align: center;
+    img {
+      border-radius:100%;
+      border: 3px solid #fff;
+    }
+    span.user-name {
+      display: block;
+      color: #fff;
+      font-weight: bold;
+      font-size: rem(30);
+    }
+  }
+}
+
+.modal-content.add-recipe {
+  border: none;
+  .modal-header {
+  }
+  .modal-title {
+    font-size: 1rem;
+  }
+  .close {
+    font-size: rem(25);
+    font-weight: 400;
+    span {
+      color: #000;
+    }
+  }
+  .form-control-label {
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 80%;
+  }
+  :-moz-placeholder {
+    font-style: italic;
+  }
+  ::-webkit-input-placeholder {
+    font-style: italic;
+  }
+  textarea {
+    font-size: 85%;
+  }
+  .recipe-submit {
+    background: #FF7E1A;
+    border: none;
+    margin-top: 1rem;
+  }
+}
+.modal-backdrop {
+  background: rgba(228, 228, 228, 0.95);
+  &.in {
+    opacity: 1;
+  }
+}
+
+#dZUpload.dropzone {
+  border-style: dashed;
+  background: url(../images/meal-icon.png) no-repeat;
+  background-position: center 1rem;
+  background-size: 130px;
+  margin-top: rem(11);
+  padding: 0;
+  overflow: hidden;
+  .dz-message {
+    margin-top: 6rem;
+    margin-bottom: 0;
+    span {
+      font-size: rem(12.5);
+    }
+  }
+  .dz-preview {
+    margin: 0;
+    .dz-image {
+      width: 100%;
+      height: auto;
+      border-radius: 0;
+    }
+    .dz-details {
+      display: none;
+    }
+    //.dz-error-mark {
+    //  display: none;
+    //}
+    .dz-error-message {
+      left: 60px;
+      top: 100px;
+      text-align: center;
+    }
+  }
+  .dz-remove {
+    position: absolute;
+    right: 15px;
+    top: 00px;
+    z-index: 9999;
+    color: #fff;
+    font-size: 20px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.55);
+    &:hover {
+      text-decoration: none;
     }
   }
 }

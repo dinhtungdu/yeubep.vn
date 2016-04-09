@@ -1,3 +1,4 @@
+'use strict';
 module.exports = {
 	isLoggedIn: function(req, res, next) {
 		console.log('Calling: isLoggedIn...');
@@ -41,5 +42,11 @@ module.exports = {
 		}
 
 		return indexOf.call(this, needle) > -1;
+	},
+
+	extractUsername: function(email) {
+		var emailArr = email.split('@');
+		return emailArr[0];
 	}
+
 }

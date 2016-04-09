@@ -49,6 +49,7 @@ require('./api/auth')(app, passport);
 require('./api/recipe')(app, passport);
 require('./api/file')(app, passport);
 require('./api/love')(app, passport);
+require('./api/category')(app);
 
 // React Routes
 app.use(function(req, res) {
@@ -67,11 +68,11 @@ app.use(function(req, res) {
 	});
 });
 
-app.use(function(err, req, res, next) {
-	console.log(err.stack.red);
-	res.status(err.status || 500);
-	res.send({ message: err.message });
-});
+//app.use(function(err, req, res, next) {
+//	//console.log(err.stack);
+//	res.sendStatus(err.status || 500);
+//	res.send({ message: err.message });
+//});
 
 // Socket.io stuffs
 var server = require('http').createServer(app);

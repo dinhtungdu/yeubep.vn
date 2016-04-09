@@ -21,7 +21,7 @@ module.exports = function(app, passport) {
 		passport.authenticate('facebook', { failureRedirect: '/login' }),
 		function(req, res) {
 			// Successful authentication, redirect home.
-			res.redirect('/');
+			res.redirect('/auth-okay');
 		});
 
 	app.get('/auth/login-state',
@@ -36,4 +36,15 @@ module.exports = function(app, passport) {
 			res.send(req.user);
 		}
 	);
+
+	app.get('/auth/user/:id',
+		function(req, res, next) {
+			User.findOne( { username: req.params.id }, function(err, user) {
+				if(err) { return next(err); }
+				if(!user) {
+					return res.sendStatus(404).send({message: 'User not found.'});
+				}
+				res.send(user);
+			});
+		});
 };

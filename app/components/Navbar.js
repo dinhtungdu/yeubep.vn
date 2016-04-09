@@ -2,7 +2,6 @@ import React from 'react';
 import {Link} from 'react-router';
 import NavbarStore from '../stores/NavbarStore';
 import NavbarActions from '../actions/NavbarActions';
-import Helper from '../../helpers';
 import _ from 'underscore';
 import NavUser from './inc/NavUser';
 
@@ -21,15 +20,16 @@ class Navbar extends React.Component {
 	onChange(state) {
 		this.setState(state);
 	}
+
 	render() {
 		var userLoggedIn = false,
 			userLink = '/auth/facebook',
 			avatarLink = '/images/df-avatar-sm.png';
 		if( _.isEmpty( this.state.myInfo) == false ) {
 			userLoggedIn = true;
-			userLink = '#';
+			userLink = '/cook/' + this.state.myInfo.username;
 			if( this.state.myInfo.avatarId != '' )	{
-				avatarLink = '/file/' + this.state.myInfo.avatarId;
+				avatarLink = 'http://graph.facebook.com/v2.5/' + this.state.myInfo.facebook.id + '/picture?height=70&width=70';
 			}
 		}
 

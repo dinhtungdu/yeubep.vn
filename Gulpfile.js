@@ -38,13 +38,14 @@ gulp.task('vendor', function() {
 		//'bower_components/bootstrap/js/dist/carousel.js',
 		'bower_components/bootstrap/js/dist/collapse.js',
 		'bower_components/bootstrap/js/dist/dropdown.js',
-		//'bower_components/bootstrap/js/dist/modal.js',
+		'bower_components/bootstrap/js/dist/modal.js',
 		//'bower_components/bootstrap/js/dist/scrollspy.js',
 		//'bower_components/bootstrap/js/dist/tab.js',
 		//'bower_components/bootstrap/js/dist/tooltip.js',
 		//'bower_components/bootstrap/js/dist/popover.js',
-		'bower_components/magnific-popup/dist/jquery.magnific-popup.js',
-		'bower_components/toastr/toastr.js'
+		//'bower_components/magnific-popup/dist/jquery.magnific-popup.js',
+		//'bower_components/toastr/toastr.js'
+		'bower_components/dropzone/dist/dropzone.js'
 	]).pipe(concat('vendor.js'))
 		.pipe(gulpif(production, uglify({ mangle: false })))
 		.pipe(gulp.dest('public/js'));

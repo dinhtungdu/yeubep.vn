@@ -7,4 +7,9 @@ module.exports = function(app, passport) {
 		'/file/:id',
 		upload.read
 	);
+
+	app.post('/file/add',
+		helpers.isLoggedIn,
+		upload.create
+	);
 };
