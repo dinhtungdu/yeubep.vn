@@ -13,3 +13,7 @@
   }
   @return ($pxval / $base) * 1rem;
 }
+
+@mixin textshadow($x: 1px, $y: 1px, $blur: 4px, $color: rgba(0,0,0,.4)) {
+  text-shadow: $x $y $blur $color;
+}

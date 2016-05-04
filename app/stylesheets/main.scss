@@ -2,14 +2,38 @@
 @import '../../bower_components/bootstrap/scss/bootstrap.scss';
 @import '../../bower_components/toastr/toastr.scss';
 @import '../../bower_components/font-awesome/scss/font-awesome';
-@import '../../bower_components/dropzone/dist/dropzone';
+@import '../../bower_components/dropzone/dist/dropzone.css';
 @import "animated-radio";
 @import './react-select/default';
 @import "mixins";
 
+.button-primary {
+  padding: 1rem 3rem;
+  color: #fff;
+}
+
+.button-small {
+  padding: 0.5rem 2rem;
+  color: #fff;
+}
+
+.button-orange {
+  background-color: #FF7E1A;
+}
+.button-orange-lighter {
+  background-color: #FDB719;
+}
+
 #app {
   padding-top: 50px;
-  background: #F1F1F1;
+  background: #f5f8fa;
+  img {
+    max-width: 100%;
+  }
+}
+
+.text-center {
+  text-align: center;
 }
 
 // Navbar
@@ -66,7 +90,7 @@
 
   .container {
     z-index: 999;
-    text-align: center;
+    width: 100%;
     img {
       border-radius:100%;
       border: 3px solid #fff;
@@ -166,5 +190,496 @@
     &:hover {
       text-decoration: none;
     }
+  }
+}
+
+.recipe-grid-item {
+  background: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.07);
+  margin-bottom: 1rem;
+  .recipe-info {
+    padding: rem(10) rem(20);
+    .recipe-title {
+      line-height: 1.2;
+      font-size: rem(14);
+      a {
+        font-weight: bold;
+        color: #111;
+      }
+    }
+    span {
+      font-size: rem(12);
+      line-height: 1;
+      color: #333;
+    }
+
+  }
+}
+
+.recipe-small-item .recipe-info {
+  padding: rem(10);
+  padding-bottom: 0;
+  .recipe-title {
+    margin-bottom: 0;
+  }
+}
+.grid {
+  margin: 2rem auto;
+  .grid-item, .grid-sizer {
+    width: rem(213);
+    img {
+      width: 100%;
+    }
+  }
+  .gutter-sizer { width: 1rem; }
+  .add-recipe-toggle {
+    border: 2px dashed #ccc;
+    display: block;
+    padding-top: 4rem;
+    padding-bottom: 3.5rem;
+    text-align: center;
+    text-decoration: none;
+    i, span {
+      display: block;
+    }
+    i {
+      color: #aaa;
+      font-size: 2.5rem;
+    }
+    span {
+      color: #666;
+      font-size: rem(12);
+    }
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+// Recipe Detail
+.recipe-detail {
+  color: #757575;
+  h2 {
+    font-size: 21px;
+    font-weight: 300;
+    float: left;
+  }
+  header {
+    border-bottom: 1px solid;
+    margin: 1rem 0;
+  }
+  .timing {
+    float: right;
+    font-size: rem(12);
+    i {
+      font-size: rem(20);
+      color: #ccc;
+    }
+    & > span {
+      padding-left: rem(10);
+      span {
+        vertical-align: top;
+        line-height:rem(20);
+      }
+    }
+  }
+  section {
+    margin-bottom: 2rem;
+  }
+  .info {
+    h1 {
+      font-size: 30px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 1px 1px 3px #555;
+      margin-bottom: 1rem;
+      .edit-recipe-toggle {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: #fff;
+        text-shadow: none;
+        font-weight: 400;
+        border-radius: 4px;
+        border: 1px solid #fff;
+        padding: 3px 5px;
+        margin-left: 10px;
+        vertical-align: top;
+        span {
+          vertical-align: top;
+        }
+        &:hover {
+          text-decoration: none;
+          box-shadow: inherit;
+        }
+      }
+    }
+    p {
+      color: #fff;
+      text-shadow: 1px 1px 4px #666;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+    .counter {
+      .item {
+        position: relative;
+        float: left;
+        margin-right: 2rem;
+      }
+      .bg {
+        width: 50px;
+        height: 50px;
+        background: rgba(#000, 0.4);
+        display: block;
+        border-radius: 100%;
+        text-align: center;
+        i {
+          line-height: 55px;
+          color: #fff;
+          font-size: rem(25);
+          &.fa-comment {
+            line-height: 50px;
+          }
+          &.spoon {
+            background: url(../images/spoon.svg) no-repeat center center;
+            width: 50px;
+            height: 50px;
+            display: block;
+          }
+        }
+      }
+      .number {
+        font-size: 11px;
+        background: #FF7E1A;
+        color: #fff;
+        padding: 3px;
+        border-radius: 100%;
+        position: absolute;
+        right: -4px;
+        bottom: -4px;
+        height: 22px;
+        min-width: 22px;
+        text-align: center;
+      }
+    }
+  }
+  .primary, .secondary {
+    background: #fff;
+    margin-top: -50px;
+    border-radius: $border-radius-lg;
+  }
+  .primary {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 1rem;
+  }
+  .secondary {
+    padding: 0;
+    color: #333;
+    background: transparent;
+  }
+  .actions {
+    height: 50px;
+    align-items: center;
+    margin-left: -2rem;
+    margin-right: -2rem;
+    border-bottom: 1px solid #eee;
+    a {
+      color: #666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none !important;
+      i {
+        font-size: 25px;
+        margin-right: 6px;
+        &.imadeit {
+          background: url(../images/spoon-o.svg) no-repeat;
+          width: 25px;
+          height: 25px;
+        }
+      }
+      span {
+        font-size: 12px;
+        font-weight: bold;
+        width: 60px;
+        line-height: 1;
+      }
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    .like {
+      color: #ed3554;
+    }
+  }
+  .ingredients {
+    ul {
+      font-size: rem(14);
+      list-style: square;
+      padding: 0 0 0 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    li {
+      flex: 0 0 30%;
+      line-height: 1.8;
+    }
+  }
+  .directions {
+    margin-bottom: 0;
+    ul {
+      counter-reset: section;
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      position: relative;
+      padding: 10px 0 10px 40px;
+      min-height: 50px;
+      font-size: rem(14);
+    }
+    span.counter {
+      position: absolute;
+      left: 0;
+      top: 10px;
+      font-size: 16px;
+      line-height: 30px;
+      border-radius: 100%;
+      border: 1px solid #ddd;
+      width: 30px;
+      height: 30px;
+      -ms-text-align-last: right;
+      text-align: center;
+      font-weight: 300;
+      &:before {
+        content: counter(section);
+        counter-increment: section;
+      }
+    }
+    .notes {
+      font-size: rem(14);
+      h3 {
+        font-size: 16px;
+        border-top: 1px dotted #ddd;
+        padding-top: 10px;
+      }
+    }
+  }
+  .i-made-it {
+    button {
+      span {
+        color: #fff;
+        font-weight: 300;
+        background: url('../images/spoon-o-white.svg') no-repeat;
+        padding-left: 2rem;
+        line-height: 25px;
+        display: block;
+      }
+    }
+  }
+}
+.userInfo {
+  a:hover {
+    text-decoration: none;
+  }
+  .avatar {
+    display: block;
+    img {
+      border: none;
+      border-radius: 4px;
+      width: 40px;
+      height: 40px;
+      float: left;
+      margin-right: 10px;
+    }
+    margin-bottom: 1rem;
+  }
+  span.username {
+    color: #fff;
+    @include textshadow();
+  }
+  .date {
+    color: #fff;
+    padding-left: rem(26);
+    @include textshadow();
+    i {
+      margin-right: 10px;
+      font-size: rem(20);
+      display: inline-block;
+      vertical-align: middle;
+      margin-bottom: 10px;
+    }
+    span {
+      font-size: rem(12);
+      vertical-align: middle;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+  }
+}
+
+.leave-review {
+  img {
+    border-radius: 100%;
+    border: 2px solid #eee;
+  }
+  & > button {
+    margin-left: 0.1rem;
+    position: relative;
+    padding-left: 3rem;
+    &:focus, &:active {
+      outline: none !important;
+    }
+    &:before {
+      width: 21px;
+      height: 21px;
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      content: "";
+      background: #fff;
+      border-bottom-right-radius: 50%;
+    }
+    &:after {
+      width: 21px;
+      height: 21px;
+      position: absolute;
+      bottom: -1px;
+      left: -1px;
+      content: "";
+      background: #fff;
+      border-top-right-radius: 50%;
+    }
+  }
+}
+
+.review-rating {
+  .overview {
+    border-bottom: 1px dotted #eee;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.review-item {
+  border-bottom: 1px dotted #eee;
+  padding-bottom: rem(10);
+
+  .avatar {
+    border-radius: 100%;
+    border: 2px solid #eee;
+  }
+  .meta {
+    .rating-score {
+      display: inline-block;
+      vertical-align: top;
+      margin-right: rem(10);
+      color: #FFAB6F;
+      font-size: rem(20);
+      font-weight: 300;
+      line-height: rem(20);
+      .score {
+        font-weight: 500;
+        font-size: rem(24);
+      }
+    }
+    .date span {
+      font-size: rem(12);
+    }
+  }
+  p {
+    font-size: rem(13);
+    margin-bottom: rem(5);
+  }
+  .like {
+    i {
+      margin-right: 3px;
+      font-size: 14px;
+      //color: #ed3554;
+      color: #666;
+    }
+    span {
+      color: #666;
+      font-weight: 700;
+      font-size: 11px;
+      line-height: 14px;
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
+}
+
+aside {
+  background: #fff;
+  padding: 1rem 1rem 2rem;
+  border-radius: $border-radius-lg;
+  margin-bottom: 1rem;
+  .widget-title {
+    font-size: rem(22);
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+  .read-all {
+    color: #333;
+    font-size: rem(12);
+    text-transform: uppercase;
+    float: right;
+  }
+}
+.wg-photo {
+  .photo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    a {
+      margin-bottom: 10px;
+      flex: 0 1 31%;
+      img {
+        border-radius: $border-radius;
+        border: 1px solid #f5f5f5;
+      }
+    }
+  }
+}
+
+.side-grid {
+  .side-grid-item, .side-grid-sizer {
+    width: rem(153);
+    img {
+      width: 100%;
+    }
+  }
+  .side-gutter-sizer {
+    width: rem(12);
+  }
+}
+
+.circle-img {
+  border-radius: 100%;
+}
+
+.added-to-collection {
+  font-size: rem(13);
+  display: flex;
+  margin-bottom: rem(10);
+  a {
+    color: #333;
+    font-weight: bold;
+  }
+  span.action {
+    color: #ccc;
+  }
+  .user {
+    img {
+      width: rem(30);
+      margin-right: rem(10);
+    }
+  }
+  time {
+    display: block;
+    font-size: rem(11);
+    color: #ccc;
   }
 }

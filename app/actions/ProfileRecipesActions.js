@@ -3,19 +3,15 @@ import alt from '../alt';
 class ProfileRecipesActions {
 	constructor() {
 		this.generateActions(
-			'getCategoriesSuccess',
 			'handleChanges',
 			'handleCategoryChange',
 			'addRecipeSuccess',
-			'addRecipeError'
+			'addRecipeError',
+			'getRecipesSuccess',
+			'getRecipesError',
+			'getAllRecipesSuccess',
+			'getAllRecipesError'
 		);
-	}
-
-	getCategories() {
-		$.ajax({ url: '/api/categories' })
-			.done((data) => {
-				this.actions.getCategoriesSuccess(data);
-			});
 	}
 
 	addRecipe(data) {
@@ -29,6 +25,30 @@ class ProfileRecipesActions {
 		})
 		.fail((jqXhr) => {
 			this.actions.addRecipeFail(jqXhr.responseJSON.message);
+		});
+	}
+
+	getRecipes(userId) {
+		$.ajax({
+				url: '/api/' + userId + '/recipes'
+			})
+			.done((data) => {
+				this.actions.getRecipesSuccess(data);
+			})
+			.fail((jqXhr) => {
+				this.actions.getRecipesFail(jqXhr.responseJSON.message);
+			});
+	}
+
+	getAllRecipes(userId) {
+		$.ajax({
+			url: '/api/' + userId + '/allrecipes'
+		})
+		.done((data) => {
+			this.actions.getRecipesSuccess(data);
+		})
+		.fail((jqXhr) => {
+			this.actions.getRecipesFail(jqXhr.responseJSON.message);
 		});
 	}
 

@@ -3,13 +3,11 @@ import React from 'react';
 class AuthSuccess extends React.Component {
 
 	componentDidMount() {
+		window.opener.postMessage('loggedIn', '*');
 		this.closeWindow();
 	}
 
 	closeWindow() {
-		if(window.opener) {
-			window.opener.location.reload();
-		}
 		window.close();
 	}
 

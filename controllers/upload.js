@@ -2,9 +2,12 @@
 var request = require('request');
 var mongoose = require('mongoose'),
 	_ = require('lodash');
+var gm = require('gm');
+var async = require('async');
 var Grid = require('gridfs-stream');
 var Busboy = require('busboy');
 var configDB = require('../config/db');
+var im = require('imagemagick-stream');
 
 if( mongoose.connection.readyState = 0) {
 	mongoose.connect(configDB.database);
@@ -20,19 +23,82 @@ exports.create = function( req, res, cb ) {
 		}
 	});
 	var fileId = '';
+	var thumbId = '';
+	var squareThumbId = '';
 	busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
 		console.log('got file', filename, mimetype, encoding);
 		fileId = new mongoose.Types.ObjectId();
-		var writeStream = gfs.createWriteStream({
-			_id: fileId,
-			filename: filename,
-			mode: 'w',
-			content_type: mimetype,
-			metadata: {
-				userId: req.user._id,
-			}
-		});
-		file.pipe(writeStream);
+		thumbId = new mongoose.Types.ObjectId();
+		squareThumbId = new mongoose.Types.ObjectId();
+		gm(file)
+			.size({bufferStream: true}, function(err, size) {
+				var thumbWidth = 320;
+				var thumbHeight = (thumbWidth * size.height) / size.width;
+				var writeStream = gfs.createWriteStream({
+					_id: fileId,
+					filename: filename,
+					mode: 'w',
+					content_type: mimetype,
+					metadata: {
+						userId: req.user._id,
+						height: size.height,
+						width: size.width,
+						thumbs: {
+							w320: {
+								id: thumbId.toString(),
+								width: thumbWidth,
+								height: thumbHeight
+							},
+							s320: {
+								id: squareThumbId.toString(),
+								width: 300,
+								height: 300
+							}
+						}
+					}
+				});
+				this.stream(function (err, stdout, stderr) {
+					stdout.pipe(writeStream);
+				});
+
+				var thumbWriteStream = gfs.createWriteStream({
+					_id: thumbId,
+					filename: 'thumb_' + filename,
+					mode: 'w',
+					content_type: mimetype,
+					metadata: {
+						userId: req.user._id,
+						original: fileId.toString(),
+						width: thumbWidth,
+						height: thumbHeight
+					}
+				});
+				var squareThumbWriteStream = gfs.createWriteStream({
+					_id: squareThumbId,
+					filename: 'thumb_320x320_' + filename,
+					mode: 'w',
+					content_type: mimetype,
+					metadata: {
+						userId: req.user._id,
+						original: fileId.toString(),
+						width: 320,
+						height: 320
+					}
+				});
+				this.resize(320)
+					.quality(80)
+					.stream(function (err, stdout, stderr) {
+						stdout.pipe(thumbWriteStream);
+					});
+				this.resize(320, 320, '^')
+					.gravity('Center')
+					.crop('320', '320')
+					.quality(80)
+					.stream(function (err, stdout, stderr) {
+						stdout.pipe(squareThumbWriteStream);
+					});
+			});
+
 	}).on('finish', function() {
 		// show a link to the uploaded file
 		//res.writeHead(200, {'content-type': 'text/html'});
@@ -53,7 +119,10 @@ exports.createFromUrl = function (url, userId) {
 		_id: fileId,
 		userId: userId,
 		filename: fileName,
-		mode: 'w'
+		mode: 'w',
+		metadata: {
+			userId: req.user._id,
+		}
 	});
 	request
 		.get(url)

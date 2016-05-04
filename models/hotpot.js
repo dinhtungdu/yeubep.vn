@@ -1,3 +1,6 @@
+var User = require('./user');
+var Comment = require('./comment');
+var GFS = require('./gfs');
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 var shortid = require('shortid');
@@ -8,7 +11,7 @@ var hotpotSchema = mongoose.Schema({
 		default: shortid.generate,
 		index: true
 	},
-	userId: { type: Schema.Types.ObjectId, ref: 'User'},
+	userId: { type: String, ref: 'User'},
 	type: {
 		type: String,
 		enum: [ 'recipe', 'photo', 'recipeCollection', 'note' ],
@@ -19,31 +22,54 @@ var hotpotSchema = mongoose.Schema({
 		enum: [ 'public', 'private' ],
 		default: 'public'
 	},
-	loves: [{ type: Schema.Types.ObjectId, ref: 'User'}],
-	comments: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
+	loves: [{ type: String, ref: 'User'}],
+	comments: [{ type: String, ref: 'Comment'}],
 	recipe: {
-		category: { type: Schema.Types.ObjectId, ref: 'Category'},
+		category: { type: String, ref: 'Category'},
 		occasion: {
 			type: [{ type: String }],
 			validate: [arrayLimit, 'Exceeds the limit of 3']
 		},
-		prepTime: Number,
-		cookTime: Number,
-		title: String,
-		numberOfServings: Number,
-		description: String,
-		directions: String,
-		preparation: String,
-		note: String,
-		ingredients: String,
+		prepTime: {
+			type: Number,
+			default: ''
+		},
+		cookTime: {
+			type: Number,
+			default: ''
+		},
+		title: {
+			type: String,
+			default: 'Công thức chưa có tiêu đề'
+		},
+		numberOfServings: {
+			type: Number,
+			default: ''
+		},
+		description: {
+			type: String,
+			default: ''
+		},
+		directions: {
+			type: String,
+			default: ''
+		},
+		note: {
+			type: String,
+			default: ''
+		},
+		ingredients: {
+			type: String,
+			default: ''
+		},
 		ingredientsTags: [ {type: String} ]
 	},
 	recipeCollection: {
 		title: String,
 		description: String,
-		recipes: [{ type: Schema.Types.ObjectId, ref: 'Hotpot'}]
+		recipes: [{ type: String, ref: 'Hotpot'}]
 	},
-	mainPhoto: String
+	mainPhoto: { type: String, ref: 'GFS', default: null }
 }, {
 	timestamps: true
 });

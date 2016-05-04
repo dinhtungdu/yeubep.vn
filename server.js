@@ -17,6 +17,7 @@ var Router = require('react-router');
 var session = require('express-session');
 var swig  = require('swig');
 var xml2js = require('xml2js');
+var fs = require('fs');
 var _ = require('underscore');
 
 // Configuration
@@ -32,6 +33,8 @@ mongoose.connection.on('error', function() {
 
 require('./config/passport')(passport);
 app.set('port', process.env.PORT || 3000);
+app.set('view engine', 'jade')
+app.set('views', path.join(__dirname, 'views'))
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -60,19 +63,17 @@ app.use(function(req, res) {
 			res.status(302).redirect(redirectLocation.pathname + redirectLocation.search)
 		} else if (renderProps) {
 			var html = ReactDOM.renderToString(React.createElement(Router.RoutingContext, renderProps));
-			var page = swig.renderFile('views/index.html', { html: html });
-			res.status(200).send(page);
+			//var page = swig.renderFile('views/index.html', { html: html });
+			//res.status(200).send(page);
+			res.status(200).render('layout', { html: html});
 		} else {
 			res.status(404).send('Page Not Found')
 		}
 	});
 });
 
-//app.use(function(err, req, res, next) {
-//	//console.log(err.stack);
-//	res.sendStatus(err.status || 500);
-//	res.send({ message: err.message });
-//});
+app.use(function(err, req, res, next) {
+});
 
 // Socket.io stuffs
 var server = require('http').createServer(app);
@@ -93,4 +94,5 @@ io.sockets.on('connection', function(socket) {
 // Start Sever
 server.listen(app.get('port'), function () {
 	console.log('Express server listening on port ' + app.get('port'));
+	fs.writeFile(__dirname + '/log/start.log', 'started');
 });

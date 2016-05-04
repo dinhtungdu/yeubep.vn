@@ -2,8 +2,8 @@
   "name": "yeubepvn",
   "dependencies": {
     "jquery": "^2.2.1",
-    "magnific-popup": "^1.1.0",
     "toastr": "^2.1.2",
-    "font-awesome": "^4.5.0"
+    "font-awesome": "^4.5.0",
+    "masonry": "^4.0.0"
   }
 }

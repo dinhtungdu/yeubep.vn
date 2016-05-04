@@ -1,5 +1,6 @@
 'use strict';
 var Hotpot = require('../models/hotpot');
+var User = require('../models/user');
 var helpers = require('../helpers');
 var upload = require('../controllers/upload');
 var async = require('async');
@@ -37,7 +38,9 @@ module.exports = function(app, passport) {
 					recipeInfo.recipe.ingredients = recipeInfo.recipe.ingredients.trim().replace(/<(?:.|\n)*?>/gm, '');
 					recipeInfo.recipe.description = recipeInfo.recipe.description.trim().replace(/<(?:.|\n)*?>/gm, '');
 					recipeInfo.recipe.note = recipeInfo.recipe.note.trim().replace(/<(?:.|\n)*?>/gm, '');
-
+					if( recipeInfo.mainPhoto == '' ) {
+						recipeInfo.mainPhoto = null;
+					}
 					cb(null, recipeInfo);
 				},
 				function(recipeInfo) {
@@ -53,7 +56,7 @@ module.exports = function(app, passport) {
 						console.log('Recipe ' + hotpot.id + ' was added successfully!');
 						res.send({
 							status: 'success',
-							id: hotpot.id
+							contentId: hotpot.contentId
 						});
 					});
 				}
@@ -62,19 +65,27 @@ module.exports = function(app, passport) {
 
 	app.get('/api/recipes/:id',
 		function(req, res, next) {
-			Hotpot.findById(req.params.id, function(err, hotpot) {
-				if(err) return next(err);
+			Hotpot.findOne({contentId: req.params.id})
+				.populate('mainPhoto userId')
+				.populate({
+					path: 'comments',
+					options: {
+						createdAt: -1
+					}
+				})
+				.exec( function(err, hotpot) {
+					if(err) return next(err);
 
-				if(!hotpot) {
-					return res.status(404).send({ message: 'Recipe not found.'});
-				}
+					if(!hotpot) {
+						return res.status(404).send('Recipe not found');
+					}
 
-				if(hotpot.visible != 'public' && helpers.isLoggedIn(req, res, next) && req.user._id != hotpot.userId ) {
-					return res.staus(401).send({ message: 'Private recipe.'});
-				}
+					if(hotpot.visible != 'public' && helpers.isLoggedIn(req, res, next) && req.user._id != hotpot.userId ) {
+						return res.status(401).send({ message: 'Private recipe.'});
+					}
 
-				res.send(hotpot);
-			});
+					res.send(hotpot);
+				});
 		}
 	);
 
@@ -91,44 +102,37 @@ module.exports = function(app, passport) {
 	);
 
 	app.put('/api/recipes/:id',
-		helpers.isLoggedIn,
+		//helpers.isLoggedIn,
 		function(req, res, next) {
 			Hotpot.findById(req.params.id, function(err, hotpot) {
 				if(err) {
-					res.send(err);
+					return next(err)
 				}
-				if( hotpot.userId !== req.user._id ) {
-					res.send('Cheating, uh?');
+				if( hotpot.userId != req.user._id ) {
+					return res.status(401).send({ message: 'Cheating, uh?'});
 				}
 				async.waterfall([
 					function(cb) {
-						var busboy = new Busboy({ headers: req.headers });
-						var recipeVar = {};
-						busboy.on('field', function(fieldname, val) {
-							recipeVar[fieldname] = val;
-						});
-						req.pipe(busboy);
-						cb(null, recipeVar);
-					},
-					function(recipeVar, cb) {
-						hotpot.visible  = recipeVar.visible;
-						hotpot.recipe.prepTime = recipeVar.prepTime;
-						hotpot.recipe.cookTime = recipeVar.cookTime;
-						hotpot.recipe.title = recipeVar.title;
-						hotpot.recipe.numberOfServings = recipeVar.numberOfServings;
-						hotpot.recipe.preparation = recipeVar.preparation;
-						hotpot.recipe.description = recipeVar.description;
-						hotpot.recipe.directions = recipeVar.directions;
-						hotpot.recipe.ingredients = recipeVar.ingredients;
-						hotpot.recipe.note = recipeVar.note;
+						console.log('before hotpot', hotpot);
+						console.log('body', req.body);
+						hotpot.visible  = req.body.visible;
+						hotpot.recipe.prepTime = req.body.prepTime;
+						hotpot.recipe.cookTime = req.body.cookTime;
+						hotpot.recipe.title = req.body.title;
+						hotpot.recipe.numberOfServings = req.body.numberOfServings;
+						hotpot.recipe.description = req.body.description;
+						hotpot.recipe.directions = req.body.directions;
+						hotpot.recipe.ingredients = req.body.ingredients;
+						hotpot.recipe.note = req.body.note;
+						hotpot.mainPhoto = req.body.mainPhoto;
 						cb(null, hotpot);
 					},
 					function(hotpot) {
 						hotpot.save(function(err) {
 							if(err) {
-								res.send(err);
+								return next(err);
 							}
-							res.send('Recipe updated!');
+							res.status(200).send({message: 'Recipe Updated!', id: hotpot.contentId});
 						});
 					}
 				]);
@@ -136,34 +140,65 @@ module.exports = function(app, passport) {
 		}
 	);
 
-	app.put('/api/recipes/:id/photo',
+	// Get user's recipes
+	app.get('/api/:userid/recipes',
+		function(req, res, next) {
+			User.findOne({
+				username: req.params.userid
+			}, function(err, user) {
+				if(err) return next(err);
+				var userid = user._id;
+				Hotpot.find({
+						userId: userid,
+						type: 'recipe',
+						visible: 'public'
+					})
+					.populate( 'userId mainPhoto' )
+					.exec( function(err, hotpots) {
+						if(err) return next(err);
+
+						if(!hotpots) {
+							return res.status(404).send({ message: 'Đầu bếp này chưa có công thức nào.'});
+						}
+
+						res.send(hotpots);
+					});
+			});
+		}
+	);
+
+	// Get all user's recipe. Use when user view his profile
+	app.get('/api/:userid/allrecipes',
 		helpers.isLoggedIn,
 		function(req, res, next) {
-			Hotpot.findById(req.params.id, function(err, hotpot) {
-				if(err) {
-					res.send(err);
+			async.waterfall([
+				function(cb) {
+					User.findOne({
+						username: req.params.userid
+					}, function(err, user) {
+						if(err) return next(err);
+						var userid = user._id;
+						console.log(userid);
+						cb(null, userid);
+					});
+				},
+				function( userid ) {
+					Hotpot.find({
+						userId: userid,
+						type: 'recipe',
+					})
+					.populate( 'mainPhoto userId' )
+					.exec( function(err, hotpots) {
+						if(err) return next(err);
+
+						if(!hotpots) {
+							return res.status(404).send({ message: 'Bạn chưa có công thức nào.'});
+						}
+
+						res.send(hotpots);
+					});
 				}
-				if( hotpot.userId != req.user._id ) {
-					res.send('Cheating, uh?');
-				}
-				async.waterfall([
-					function(cb) {
-						upload.create(req, res, function(photoId) {
-							cb(null, photoId);
-						});
-					},
-					function(photoId) {
-						hotpot.mainPhoto = photoId;
-						hotpot.save(function(err) {
-							if(err) {
-								res.send(err);
-							}
-							res.send('Main photo of recipe updated!');
-						});
-					}
-				]);
-			});
+			]);
 		}
 	);
-
 };
