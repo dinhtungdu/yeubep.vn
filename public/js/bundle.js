@@ -320,146 +320,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactStarRatingComponent = require('react-star-rating-component');
-
-var _reactStarRatingComponent2 = _interopRequireDefault(_reactStarRatingComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var AddReviewModal = function (_React$Component) {
-	_inherits(AddReviewModal, _React$Component);
-
-	function AddReviewModal(props) {
-		_classCallCheck(this, AddReviewModal);
-
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AddReviewModal).call(this, props));
-
-		_this.state = {
-			rating: 1
-		};
-		return _this;
-	}
-
-	_createClass(AddReviewModal, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {}
-	}, {
-		key: 'onStarClick',
-		value: function onStarClick(name, value) {
-			this.setState({ rating: value });
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			return _react2.default.createElement(
-				'div',
-				{ className: 'AddReviewModal' },
-				_react2.default.createElement(
-					'div',
-					{ className: 'modal fade', id: 'addReviewModal', tabIndex: '-1', role: 'dialog', 'aria-labelledby': 'addReviewModalLabel', 'aria-hidden': 'true' },
-					_react2.default.createElement(
-						'div',
-						{ className: 'modal-dialog', role: 'document' },
-						_react2.default.createElement(
-							'div',
-							{ className: 'modal-content add-recipe' },
-							_react2.default.createElement('div', { id: 'add-recipe-bg' }),
-							_react2.default.createElement(
-								'div',
-								{ className: 'modal-header' },
-								_react2.default.createElement(
-									'button',
-									{ type: 'button', className: 'close', 'data-dismiss': 'modal', 'aria-label': 'Close' },
-									_react2.default.createElement(
-										'span',
-										{ 'aria-hidden': 'true' },
-										'×'
-									)
-								),
-								_react2.default.createElement(
-									'h4',
-									{ className: 'modal-title', id: 'addReviewModalLabel' },
-									'Đánh giá công thức: ',
-									this.props.recipeTitle
-								)
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'modal-body' },
-								_react2.default.createElement(
-									'form',
-									{ className: 'container-fluid clearfix' },
-									_react2.default.createElement(
-										'div',
-										{ className: 'form-group row' },
-										_react2.default.createElement(
-											'label',
-											{ className: 'col-sm-3 form-control-label' },
-											'Bạn cho công thức này mấy sao?'
-										),
-										_react2.default.createElement(
-											'div',
-											{ className: 'col-sm-9' },
-											_react2.default.createElement(_reactStarRatingComponent2.default, {
-												name: 'recipeRating',
-												starCount: 5,
-												value: this.state.rating,
-												onStarClick: this.onStarClick.bind(this)
-											})
-										)
-									),
-									_react2.default.createElement(
-										'div',
-										{ className: 'form-group row' },
-										_react2.default.createElement(
-											'label',
-											{ className: 'col-sm-3 form-control-label' },
-											'Nhận xét của bạn về công thức này?'
-										),
-										_react2.default.createElement(
-											'div',
-											{ className: 'col-sm-9' },
-											_react2.default.createElement('textarea', { rows: '4', name: 'recipeReview', className: 'form-control' })
-										)
-									),
-									_react2.default.createElement(
-										'button',
-										{ type: 'submit', className: 'btn btn-sm btn-primary recipe-submit pull-right' },
-										'Nhận xét'
-									)
-								)
-							)
-						)
-					)
-				)
-			);
-		}
-	}]);
-
-	return AddReviewModal;
-}(_react2.default.Component);
-
-exports.default = AddReviewModal;
-
-},{"react":"react","react-star-rating-component":69}],9:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
 var _Navbar = require('./Navbar');
 
 var _Navbar2 = _interopRequireDefault(_Navbar);
@@ -498,7 +358,7 @@ var App = function (_React$Component) {
 
 exports.default = App;
 
-},{"./Navbar":13,"react":"react"}],10:[function(require,module,exports){
+},{"./Navbar":12,"react":"react"}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -555,7 +415,7 @@ var AuthSuccess = function (_React$Component) {
 
 exports.default = AuthSuccess;
 
-},{"react":"react"}],11:[function(require,module,exports){
+},{"react":"react"}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -621,7 +481,7 @@ var Category = function (_React$Component) {
 
 exports.default = Category;
 
-},{"react":"react","react-router":"react-router"}],12:[function(require,module,exports){
+},{"react":"react","react-router":"react-router"}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -692,7 +552,7 @@ var Home = function (_React$Component) {
 
 exports.default = Home;
 
-},{"../actions/HomeActions":1,"../stores/HomeStore":30,"react":"react","react-router":"react-router"}],13:[function(require,module,exports){
+},{"../actions/HomeActions":1,"../stores/HomeStore":31,"react":"react","react-router":"react-router"}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -805,7 +665,7 @@ var Navbar = function (_React$Component) {
 
 exports.default = Navbar;
 
-},{"../actions/NavbarActions":2,"../stores/NavbarStore":31,"./inc/NavUser":22,"react":"react","react-router":"react-router","underscore":"underscore"}],14:[function(require,module,exports){
+},{"../actions/NavbarActions":2,"../stores/NavbarStore":32,"./inc/NavUser":23,"react":"react","react-router":"react-router","underscore":"underscore"}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -851,7 +711,7 @@ var NotFound = function (_React$Component) {
 
 exports.default = NotFound;
 
-},{"react":"react"}],15:[function(require,module,exports){
+},{"react":"react"}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -937,7 +797,7 @@ var Profile = function (_React$Component) {
 
 exports.default = Profile;
 
-},{"../actions/ProfileActions":3,"../stores/ProfileStore":33,"./inc/UserCover":26,"react":"react","react-router":"react-router","underscore":"underscore"}],16:[function(require,module,exports){
+},{"../actions/ProfileActions":3,"../stores/ProfileStore":34,"./inc/UserCover":27,"react":"react","react-router":"react-router","underscore":"underscore"}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1133,7 +993,7 @@ var ProfileRecipes = function (_React$Component) {
 
 exports.default = ProfileRecipes;
 
-},{"../actions/NavbarActions":2,"../actions/ProfileRecipesActions":4,"../stores/NavbarStore":31,"../stores/ProfileRecipesStore":32,"../stores/RecipeModalStore":34,"./RecipeModal":18,"react":"react","react-helmet":58,"react-router":"react-router","react-select":63,"underscore":"underscore"}],17:[function(require,module,exports){
+},{"../actions/NavbarActions":2,"../actions/ProfileRecipesActions":4,"../stores/NavbarStore":32,"../stores/ProfileRecipesStore":33,"../stores/RecipeModalStore":35,"./RecipeModal":17,"react":"react","react-helmet":59,"react-router":"react-router","react-select":64,"underscore":"underscore"}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1164,7 +1024,7 @@ var _RecipeModal = require('./RecipeModal');
 
 var _RecipeModal2 = _interopRequireDefault(_RecipeModal);
 
-var _AddReviewModal = require('./AddReviewModal');
+var _AddReviewModal = require('./inc/AddReviewModal');
 
 var _AddReviewModal2 = _interopRequireDefault(_AddReviewModal);
 
@@ -1199,6 +1059,10 @@ var _LikeButton2 = _interopRequireDefault(_LikeButton);
 var _helpers = require('../helpers');
 
 var _helpers2 = _interopRequireDefault(_helpers);
+
+var _AddRecipePhotoModal = require('./inc/AddRecipePhotoModal');
+
+var _AddRecipePhotoModal2 = _interopRequireDefault(_AddRecipePhotoModal);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1249,7 +1113,6 @@ var Recipe = function (_React$Component) {
 		key: 'onChange',
 		value: function onChange(state) {
 			this.setState(state);
-			console.log(this.state);
 			this.masonry.masonry('reloadItems');
 			this.masonry.masonry();
 		}
@@ -1522,7 +1385,8 @@ var Recipe = function (_React$Component) {
 											null,
 											'Tôi đã làm món này'
 										)
-									)
+									),
+									_react2.default.createElement(_AddRecipePhotoModal2.default, null)
 								),
 								_react2.default.createElement(
 									'section',
@@ -1734,7 +1598,7 @@ var Recipe = function (_React$Component) {
 
 exports.default = Recipe;
 
-},{"../actions/RecipeActions":5,"../helpers":27,"../stores/NavbarStore":31,"../stores/RecipeModalStore":34,"../stores/RecipeStore":35,"./AddReviewModal":8,"./RecipeModal":18,"./inc/AddedToCollection":20,"./inc/LikeButton":21,"./inc/RecipeHeaderCover":23,"./inc/RecipeSmall":24,"./inc/Review":25,"react":"react","react-router":"react-router","underscore":"underscore"}],18:[function(require,module,exports){
+},{"../actions/RecipeActions":5,"../helpers":28,"../stores/NavbarStore":32,"../stores/RecipeModalStore":35,"../stores/RecipeStore":36,"./RecipeModal":17,"./inc/AddRecipePhotoModal":19,"./inc/AddReviewModal":20,"./inc/AddedToCollection":21,"./inc/LikeButton":22,"./inc/RecipeHeaderCover":24,"./inc/RecipeSmall":25,"./inc/Review":26,"react":"react","react-router":"react-router","underscore":"underscore"}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2274,7 +2138,7 @@ var RecipeModal = function (_React$Component) {
 
 exports.default = RecipeModal;
 
-},{"../actions/RecipeModalActions":6,"../stores/RecipeModalStore":34,"react":"react","react-select":63}],19:[function(require,module,exports){
+},{"../actions/RecipeModalActions":6,"../stores/RecipeModalStore":35,"react":"react","react-select":64}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2340,7 +2204,296 @@ var Recipes = function (_React$Component) {
 
 exports.default = Recipes;
 
-},{"react":"react","react-router":"react-router"}],20:[function(require,module,exports){
+},{"react":"react","react-router":"react-router"}],19:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactStarRatingComponent = require('react-star-rating-component');
+
+var _reactStarRatingComponent2 = _interopRequireDefault(_reactStarRatingComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AddRecipePhotoModal = function (_React$Component) {
+	_inherits(AddRecipePhotoModal, _React$Component);
+
+	function AddRecipePhotoModal(props) {
+		_classCallCheck(this, AddRecipePhotoModal);
+
+		return _possibleConstructorReturn(this, Object.getPrototypeOf(AddRecipePhotoModal).call(this, props));
+	}
+
+	_createClass(AddRecipePhotoModal, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {}
+	}, {
+		key: 'dropzoneControl',
+		value: function dropzoneControl() {
+			Dropzone.autoDiscover = false;
+			var myDropzone = new Dropzone('#dZAddRecipePhoto', {
+				url: "/file/add",
+				maxFiles: 1,
+				addRemoveLinks: true,
+				//acceptedFiles: 'image',
+				thumbnailWidth: 260,
+				thumbnailHeight: 150,
+				dictRemoveFile: '×',
+				dictDefaultMessage: 'Kéo ảnh hoặc click vào đây để upload',
+				thumbnail: function thumbnail(file, dataUrl) {
+					var thumbnailElement, _i, _len, _ref;
+					if (file.previewElement) {
+						file.previewElement.classList.remove("dz-file-preview");
+						_ref = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
+						for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+							thumbnailElement = _ref[_i];
+							thumbnailElement.alt = file.name;
+							thumbnailElement.src = dataUrl;
+						}
+						return setTimeout(function (_this) {
+							return function () {
+								return file.previewElement.classList.add("dz-image-preview");
+							};
+						}(this), 1);
+					}
+					$('#add-recipe-bg').css("background", 'url(' + dataUrl + ')');
+				},
+				success: function success(file, response) {
+					file.previewElement.classList.add("dz-success");
+					$('#mainPhoto').val(response);
+					RecipeModalActions.changeMainPhoto(response);
+				}
+			});
+			if (typeof this.state.mockfile != 'undefined' && this.state.mockfile != "") {
+				var mockFile = { name: this.state.mockfile.filename, size: this.state.mockfile.chunkSize };
+				var imgUrl = '/file/' + this.state.mockfile._id;
+				myDropzone.emit("addedfile", mockFile);
+
+				myDropzone.createThumbnailFromUrl(mockFile, imgUrl);
+
+				myDropzone.emit("complete", mockFile);
+
+				var existingFileCount = 1; // The number of files already uploaded
+				myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+			}
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				{ className: 'AddRecipePhotoModal' },
+				_react2.default.createElement(
+					'div',
+					{ className: 'modal fade', id: 'addRecipePhotoModal', tabIndex: '-1', role: 'dialog', 'aria-labelledby': 'addRecipePhotoModalLabel', 'aria-hidden': 'true' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'modal-dialog', role: 'document' },
+						_react2.default.createElement(
+							'div',
+							{ className: 'modal-content add-recipe' },
+							_react2.default.createElement('div', { id: 'add-recipe-bg' }),
+							_react2.default.createElement(
+								'div',
+								{ className: 'modal-header' },
+								_react2.default.createElement(
+									'button',
+									{ type: 'button', className: 'close', 'data-dismiss': 'modal', 'aria-label': 'Close' },
+									_react2.default.createElement(
+										'span',
+										{ 'aria-hidden': 'true' },
+										'×'
+									)
+								),
+								_react2.default.createElement(
+									'h4',
+									{ className: 'modal-title', id: 'addRecipePhotoModalLabel' },
+									'Thêm ảnh của bạn cho món ',
+									this.props.recipeTitle
+								)
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'modal-body' },
+								_react2.default.createElement(
+									'div',
+									{ id: 'dZAddRecipePhoto', className: 'dropzone' },
+									_react2.default.createElement('div', { className: 'dropzone-previews' })
+								),
+								_react2.default.createElement('input', { type: 'checkbox', className: 'form-control' }),
+								_react2.default.createElement(
+									'button',
+									{ className: 'btn btn-sm btn-primary recipe-submit pull-right' },
+									'Đăng'
+								)
+							)
+						)
+					)
+				)
+			);
+		}
+	}]);
+
+	return AddRecipePhotoModal;
+}(_react2.default.Component);
+
+exports.default = AddRecipePhotoModal;
+
+},{"react":"react","react-star-rating-component":70}],20:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactStarRatingComponent = require('react-star-rating-component');
+
+var _reactStarRatingComponent2 = _interopRequireDefault(_reactStarRatingComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AddReviewModal = function (_React$Component) {
+	_inherits(AddReviewModal, _React$Component);
+
+	function AddReviewModal(props) {
+		_classCallCheck(this, AddReviewModal);
+
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AddReviewModal).call(this, props));
+
+		_this.state = {
+			rating: 1
+		};
+		return _this;
+	}
+
+	_createClass(AddReviewModal, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {}
+	}, {
+		key: 'onStarClick',
+		value: function onStarClick(name, value) {
+			this.setState({ rating: value });
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				{ className: 'AddReviewModal' },
+				_react2.default.createElement(
+					'div',
+					{ className: 'modal fade', id: 'addReviewModal', tabIndex: '-1', role: 'dialog', 'aria-labelledby': 'addReviewModalLabel', 'aria-hidden': 'true' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'modal-dialog', role: 'document' },
+						_react2.default.createElement(
+							'div',
+							{ className: 'modal-content add-recipe' },
+							_react2.default.createElement('div', { id: 'add-recipe-bg' }),
+							_react2.default.createElement(
+								'div',
+								{ className: 'modal-header' },
+								_react2.default.createElement(
+									'button',
+									{ type: 'button', className: 'close', 'data-dismiss': 'modal', 'aria-label': 'Close' },
+									_react2.default.createElement(
+										'span',
+										{ 'aria-hidden': 'true' },
+										'×'
+									)
+								),
+								_react2.default.createElement(
+									'h4',
+									{ className: 'modal-title', id: 'addReviewModalLabel' },
+									'Đánh giá công thức: ',
+									this.props.recipeTitle
+								)
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'modal-body' },
+								_react2.default.createElement(
+									'form',
+									{ className: 'container-fluid clearfix' },
+									_react2.default.createElement(
+										'div',
+										{ className: 'form-group row' },
+										_react2.default.createElement(
+											'label',
+											{ className: 'col-sm-3 form-control-label' },
+											'Bạn cho công thức này mấy sao?'
+										),
+										_react2.default.createElement(
+											'div',
+											{ className: 'col-sm-9' },
+											_react2.default.createElement(_reactStarRatingComponent2.default, {
+												name: 'recipeRating',
+												starCount: 5,
+												value: this.state.rating,
+												onStarClick: this.onStarClick.bind(this)
+											})
+										)
+									),
+									_react2.default.createElement(
+										'div',
+										{ className: 'form-group row' },
+										_react2.default.createElement(
+											'label',
+											{ className: 'col-sm-3 form-control-label' },
+											'Nhận xét của bạn về công thức này?'
+										),
+										_react2.default.createElement(
+											'div',
+											{ className: 'col-sm-9' },
+											_react2.default.createElement('textarea', { rows: '4', name: 'recipeReview', className: 'form-control' })
+										)
+									),
+									_react2.default.createElement(
+										'button',
+										{ type: 'submit', className: 'btn btn-sm btn-primary recipe-submit pull-right' },
+										'Nhận xét'
+									)
+								)
+							)
+						)
+					)
+				)
+			);
+		}
+	}]);
+
+	return AddReviewModal;
+}(_react2.default.Component);
+
+exports.default = AddReviewModal;
+
+},{"react":"react","react-star-rating-component":70}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2426,7 +2579,7 @@ var AddedToCollection = function (_React$Component) {
 
 exports.default = AddedToCollection;
 
-},{"../../helpers":27,"react":"react","react-router":"react-router"}],21:[function(require,module,exports){
+},{"../../helpers":28,"react":"react","react-router":"react-router"}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2508,7 +2661,7 @@ var LikeButton = function (_React$Component) {
 
 exports.default = LikeButton;
 
-},{"react":"react","react-router":"react-router","underscore":"underscore"}],22:[function(require,module,exports){
+},{"react":"react","react-router":"react-router","underscore":"underscore"}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2590,7 +2743,7 @@ var NavUser = function (_React$Component) {
 
 exports.default = NavUser;
 
-},{"../../../helpers":36,"react":"react","react-router":"react-router","underscore":"underscore"}],23:[function(require,module,exports){
+},{"../../../helpers":37,"react":"react","react-router":"react-router","underscore":"underscore"}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2805,7 +2958,7 @@ var RecipeHeaderCover = function (_React$Component) {
 
 exports.default = RecipeHeaderCover;
 
-},{"moment":55,"react":"react","react-router":"react-router"}],24:[function(require,module,exports){
+},{"moment":56,"react":"react","react-router":"react-router"}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2884,7 +3037,7 @@ var RecipeSmall = function (_React$Component) {
 
 exports.default = RecipeSmall;
 
-},{"react":"react","react-router":"react-router","react-star-rating-component":69}],25:[function(require,module,exports){
+},{"react":"react","react-router":"react-router","react-star-rating-component":70}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3009,7 +3162,7 @@ var Review = function (_React$Component) {
 
 exports.default = Review;
 
-},{"../../../helpers":36,"react":"react","react-router":"react-router","react-star-rating-component":69,"underscore":"underscore"}],26:[function(require,module,exports){
+},{"../../../helpers":37,"react":"react","react-router":"react-router","react-star-rating-component":70,"underscore":"underscore"}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3079,7 +3232,7 @@ var UserCover = function (_React$Component) {
 
 exports.default = UserCover;
 
-},{"../../../helpers":36,"react":"react","react-router":"react-router","underscore":"underscore"}],27:[function(require,module,exports){
+},{"../../../helpers":37,"react":"react","react-router":"react-router","underscore":"underscore"}],28:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -3102,7 +3255,7 @@ module.exports = {
 	}
 };
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -3135,7 +3288,7 @@ _reactDom2.default.render(_react2.default.createElement(
 	_routes2.default
 ), document.getElementById('app'));
 
-},{"./routes":29,"history/lib/createBrowserHistory":46,"react":"react","react-dom":"react-dom","react-router":"react-router"}],29:[function(require,module,exports){
+},{"./routes":30,"history/lib/createBrowserHistory":47,"react":"react","react-dom":"react-dom","react-router":"react-router"}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3203,7 +3356,7 @@ exports.default = _react2.default.createElement(
 	_react2.default.createElement(_reactRouter.Redirect, { from: '/*', to: '/khong-tim-thay' })
 );
 
-},{"./components/App":9,"./components/AuthSuccess":10,"./components/Category":11,"./components/Home":12,"./components/NotFound":14,"./components/Profile":15,"./components/ProfileRecipes":16,"./components/Recipe":17,"./components/Recipes":19,"react":"react","react-router":"react-router"}],30:[function(require,module,exports){
+},{"./components/App":8,"./components/AuthSuccess":9,"./components/Category":10,"./components/Home":11,"./components/NotFound":13,"./components/Profile":14,"./components/ProfileRecipes":15,"./components/Recipe":16,"./components/Recipes":18,"react":"react","react-router":"react-router"}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3244,7 +3397,7 @@ var HomeStore = function () {
 
 exports.default = _alt2.default.createStore(HomeStore);
 
-},{"../actions/HomeActions":1,"../alt":7}],31:[function(require,module,exports){
+},{"../actions/HomeActions":1,"../alt":7}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3289,7 +3442,7 @@ var NavbarStore = function () {
 
 exports.default = _alt2.default.createStore(NavbarStore);
 
-},{"../actions/NavbarActions":2,"../alt":7}],32:[function(require,module,exports){
+},{"../actions/NavbarActions":2,"../alt":7}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3349,7 +3502,7 @@ var ProfileRecipesStore = function () {
 
 exports.default = _alt2.default.createStore(ProfileRecipesStore);
 
-},{"../actions/ProfileRecipesActions":4,"../alt":7,"underscore":"underscore"}],33:[function(require,module,exports){
+},{"../actions/ProfileRecipesActions":4,"../alt":7,"underscore":"underscore"}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3390,7 +3543,7 @@ var ProfileStore = function () {
 
 exports.default = _alt2.default.createStore(ProfileStore);
 
-},{"../actions/ProfileActions":3,"../alt":7}],34:[function(require,module,exports){
+},{"../actions/ProfileActions":3,"../alt":7}],35:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3494,7 +3647,7 @@ var RecipeModalStore = function () {
 
 exports.default = _alt2.default.createStore(RecipeModalStore);
 
-},{"../actions/RecipeModalActions":6,"../alt":7,"underscore":"underscore"}],35:[function(require,module,exports){
+},{"../actions/RecipeModalActions":6,"../alt":7,"underscore":"underscore"}],36:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3586,7 +3739,7 @@ var RecipeStore = function () {
 
 exports.default = _alt2.default.createStore(RecipeStore);
 
-},{"../actions/NavbarActions":2,"../actions/RecipeActions":5,"../alt":7,"./NavbarStore":31,"underscore":"underscore"}],36:[function(require,module,exports){
+},{"../actions/NavbarActions":2,"../actions/RecipeActions":5,"../alt":7,"./NavbarStore":32,"underscore":"underscore"}],37:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -3642,7 +3795,7 @@ module.exports = {
 
 };
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 /*!
   Copyright (c) 2016 Jed Watson.
   Licensed under the MIT License (MIT), see
@@ -3692,7 +3845,7 @@ module.exports = {
 	}
 }());
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -3788,7 +3941,7 @@ function objEquiv(a, b, opts) {
   return typeof a === typeof b;
 }
 
-},{"./lib/is_arguments.js":39,"./lib/keys.js":40}],39:[function(require,module,exports){
+},{"./lib/is_arguments.js":40,"./lib/keys.js":41}],40:[function(require,module,exports){
 var supportsArgumentsClass = (function(){
   return Object.prototype.toString.call(arguments)
 })() == '[object Arguments]';
@@ -3810,7 +3963,7 @@ function unsupported(object){
     false;
 };
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
@@ -3821,7 +3974,7 @@ function shim (obj) {
   return keys;
 }
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 /**
  * Indicates that navigation was caused by a call to history.push.
  */
@@ -3853,7 +4006,7 @@ exports['default'] = {
   REPLACE: REPLACE,
   POP: POP
 };
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -3880,7 +4033,7 @@ function loopAsync(turns, work, callback) {
 
   next();
 }
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 (function (process){
 /*eslint-disable no-empty */
 'use strict';
@@ -3952,7 +4105,7 @@ function readState(key) {
 }
 }).call(this,require('_process'))
 
-},{"_process":57,"warning":70}],44:[function(require,module,exports){
+},{"_process":58,"warning":71}],45:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4033,13 +4186,13 @@ function supportsGoWithoutReloadUsingHash() {
   var ua = navigator.userAgent;
   return ua.indexOf('Firefox') === -1;
 }
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 exports.canUseDOM = canUseDOM;
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -4221,7 +4374,7 @@ exports['default'] = createBrowserHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./Actions":41,"./DOMStateStorage":43,"./DOMUtils":44,"./ExecutionEnvironment":45,"./createDOMHistory":47,"./parsePath":52,"_process":57,"invariant":54}],47:[function(require,module,exports){
+},{"./Actions":42,"./DOMStateStorage":44,"./DOMUtils":45,"./ExecutionEnvironment":46,"./createDOMHistory":48,"./parsePath":53,"_process":58,"invariant":55}],48:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -4265,7 +4418,7 @@ exports['default'] = createDOMHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./DOMUtils":44,"./ExecutionEnvironment":45,"./createHistory":48,"_process":57,"invariant":54}],48:[function(require,module,exports){
+},{"./DOMUtils":45,"./ExecutionEnvironment":46,"./createHistory":49,"_process":58,"invariant":55}],49:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -4557,7 +4710,7 @@ function createHistory() {
 
 exports['default'] = createHistory;
 module.exports = exports['default'];
-},{"./Actions":41,"./AsyncUtils":42,"./createLocation":49,"./deprecate":50,"./parsePath":52,"./runTransitionHook":53,"deep-equal":38}],49:[function(require,module,exports){
+},{"./Actions":42,"./AsyncUtils":43,"./createLocation":50,"./deprecate":51,"./parsePath":53,"./runTransitionHook":54,"deep-equal":39}],50:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -4612,7 +4765,7 @@ function createLocation() {
 
 exports['default'] = createLocation;
 module.exports = exports['default'];
-},{"./Actions":41,"./parsePath":52}],50:[function(require,module,exports){
+},{"./Actions":42,"./parsePath":53}],51:[function(require,module,exports){
 //import warning from 'warning'
 
 "use strict";
@@ -4628,7 +4781,7 @@ function deprecate(fn) {
 
 exports["default"] = deprecate;
 module.exports = exports["default"];
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -4642,7 +4795,7 @@ function extractPath(string) {
 
 exports["default"] = extractPath;
 module.exports = exports["default"];
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -4690,7 +4843,7 @@ exports['default'] = parsePath;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./extractPath":51,"_process":57,"warning":70}],53:[function(require,module,exports){
+},{"./extractPath":52,"_process":58,"warning":71}],54:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -4718,7 +4871,7 @@ exports['default'] = runTransitionHook;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"_process":57,"warning":70}],54:[function(require,module,exports){
+},{"_process":58,"warning":71}],55:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -4774,7 +4927,7 @@ module.exports = invariant;
 
 }).call(this,require('_process'))
 
-},{"_process":57}],55:[function(require,module,exports){
+},{"_process":58}],56:[function(require,module,exports){
 //! moment.js
 //! version : 2.13.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -8815,7 +8968,7 @@ module.exports = invariant;
     return _moment;
 
 }));
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 /* eslint-disable no-unused-vars */
 'use strict';
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -8856,7 +9009,7 @@ module.exports = Object.assign || function (target, source) {
 	return to;
 };
 
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -8949,7 +9102,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -9469,7 +9622,7 @@ var SideEffect = (0, _reactSideEffect2["default"])(reducePropsToState, handleCli
 // PlainComponent is used to be a blank component decorated by react-side-effect
 exports["default"] = Helmet(SideEffect(_PlainComponent2["default"]));
 module.exports = exports["default"];
-},{"./HelmetConstants.js":59,"./PlainComponent":60,"deep-equal":38,"object-assign":56,"react":"react","react-side-effect":66}],59:[function(require,module,exports){
+},{"./HelmetConstants.js":60,"./PlainComponent":61,"deep-equal":39,"object-assign":57,"react":"react","react-side-effect":67}],60:[function(require,module,exports){
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -9500,7 +9653,7 @@ var REACT_TAG_MAP = {
     "http-equiv": "httpEquiv"
 };
 exports.REACT_TAG_MAP = REACT_TAG_MAP;
-},{}],60:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -9540,7 +9693,7 @@ var PlainComponent = (function (_React$Component) {
 
 exports["default"] = PlainComponent;
 module.exports = exports["default"];
-},{"react":"react"}],61:[function(require,module,exports){
+},{"react":"react"}],62:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -9667,7 +9820,7 @@ var AutosizeInput = React.createClass({
 });
 
 module.exports = AutosizeInput;
-},{"react":"react"}],62:[function(require,module,exports){
+},{"react":"react"}],63:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -9732,7 +9885,7 @@ var Option = React.createClass({
 });
 
 module.exports = Option;
-},{"classnames":37,"react":"react"}],63:[function(require,module,exports){
+},{"classnames":38,"react":"react"}],64:[function(require,module,exports){
 /* disable some rules until we refactor more completely; fixing them now would
    cause conflicts with some open PRs unnecessarily. */
 /* eslint react/jsx-sort-prop-types: 0, react/sort-comp: 0, react/prop-types: 0 */
@@ -10680,7 +10833,7 @@ var Select = React.createClass({
 });
 
 module.exports = Select;
-},{"./Option":62,"./SingleValue":64,"./Value":65,"classnames":37,"react":"react","react-dom":"react-dom","react-input-autosize":61}],64:[function(require,module,exports){
+},{"./Option":63,"./SingleValue":65,"./Value":66,"classnames":38,"react":"react","react-dom":"react-dom","react-input-autosize":62}],65:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -10708,7 +10861,7 @@ var SingleValue = React.createClass({
 });
 
 module.exports = SingleValue;
-},{"classnames":37,"react":"react"}],65:[function(require,module,exports){
+},{"classnames":38,"react":"react"}],66:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -10792,7 +10945,7 @@ var Value = React.createClass({
 });
 
 module.exports = Value;
-},{"classnames":37,"react":"react"}],66:[function(require,module,exports){
+},{"classnames":38,"react":"react"}],67:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -10917,7 +11070,7 @@ module.exports = function withSideEffect(reducePropsToState, handleStateChangeOn
     return SideEffect;
   };
 };
-},{"fbjs/lib/ExecutionEnvironment":67,"fbjs/lib/shallowEqual":68,"react":"react"}],67:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":68,"fbjs/lib/shallowEqual":69,"react":"react"}],68:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -10954,7 +11107,7 @@ var ExecutionEnvironment = {
 };
 
 module.exports = ExecutionEnvironment;
-},{}],68:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -11005,7 +11158,7 @@ function shallowEqual(objA, objB) {
 }
 
 module.exports = shallowEqual;
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -11164,7 +11317,7 @@ StarRatingComponent.defaultProps = {
 exports.default = StarRatingComponent;
 module.exports = exports['default'];
 
-},{"classnames":37,"react":"react"}],70:[function(require,module,exports){
+},{"classnames":38,"react":"react"}],71:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -11229,7 +11382,7 @@ module.exports = warning;
 
 }).call(this,require('_process'))
 
-},{"_process":57}]},{},[28])
+},{"_process":58}]},{},[29])
 
 
 //# sourceMappingURL=bundle.js.map

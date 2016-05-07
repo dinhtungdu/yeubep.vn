@@ -4,7 +4,7 @@ import RecipeStore from '../stores/RecipeStore';
 import RecipeActions from '../actions/RecipeActions';
 import RecipeHeaderCover from './inc/RecipeHeaderCover';
 import RecipeModal from './RecipeModal';
-import AddReviewModal from './AddReviewModal';
+import AddReviewModal from './inc/AddReviewModal';
 import RecipeModalStore from '../stores/RecipeModalStore';
 import NavbarStore from '../stores/NavbarStore';
 import _ from 'underscore';
@@ -13,6 +13,7 @@ import RecipeSmall from './inc/RecipeSmall';
 import AddedToCollection from './inc/AddedToCollection';
 import LikeButton from './inc/LikeButton';
 import Helpers from '../helpers';
+import AddRecipePhotoModal from './inc/AddRecipePhotoModal';
 
 class Recipe extends React.Component {
 	constructor(props) {
@@ -45,7 +46,6 @@ class Recipe extends React.Component {
 
 	onChange(state) {
 		this.setState(state);
-		console.log(this.state);
 		this.masonry.masonry('reloadItems');
 		this.masonry.masonry();
 	}
@@ -226,6 +226,9 @@ class Recipe extends React.Component {
 							</section>
 							<section className="i-made-it">
 								<button className="btn button-primary button-orange"><span>Tôi đã làm món này</span></button>
+								<AddRecipePhotoModal
+
+								/>
 							</section>
 							<section id="review-section" className="review-rating clearfix">
 								<header className="clearfix">
