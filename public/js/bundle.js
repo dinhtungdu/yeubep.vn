@@ -5,6 +5,188 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var CollectionActions = function () {
+	function CollectionActions() {
+		_classCallCheck(this, CollectionActions);
+
+		this.generateActions('getCollectionSuccess', 'likeSuccess', 'followSuccess');
+	}
+
+	_createClass(CollectionActions, [{
+		key: 'getCollection',
+		value: function getCollection(id) {
+			var _this = this;
+
+			$.ajax('/api/collections/' + id).done(function (resp) {
+				_this.actions.getCollectionSuccess(resp);
+			});
+		}
+	}, {
+		key: 'handleLike',
+		value: function handleLike(postId) {
+			var _this2 = this;
+
+			$.ajax({
+				url: '/api/lovecollection/' + postId,
+				type: 'PUT'
+			}).done(function (data) {
+				_this2.actions.likeSuccess(data);
+			});
+		}
+	}, {
+		key: 'handleFollow',
+		value: function handleFollow(postId) {
+			var _this3 = this;
+
+			$.ajax({
+				url: '/api/followcollection/' + postId,
+				type: 'PUT'
+			}).done(function (data) {
+				_this3.actions.followSuccess(data);
+			});
+		}
+	}]);
+
+	return CollectionActions;
+}();
+
+exports.default = _alt2.default.createActions(CollectionActions);
+
+},{"../alt":11}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var RecipeModalActions = function () {
+	function RecipeModalActions() {
+		_classCallCheck(this, RecipeModalActions);
+
+		this.generateActions('addCommentSuccess');
+	}
+
+	_createClass(RecipeModalActions, [{
+		key: 'addCollectionComment',
+		value: function addCollectionComment(dataToSend) {
+			var _this = this;
+
+			$.ajax({
+				url: '/api/collection-comments/',
+				method: 'POST',
+				data: {
+					commentBody: dataToSend.commentBody,
+					postId: dataToSend.postId
+				}
+			}).done(function (data) {
+				_this.actions.addCommentSuccess(data);
+			});
+		}
+	}]);
+
+	return RecipeModalActions;
+}();
+
+exports.default = _alt2.default.createActions(RecipeModalActions);
+
+},{"../alt":11}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var GhimActions = function () {
+	function GhimActions() {
+		_classCallCheck(this, GhimActions);
+
+		this.generateActions('getRecipeSuccess', 'getCollectionsSuccess');
+	}
+
+	_createClass(GhimActions, [{
+		key: 'getRecipe',
+		value: function getRecipe(recipeId) {
+			var _this = this;
+
+			$.ajax({
+				url: '/api/recipes/' + recipeId,
+				statusCode: {
+					404: function _() {
+						window.location.replace('/khong-tim-thay');
+					}
+				}
+			}).done(function (data) {
+				_this.actions.getRecipeSuccess(data);
+			});
+		}
+	}, {
+		key: 'getCollections',
+		value: function getCollections(userId) {
+			var _this2 = this;
+
+			$.ajax({
+				url: '/api/usercollections/' + userId
+			}).done(function (data) {
+				_this2.actions.getCollectionsSuccess(data);
+			});
+		}
+	}, {
+		key: 'addToCollection',
+		value: function addToCollection(dataToSend) {
+			$.ajax({
+				url: '/api/collections/add/' + dataToSend.collectionId,
+				method: 'POST',
+				data: {
+					recipeId: dataToSend.recipeId
+				}
+			}).done(function (data) {
+				toastr.success(data);
+			});
+		}
+	}]);
+
+	return GhimActions;
+}();
+
+exports.default = _alt2.default.createActions(GhimActions);
+
+},{"../alt":11}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
 var _alt = require('../alt');
 
 var _alt2 = _interopRequireDefault(_alt);
@@ -21,7 +203,7 @@ var HomeActions = function HomeActions() {
 
 exports.default = _alt2.default.createActions(HomeActions);
 
-},{"../alt":7}],2:[function(require,module,exports){
+},{"../alt":11}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -61,7 +243,7 @@ var NavbarActions = function () {
 
 exports.default = _alt2.default.createActions(NavbarActions);
 
-},{"../alt":7}],3:[function(require,module,exports){
+},{"../alt":11}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -90,7 +272,14 @@ var ProfileActions = function () {
 		value: function getCook(userId) {
 			var _this = this;
 
-			$.ajax({ url: '/auth/user/' + userId }).done(function (data) {
+			$.ajax({
+				url: '/auth/user/' + userId,
+				statusCode: {
+					404: function _() {
+						window.location.replace('/khong-tim-thay');
+					}
+				}
+			}).done(function (data) {
 				_this.actions.getCookSuccess(data);
 			});
 		}
@@ -101,7 +290,69 @@ var ProfileActions = function () {
 
 exports.default = _alt2.default.createActions(ProfileActions);
 
-},{"../alt":7}],4:[function(require,module,exports){
+},{"../alt":11}],7:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var _history = require('../history');
+
+var _history2 = _interopRequireDefault(_history);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ProfileCollectionsActions = function () {
+	function ProfileCollectionsActions() {
+		_classCallCheck(this, ProfileCollectionsActions);
+
+		this.generateActions('getCollectionsSuccess', 'getCollectionsError', 'addCollectionSuccess');
+	}
+
+	_createClass(ProfileCollectionsActions, [{
+		key: 'getCollections',
+		value: function getCollections(userId) {
+			var _this = this;
+
+			$.ajax({
+				url: '/api/usercollections/' + userId
+			}).done(function (data) {
+				_this.actions.getCollectionsSuccess(data);
+			}).fail(function (jqXhr) {
+				_this.actions.getCollectionsFail(jqXhr.responseJSON.message);
+			});
+		}
+	}, {
+		key: 'addCollection',
+		value: function addCollection(dataToSend) {
+			$.ajax({
+				url: '/api/collections',
+				method: 'POST',
+				data: {
+					collectionTitle: dataToSend.title,
+					collectionDesc: dataToSend.desc
+				}
+			}).done(function (data) {
+				window.location.replace('/collections/' + data);
+			});
+		}
+	}]);
+
+	return ProfileCollectionsActions;
+}();
+
+exports.default = _alt2.default.createActions(ProfileCollectionsActions);
+
+},{"../alt":11,"../history":43}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -122,7 +373,7 @@ var ProfileRecipesActions = function () {
 	function ProfileRecipesActions() {
 		_classCallCheck(this, ProfileRecipesActions);
 
-		this.generateActions('handleChanges', 'handleCategoryChange', 'addRecipeSuccess', 'addRecipeError', 'getRecipesSuccess', 'getRecipesError', 'getAllRecipesSuccess', 'getAllRecipesError');
+		this.generateActions('handleChanges', 'handleCategoryChange', 'addRecipeSuccess', 'addRecipeFail', 'getRecipesSuccess', 'getRecipesFail', 'getAllRecipesSuccess', 'getAllRecipesFail');
 	}
 
 	_createClass(ProfileRecipesActions, [{
@@ -173,7 +424,7 @@ var ProfileRecipesActions = function () {
 
 exports.default = _alt2.default.createActions(ProfileRecipesActions);
 
-},{"../alt":7}],5:[function(require,module,exports){
+},{"../alt":11}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -198,7 +449,7 @@ var RecipeActions = function () {
 	function RecipeActions() {
 		_classCallCheck(this, RecipeActions);
 
-		this.generateActions('getCategoriesSuccess', 'getRecipeSuccess', 'getRecipeFail', 'updateRecipeSuccess', 'updateRecipeFail', 'likeSuccess');
+		this.generateActions('getCategoriesSuccess', 'getRecipeSuccess', 'getRecipeFail', 'updateRecipeSuccess', 'updateRecipeFail', 'likeSuccess', 'addCommentSuccess', 'getSameOwnerRecipesSuccess');
 	}
 
 	_createClass(RecipeActions, [{
@@ -215,6 +466,7 @@ var RecipeActions = function () {
 				}
 			}).done(function (data) {
 				_this.actions.getRecipeSuccess(data);
+				_this.actions.getSameOwnerRecipes({ id: data.contentId, userId: data.userId._id.toString() });
 				_RecipeModalActions2.default.getRecipeFromParent(data);
 			});
 		}
@@ -245,6 +497,63 @@ var RecipeActions = function () {
 				_this3.actions.likeSuccess(data);
 			});
 		}
+	}, {
+		key: 'addRecipePhoto',
+		value: function addRecipePhoto(data) {
+			$.ajax({
+				url: '/api/recipes/' + data.recipeId + '/photo/' + data.photoId,
+				type: 'PUT'
+			}).done(function (resp) {
+				toastr.success(resp);
+				window.location.reload();
+				//this.getRecipe(data.recipeId);
+			});
+		}
+	}, {
+		key: 'addComment',
+		value: function addComment(data) {
+			$.ajax({
+				url: '/api/comments',
+				type: 'POST',
+				data: {
+					commentBody: data.comment,
+					postId: data.postId,
+					rating: data.rating
+				}
+			}).done(function (resp) {
+				toastr.success(resp);
+				$('#addReviewModal').modal('hide');
+			});
+		}
+	}, {
+		key: 'likeReview',
+		value: function likeReview(postId) {
+			$.ajax({
+				url: '/api/lovecomment/' + postId,
+				type: 'PUT'
+			});
+		}
+	}, {
+		key: 'getSameOwnerRecipes',
+		value: function getSameOwnerRecipes(data) {
+			var _this4 = this;
+
+			$.ajax({
+				url: '/api/recipes/' + data.id + '/same/' + data.userId
+			}).done(function (resp) {
+				_this4.actions.getSameOwnerRecipesSuccess(resp);
+			});
+		}
+	}, {
+		key: 'deleteRecipe',
+		value: function deleteRecipe(data) {
+			$.ajax({
+				method: 'DELETE',
+				url: '/api/recipes/' + data.recipeId
+			}).done(function (resp) {
+				window.location.replace('/cook/' + data.username + '/recipes');
+			});
+		}
 	}]);
 
 	return RecipeActions;
@@ -252,7 +561,7 @@ var RecipeActions = function () {
 
 exports.default = _alt2.default.createActions(RecipeActions);
 
-},{"../alt":7,"./RecipeModalActions":6}],6:[function(require,module,exports){
+},{"../alt":11,"./RecipeModalActions":10}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -292,7 +601,7 @@ var RecipeModalActions = function () {
 
 exports.default = _alt2.default.createActions(RecipeModalActions);
 
-},{"../alt":7}],7:[function(require,module,exports){
+},{"../alt":11}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -307,7 +616,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = new _alt2.default();
 
-},{"alt":"alt"}],8:[function(require,module,exports){
+},{"alt":"alt"}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -323,6 +632,10 @@ var _react2 = _interopRequireDefault(_react);
 var _Navbar = require('./Navbar');
 
 var _Navbar2 = _interopRequireDefault(_Navbar);
+
+var _Modal = require('./inc/Modal');
+
+var _Modal2 = _interopRequireDefault(_Modal);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -342,13 +655,32 @@ var App = function (_React$Component) {
 	}
 
 	_createClass(App, [{
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			// if we changed routes...
+			if (nextProps.location.key !== this.props.location.key && nextProps.location.state && nextProps.location.state.modal) {
+				// save the old children (just like animation)
+				this.previousChildren = this.props.children;
+			}
+		}
+	}, {
 		key: 'render',
 		value: function render() {
+			var location = this.props.location;
+
+
+			var isModal = location.state && location.state.modal && this.previousChildren;
+
 			return _react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(_Navbar2.default, { history: this.props.history }),
-				this.props.children
+				isModal ? this.previousChildren : this.props.children,
+				isModal && _react2.default.createElement(
+					_Modal2.default,
+					{ isOpen: true, returnTo: location.state.returnTo },
+					this.props.children
+				)
 			);
 		}
 	}]);
@@ -358,7 +690,7 @@ var App = function (_React$Component) {
 
 exports.default = App;
 
-},{"./Navbar":12,"react":"react"}],9:[function(require,module,exports){
+},{"./Navbar":19,"./inc/Modal":36,"react":"react"}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -415,7 +747,7 @@ var AuthSuccess = function (_React$Component) {
 
 exports.default = AuthSuccess;
 
-},{"react":"react"}],10:[function(require,module,exports){
+},{"react":"react"}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -481,7 +813,539 @@ var Category = function (_React$Component) {
 
 exports.default = Category;
 
-},{"react":"react","react-router":"react-router"}],11:[function(require,module,exports){
+},{"react":"react","react-router":"react-router"}],15:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _CollectionActions = require('../actions/CollectionActions');
+
+var _CollectionActions2 = _interopRequireDefault(_CollectionActions);
+
+var _CollectionStore = require('../stores/CollectionStore');
+
+var _CollectionStore2 = _interopRequireDefault(_CollectionStore);
+
+var _NavbarStore = require('../stores/NavbarStore');
+
+var _NavbarStore2 = _interopRequireDefault(_NavbarStore);
+
+var _AvatarUsername = require('./inc/AvatarUsername');
+
+var _AvatarUsername2 = _interopRequireDefault(_AvatarUsername);
+
+var _LikeButton = require('./inc/LikeButton');
+
+var _LikeButton2 = _interopRequireDefault(_LikeButton);
+
+var _CommentForm = require('./CommentForm');
+
+var _CommentForm2 = _interopRequireDefault(_CommentForm);
+
+var _Comment = require('./inc/Comment');
+
+var _Comment2 = _interopRequireDefault(_Comment);
+
+var _RecipeSmall = require('./inc/RecipeSmall');
+
+var _RecipeSmall2 = _interopRequireDefault(_RecipeSmall);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Collection = function (_React$Component) {
+	_inherits(Collection, _React$Component);
+
+	function Collection(props) {
+		_classCallCheck(this, Collection);
+
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Collection).call(this, props));
+
+		_this.state = Object.assign(_CollectionStore2.default.getState(), _NavbarStore2.default.getState());
+		_this.onChange = _this.onChange.bind(_this);
+		return _this;
+	}
+
+	_createClass(Collection, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			_CollectionStore2.default.listen(this.onChange);
+			_NavbarStore2.default.listen(this.onChange);
+			_CollectionActions2.default.getCollection(this.props.params.collectionId);
+			this.masonry = $('.grid').masonry({
+				columnWidth: '.grid-sizer',
+				gutter: '.gutter-sizer',
+				itemSelector: '.grid-item',
+				fitWidth: true
+			});
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			_CollectionStore2.default.unlisten(this.onChange);
+			_NavbarStore2.default.unlisten(this.onChange);
+		}
+	}, {
+		key: 'onChange',
+		value: function onChange(state) {
+			this.setState(state, function () {
+				this.masonry.masonry('reloadItems');
+				this.masonry.masonry();
+			});
+		}
+	}, {
+		key: 'facebookLogin',
+		value: function facebookLogin() {
+			var url = '/auth/facebook',
+			    width = 400,
+			    height = 500,
+			    top = (window.outerHeight - height) / 2,
+			    left = (window.outerWidth - width) / 2;
+			window.open(url, 'facebook_login', 'width=' + width + ',height=' + height + ',scrollbars=0,top=' + top + ',left=' + left);
+		}
+	}, {
+		key: 'handleLike',
+		value: function handleLike(event) {
+			var self = this;
+			event.preventDefault();
+			if (this.state.currentUserId == '') {
+				toastr.info('Bạn cần đăng nhập!', '', {
+					onclick: function onclick() {
+						self.facebookLogin();
+					}
+				});
+				return;
+			}
+			_CollectionActions2.default.handleLike(this.state.collection._id);
+		}
+	}, {
+		key: 'handleFollow',
+		value: function handleFollow() {
+			var self = this;
+			if (this.state.currentUserId == '') {
+				toastr.info('Bạn cần đăng nhập!', '', {
+					onclick: function onclick() {
+						self.facebookLogin();
+					}
+				});
+				return;
+			}
+			_CollectionActions2.default.handleFollow(this.state.collection._id);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			return _react2.default.createElement(
+				'div',
+				{ id: 'Collection' },
+				_react2.default.createElement(
+					'header',
+					{ className: 'collection-header' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'container' },
+						_react2.default.createElement(_AvatarUsername2.default, { owner: this.state.collection.userId }),
+						_react2.default.createElement(
+							'h1',
+							null,
+							this.state.collection.title
+						),
+						_react2.default.createElement(
+							'p',
+							null,
+							this.state.collection.description
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'collection-counter text-xs-center' },
+							_react2.default.createElement(
+								'span',
+								{ className: 'item like' },
+								_react2.default.createElement(_LikeButton2.default, {
+									currentUser: this.state.currentUserId,
+									handleLike: this.handleLike.bind(this),
+									likeState: this.state.likeState,
+									likes: this.state.collection.loves
+								}),
+								_react2.default.createElement(
+									'span',
+									{ className: 'count' },
+									this.state.likeCount
+								)
+							),
+							_react2.default.createElement(
+								'span',
+								{ className: 'item follow' },
+								_react2.default.createElement(
+									'a',
+									{ href: 'javascript:void(0)', onClick: this.handleFollow.bind(this), className: this.state.followState },
+									_react2.default.createElement('i', { className: 'fa fa-check' }),
+									_react2.default.createElement(
+										'span',
+										{ className: 'txt' },
+										'Theo dõi'
+									)
+								),
+								_react2.default.createElement(
+									'span',
+									{ className: 'count' },
+									this.state.followCount
+								)
+							),
+							_react2.default.createElement(
+								'span',
+								{ className: 'item comment' },
+								_react2.default.createElement(
+									'a',
+									{ href: '#collection-comments' },
+									_react2.default.createElement('i', { className: 'fa fa-comment-o' }),
+									_react2.default.createElement(
+										'span',
+										{ className: 'txt' },
+										'Bình luận'
+									)
+								),
+								_react2.default.createElement(
+									'span',
+									{ className: 'count' },
+									this.state.commentCount
+								)
+							)
+						)
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'container' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'row' },
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-sm-8' },
+							_react2.default.createElement(
+								'div',
+								{ className: 'grid' },
+								_react2.default.createElement('div', { className: 'grid-sizer' }),
+								_react2.default.createElement('div', { className: 'gutter-sizer' }),
+								this.state.collection.recipes.map(function (recipe) {
+									return _react2.default.createElement(_RecipeSmall2.default, {
+										key: recipe._id,
+										recipeUrl: '/recipe/' + recipe.recipeId.contentId,
+										imgId: recipe.recipeId.mainPhoto,
+										imgWidth: '213',
+										imgHeight: '171',
+										recipeTitle: recipe.recipeId.recipe.title,
+										'class': 'recipe-grid-item grid-item',
+										location: _this2.props.location
+									});
+								})
+							)
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-sm-4', id: 'collection-comments' },
+							_react2.default.createElement(
+								'div',
+								{ className: 'inside' },
+								_react2.default.createElement(
+									'h2',
+									null,
+									'Nhận xét'
+								),
+								_react2.default.createElement(_CommentForm2.default, {
+									contentId: this.state.collection._id,
+									type: 'collection'
+								}),
+								this.state.collection.comments.map(function (comment) {
+									return _react2.default.createElement(_Comment2.default, {
+										comment: comment,
+										key: comment._id
+									});
+								})
+							)
+						)
+					)
+				)
+			);
+		}
+	}]);
+
+	return Collection;
+}(_react2.default.Component);
+
+exports.default = Collection;
+
+},{"../actions/CollectionActions":1,"../stores/CollectionStore":46,"../stores/NavbarStore":49,"./CommentForm":16,"./inc/AvatarUsername":32,"./inc/Comment":34,"./inc/LikeButton":35,"./inc/RecipeSmall":39,"react":"react","react-router":"react-router"}],16:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _CommentFormActions = require('../actions/CommentFormActions');
+
+var _CommentFormActions2 = _interopRequireDefault(_CommentFormActions);
+
+var _helpers = require('../helpers');
+
+var _helpers2 = _interopRequireDefault(_helpers);
+
+var _underscore = require('underscore');
+
+var _underscore2 = _interopRequireDefault(_underscore);
+
+var _NavbarStore = require('../stores/NavbarStore');
+
+var _NavbarStore2 = _interopRequireDefault(_NavbarStore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CommentForm = function (_React$Component) {
+	_inherits(CommentForm, _React$Component);
+
+	function CommentForm(props) {
+		_classCallCheck(this, CommentForm);
+
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CommentForm).call(this, props));
+
+		_this.state = Object.assign(_NavbarStore2.default.getState());
+		_this.onChange = _this.onChange.bind(_this);
+		return _this;
+	}
+
+	_createClass(CommentForm, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			_NavbarStore2.default.listen(this.onChange);
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			_NavbarStore2.default.unlisten(this.onChange);
+		}
+	}, {
+		key: 'onChange',
+		value: function onChange(state) {
+			this.setState(state);
+		}
+	}, {
+		key: 'handleSubmit',
+		value: function handleSubmit(event) {
+			event.preventDefault();
+			if (this.state.currentUserId == '') {
+				_helpers2.default.facebookLogin();
+				return;
+			}
+			if (this.props.type == 'collection') {
+				_CommentFormActions2.default.addCollectionComment({
+					commentBody: $('#commentBody').val(),
+					postId: this.props.contentId
+				});
+			}
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'form',
+				{ id: 'master-comment-form', className: 'clearfix', onSubmit: this.handleSubmit.bind(this) },
+				_react2.default.createElement('textarea', { required: true, rows: '2', id: 'commentBody', name: 'commentBody', className: 'form-control' }),
+				_react2.default.createElement(
+					'button',
+					{ type: 'submit', className: 'pull-right btn button-orange button-tiny' },
+					this.state.currentUserId == '' ? _react2.default.createElement(
+						'span',
+						null,
+						'Đăng nhập để nhận xét'
+					) : _react2.default.createElement(
+						'span',
+						null,
+						'Gửi'
+					)
+				)
+			);
+		}
+	}]);
+
+	return CommentForm;
+}(_react2.default.Component);
+
+exports.default = CommentForm;
+
+},{"../actions/CommentFormActions":2,"../helpers":42,"../stores/NavbarStore":49,"react":"react","react-router":"react-router","underscore":"underscore"}],17:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _NavbarStore = require('../stores/NavbarStore');
+
+var _NavbarStore2 = _interopRequireDefault(_NavbarStore);
+
+var _GhimStore = require('../stores/GhimStore');
+
+var _GhimStore2 = _interopRequireDefault(_GhimStore);
+
+var _GhimActions = require('../actions/GhimActions');
+
+var _GhimActions2 = _interopRequireDefault(_GhimActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Ghim = function (_React$Component) {
+	_inherits(Ghim, _React$Component);
+
+	function Ghim(props) {
+		_classCallCheck(this, Ghim);
+
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Ghim).call(this, props));
+
+		_this.state = Object.assign(_GhimStore2.default.getState(), _NavbarStore2.default.getState());
+		_this.onChange = _this.onChange.bind(_this);
+		_this.oneTime = true;
+		return _this;
+	}
+
+	_createClass(Ghim, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var self = this;
+			_GhimStore2.default.listen(this.onChange);
+			_NavbarStore2.default.listen(this.onChange);
+			_GhimActions2.default.getRecipe(this.props.params.recipeId);
+		}
+	}, {
+		key: 'onChange',
+		value: function onChange(state) {
+			this.setState(state);
+			if (this.state.currentUserId != '' && this.oneTime) {
+				this.oneTime = false;
+				_GhimActions2.default.getCollections(this.state.currentUserId);
+			}
+		}
+	}, {
+		key: 'handleGhim',
+		value: function handleGhim(collectionId) {
+			//console.log(collectionId);
+			var dataToSend = {
+				recipeId: this.state.recipe._id,
+				collectionId: collectionId
+			};
+			_GhimActions2.default.addToCollection(dataToSend);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			return _react2.default.createElement(
+				'div',
+				{ id: 'Ghim', className: 'container' },
+				_react2.default.createElement(
+					'div',
+					{ className: 'row' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'col-sm-5' },
+						_react2.default.createElement('img', { src: this.state.recipe.photo, alt: '' }),
+						_react2.default.createElement(
+							'h3',
+							null,
+							this.state.recipe.title
+						),
+						_react2.default.createElement(
+							'p',
+							null,
+							this.state.recipe.description
+						)
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'col-sm-7' },
+						_react2.default.createElement(
+							'h3',
+							null,
+							'Chọn bộ sưu tập'
+						),
+						_react2.default.createElement(
+							'ul',
+							null,
+							this.state.collections.map(function (collection) {
+								return _react2.default.createElement(
+									'li',
+									{ key: collection._id },
+									_react2.default.createElement('img', { src: '/images/df-img-sm.jpg' }),
+									_react2.default.createElement(
+										'span',
+										{ className: 'collection-name' },
+										collection.title
+									),
+									_react2.default.createElement(
+										'button',
+										{ className: 'ghim-btn', onClick: _this2.handleGhim.bind(_this2, collection._id) },
+										_react2.default.createElement('i', { className: 'fa fa-thumb-tack' }),
+										' Ghim'
+									)
+								);
+							})
+						)
+					)
+				)
+			);
+		}
+	}]);
+
+	return Ghim;
+}(_react2.default.Component);
+
+exports.default = Ghim;
+
+},{"../actions/GhimActions":3,"../stores/GhimStore":47,"../stores/NavbarStore":49,"react":"react"}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -552,7 +1416,7 @@ var Home = function (_React$Component) {
 
 exports.default = Home;
 
-},{"../actions/HomeActions":1,"../stores/HomeStore":31,"react":"react","react-router":"react-router"}],12:[function(require,module,exports){
+},{"../actions/HomeActions":4,"../stores/HomeStore":48,"react":"react","react-router":"react-router"}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -665,7 +1529,7 @@ var Navbar = function (_React$Component) {
 
 exports.default = Navbar;
 
-},{"../actions/NavbarActions":2,"../stores/NavbarStore":32,"./inc/NavUser":23,"react":"react","react-router":"react-router","underscore":"underscore"}],13:[function(require,module,exports){
+},{"../actions/NavbarActions":5,"../stores/NavbarStore":49,"./inc/NavUser":37,"react":"react","react-router":"react-router","underscore":"underscore"}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -711,7 +1575,7 @@ var NotFound = function (_React$Component) {
 
 exports.default = NotFound;
 
-},{"react":"react"}],14:[function(require,module,exports){
+},{"react":"react"}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -753,6 +1617,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Profile = function (_React$Component) {
 	_inherits(Profile, _React$Component);
 
+	//static childContextTypes = {
+	//	userId: React.PropTypes.string
+	//	}
+	//getChildContext() {
+	//	var self = this;
+	//	return {
+	//		userId: self.state.userId
+	//	};
+	//}
+
 	function Profile(props) {
 		_classCallCheck(this, Profile);
 
@@ -779,15 +1653,22 @@ var Profile = function (_React$Component) {
 		value: function render() {
 			var userPicture = '/images/df-avatar.png';
 			var userName = '';
+			var userId = '';
 			if (_underscore2.default.isEmpty(this.state.cook) == false) {
 				userPicture = 'http://graph.facebook.com/v2.5/' + this.state.cook.facebook.id + '/picture?height=400&width=400';
 				userName = this.state.cook.name;
+				userId = this.state.cook.username;
 			}
 			return _react2.default.createElement(
 				'div',
 				{ className: 'Profile' },
-				_react2.default.createElement(_UserCover2.default, { userPicture: userPicture, userName: userName }),
-				this.props.children
+				_react2.default.createElement(_UserCover2.default, {
+					userPicture: userPicture,
+					userName: userName,
+					userId: userId,
+					current: this.props.location.pathname
+				}),
+				_react2.default.cloneElement(this.props.children, { cookId: this.state.cook._id })
 			);
 		}
 	}]);
@@ -797,7 +1678,155 @@ var Profile = function (_React$Component) {
 
 exports.default = Profile;
 
-},{"../actions/ProfileActions":3,"../stores/ProfileStore":34,"./inc/UserCover":27,"react":"react","react-router":"react-router","underscore":"underscore"}],15:[function(require,module,exports){
+},{"../actions/ProfileActions":6,"../stores/ProfileStore":52,"./inc/UserCover":41,"react":"react","react-router":"react-router","underscore":"underscore"}],22:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _ProfileCollectionsStore = require('../stores/ProfileCollectionsStore');
+
+var _ProfileCollectionsStore2 = _interopRequireDefault(_ProfileCollectionsStore);
+
+var _ProfileCollectionsActions = require('../actions/ProfileCollectionsActions');
+
+var _ProfileCollectionsActions2 = _interopRequireDefault(_ProfileCollectionsActions);
+
+var _NavbarStore = require('../stores/NavbarStore');
+
+var _NavbarStore2 = _interopRequireDefault(_NavbarStore);
+
+var _AddCollectionModal = require('./inc/AddCollectionModal');
+
+var _AddCollectionModal2 = _interopRequireDefault(_AddCollectionModal);
+
+var _AddCollectionButton = require('./inc/AddCollectionButton');
+
+var _AddCollectionButton2 = _interopRequireDefault(_AddCollectionButton);
+
+var _CollectionSmall = require('./inc/CollectionSmall');
+
+var _CollectionSmall2 = _interopRequireDefault(_CollectionSmall);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+//import Helpers from '../helpers';
+
+
+var ProfileCollections = function (_React$Component) {
+	_inherits(ProfileCollections, _React$Component);
+
+	function ProfileCollections(props) {
+		_classCallCheck(this, ProfileCollections);
+
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ProfileCollections).call(this, props));
+
+		_this.state = Object.assign(_ProfileCollectionsStore2.default.getState(), _NavbarStore2.default.getState());
+		_this.onChange = _this.onChange.bind(_this);
+		return _this;
+	}
+
+	_createClass(ProfileCollections, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			_ProfileCollectionsStore2.default.listen(this.onChange);
+			_NavbarStore2.default.listen(this.onChange);
+			_ProfileCollectionsActions2.default.getCollections(this.props.cookId);
+			this.masonry = $('.grid').masonry({
+				columnWidth: '.grid-sizer',
+				gutter: '.gutter-sizer',
+				itemSelector: '.grid-item',
+				fitWidth: true
+			});
+		}
+	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(newProps) {
+			_ProfileCollectionsActions2.default.getCollections(newProps.cookId);
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			_ProfileCollectionsStore2.default.unlisten(this.onChange);
+			_NavbarStore2.default.unlisten(this.onChange);
+		}
+	}, {
+		key: 'onChange',
+		value: function onChange(state) {
+			this.setState(state, function () {
+				this.masonry.masonry('reloadItems');
+				this.masonry.masonry();
+			});
+		}
+	}, {
+		key: 'addCollectionHandler',
+		value: function addCollectionHandler(event) {
+			event.preventDefault();
+			var dataToSend = {
+				title: $('#collectionName').val(),
+				desc: $('#collectionDesc').val()
+			};
+			_ProfileCollectionsActions2.default.addCollection(dataToSend);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var collectionsList = null;
+			if (this.state.collections != null) {
+				collectionsList = this.state.collections.map(function (collection, index) {
+					return _react2.default.createElement(_CollectionSmall2.default, {
+						key: collection.collectionId,
+						collection: collection,
+						'class': 'collection collection-grid-item grid-item'
+					});
+				});
+			}
+
+			return _react2.default.createElement(
+				'div',
+				{ className: 'ProfileCollections' },
+				_react2.default.createElement(
+					'div',
+					{ className: 'container' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'grid' },
+						_react2.default.createElement('div', { className: 'grid-sizer' }),
+						_react2.default.createElement('div', { className: 'gutter-sizer' }),
+						_react2.default.createElement(_AddCollectionButton2.default, {
+							currentUser: this.state.currentUserId,
+							currentCook: this.props.cookId
+						}),
+						collectionsList
+					)
+				),
+				_react2.default.createElement(_AddCollectionModal2.default, {
+					handleSubmit: this.addCollectionHandler.bind(this)
+				})
+			);
+		}
+	}]);
+
+	return ProfileCollections;
+}(_react2.default.Component);
+
+exports.default = ProfileCollections;
+
+},{"../actions/ProfileCollectionsActions":7,"../stores/NavbarStore":49,"../stores/ProfileCollectionsStore":50,"./inc/AddCollectionButton":27,"./inc/AddCollectionModal":28,"./inc/CollectionSmall":33,"react":"react","react-router":"react-router"}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -881,13 +1910,25 @@ var ProfileRecipes = function (_React$Component) {
 			_ProfileRecipesStore2.default.listen(this.onChange);
 			_NavbarStore2.default.listen(this.onChange);
 			_RecipeModalStore2.default.listen(this.onChange);
-			_ProfileRecipesActions2.default.getRecipes(this.props.params.id);
+			_ProfileRecipesActions2.default.getRecipes(this.props.cookId);
 			window.addEventListener('message', function (event) {
 				if (event.data == 'loggedIn') {
 					_NavbarActions2.default.getMyInfo();
-					_ProfileRecipesActions2.default.getAllRecipes(this.props.params.id);
+					_ProfileRecipesActions2.default.getAllRecipes(this.props.cookId);
 				}
 			}.bind(this));
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			_ProfileRecipesStore2.default.unlisten(this.onChange);
+			_NavbarStore2.default.unlisten(this.onChange);
+			_RecipeModalStore2.default.unlisten(this.onChange);
+		}
+	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(newProps) {
+			_ProfileRecipesActions2.default.getRecipes(newProps.cookId);
 		}
 	}, {
 		key: 'onChange',
@@ -906,6 +1947,8 @@ var ProfileRecipes = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
+			var _this2 = this;
+
 			var recipesList = this.state.recipes.map(function (recipe, index) {
 				var imgUrl = '/images/meal-icon.png';
 				var imgHeight = 140;
@@ -929,6 +1972,16 @@ var ProfileRecipes = function (_React$Component) {
 							_reactRouter.Link,
 							{ to: recipeUrl },
 							_react2.default.createElement('img', { src: imgUrl, width: imgWidth, height: imgHeight })
+						),
+						_react2.default.createElement(
+							_reactRouter.Link,
+							{ state: { modal: true, returnTo: _this2.props.location.pathname }, className: 'ghim-btn', to: recipeUrl + '/ghim' },
+							_react2.default.createElement('i', { className: 'fa fa-thumb-tack' }),
+							_react2.default.createElement(
+								'span',
+								{ className: 'txt' },
+								'Ghim'
+							)
 						)
 					),
 					_react2.default.createElement(
@@ -964,9 +2017,9 @@ var ProfileRecipes = function (_React$Component) {
 						{ className: 'grid' },
 						_react2.default.createElement('div', { className: 'grid-sizer' }),
 						_react2.default.createElement('div', { className: 'gutter-sizer' }),
-						_underscore2.default.isEmpty(this.state.myInfo) && this.state.myInfo.username == this.props.params.id ? null : _react2.default.createElement(
+						_underscore2.default.isEmpty(this.state.myInfo) && this.state.myInfo.username != this.props.params.id ? null : _react2.default.createElement(
 							'div',
-							{ className: 'grid-item' },
+							{ className: 'grid-item recipe-grid-item' },
 							_react2.default.createElement(
 								'a',
 								{ href: '#', className: 'add-recipe-toggle', 'data-toggle': 'modal', 'data-target': '#myModal' },
@@ -993,7 +2046,7 @@ var ProfileRecipes = function (_React$Component) {
 
 exports.default = ProfileRecipes;
 
-},{"../actions/NavbarActions":2,"../actions/ProfileRecipesActions":4,"../stores/NavbarStore":32,"../stores/ProfileRecipesStore":33,"../stores/RecipeModalStore":35,"./RecipeModal":17,"react":"react","react-helmet":59,"react-router":"react-router","react-select":64,"underscore":"underscore"}],16:[function(require,module,exports){
+},{"../actions/NavbarActions":5,"../actions/ProfileRecipesActions":8,"../stores/NavbarStore":49,"../stores/ProfileRecipesStore":51,"../stores/RecipeModalStore":53,"./RecipeModal":25,"react":"react","react-helmet":78,"react-router":"react-router","react-select":83,"underscore":"underscore"}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1064,6 +2117,14 @@ var _AddRecipePhotoModal = require('./inc/AddRecipePhotoModal');
 
 var _AddRecipePhotoModal2 = _interopRequireDefault(_AddRecipePhotoModal);
 
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _async = require('async');
+
+var _async2 = _interopRequireDefault(_async);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1088,6 +2149,7 @@ var Recipe = function (_React$Component) {
 	_createClass(Recipe, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
+			var self = this;
 			_RecipeStore2.default.listen(this.onChange);
 			_RecipeModalStore2.default.listen(this.onChange);
 			_NavbarStore2.default.listen(this.onChange);
@@ -1095,8 +2157,7 @@ var Recipe = function (_React$Component) {
 			this.masonry = $('.side-grid').masonry({
 				columnWidth: '.side-grid-sizer',
 				gutter: '.side-gutter-sizer',
-				itemSelector: '.side-grid-item',
-				fitWidth: true
+				itemSelector: '.side-grid-item'
 			});
 		}
 	}, {
@@ -1132,11 +2193,54 @@ var Recipe = function (_React$Component) {
 			_RecipeActions2.default.handleLike(this.state.recipe._id);
 		}
 	}, {
+		key: 'addPhotoModal',
+		value: function addPhotoModal(event) {
+			var self = this;
+			event.preventDefault();
+			if (self.state.currentUserId == '') {
+				toastr.info('Bạn cần đăng nhập để thêm ảnh', '', {
+					onclick: function onclick() {
+						self.facebookLogin();
+					}
+				});
+				return;
+			}
+			$('#addRecipePhotoModal').modal();
+		}
+	}, {
+		key: 'addPhotoHandler',
+		value: function addPhotoHandler(event) {
+			event.preventDefault();
+			var photoId = $('#imadeitPhotoId').val();
+			var postToFacebook = false;
+			if ($('#post-to-facebook').is(':checked')) {
+				postToFacebook = true;
+			}
+			var dataToSend = {
+				photoId: photoId,
+				postFace: postToFacebook,
+				recipeId: this.state.recipe._id
+			};
+			//console.log(dataToSend);
+			_RecipeActions2.default.addRecipePhoto(dataToSend);
+		}
+	}, {
+		key: 'addReviewHandler',
+		value: function addReviewHandler(event) {
+			event.preventDefault();
+			var dataToSend = {
+				postId: this.state.recipe._id,
+				comment: $('#recipeReview').val(),
+				rating: $('#review-star-rating').val()
+			};
+			_RecipeActions2.default.addComment(dataToSend);
+		}
+	}, {
 		key: 'reviewModal',
 		value: function reviewModal(event) {
 			var self = this;
 			event.preventDefault();
-			if (this.state.currentUserId == '') {
+			if (self.state.currentUserId == '') {
 				toastr.info('Bạn cần đăng nhập để thêm đánh giá', '', {
 					onclick: function onclick() {
 						self.facebookLogin();
@@ -1155,8 +2259,63 @@ var Recipe = function (_React$Component) {
 			_RecipeActions2.default.updateRecipe(dataToSend);
 		}
 	}, {
+		key: 'openPhotoSwipe',
+		value: function openPhotoSwipe(pos) {
+			var pswpElement = document.querySelectorAll('.pswp')[0];
+
+			var items = [];
+			this.state.recipe.recipe.photos.map(function (thumb, index) {
+				if (index < 9) {
+					items.push({
+						src: '/file/' + thumb.photoId._id,
+						w: thumb.photoId.metadata.width,
+						h: thumb.photoId.metadata.height,
+						title: thumb.peopleId.name,
+						avatar: _helpers2.default.fb_avatar(thumb.peopleId.facebook.id, 100, 100),
+						profile: '/cook/' + thumb.peopleId.username,
+						time: (0, _moment2.default)(thumb.photoId.uploadDate).format('D/M/YYYY')
+					});
+				}
+			});
+
+			var options = {
+				index: pos,
+				addCaptionHTMLFn: function addCaptionHTMLFn(item, captionEl, isFake) {
+					if (!item.title) {
+						captionEl.children[0].innerText = '';
+						return false;
+					}
+					captionEl.children[0].innerHTML = '<a href="' + item.profile + '"><img src="' + item.avatar + '"><span class="info"><span class="username">' + item.title + '</span><time class="date">' + item.time + '</time></span></a>';
+					return true;
+				}
+			};
+
+			var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+			gallery.init();
+		}
+	}, {
+		key: 'likeReview',
+		value: function likeReview(id, event) {
+			console.log(event);
+			$(event.currentTarget).toggleClass('liked');
+			_RecipeActions2.default.likeReview(id);
+		}
+	}, {
+		key: 'handleDelete',
+		value: function handleDelete(event) {
+			var r = confirm('Bạn có chắc chắn muốn xóa công thức này không?');
+			if (r == true) {
+				_RecipeActions2.default.deleteRecipe({
+					recipeId: this.state.recipe._id,
+					username: this.state.myInfo.username
+				});
+			}
+		}
+	}, {
 		key: 'render',
 		value: function render() {
+			var _this2 = this;
+
 			var imgUrl = '/images/meal-icon.png';
 			if (this.state.recipe.mainPhoto != "" && this.state.recipe.mainPhoto != null) {
 				imgUrl = '/file/' + this.state.recipe.mainPhoto.metadata.thumbs.s320.id;
@@ -1195,7 +2354,44 @@ var Recipe = function (_React$Component) {
 			var reviewList = null;
 			if (typeof this.state.recipe.comments != 'undefined') {
 				reviewList = this.state.recipe.comments.map(function (review, index) {
-					return _react2.default.createElement(_Review2.default, { key: review._id });
+					return _react2.default.createElement(_Review2.default, {
+						key: review._id,
+						rating: review.rating,
+						body: review.body,
+						time: review.createdAt,
+						user: review.userId,
+						likes: review.loves,
+						likeCount: review.loves.length,
+						handleLike: _this2.likeReview.bind(_this2, review._id)
+					});
+				});
+			}
+
+			var thumbList = null;
+			if (typeof this.state.recipe.recipe.photos != 'undefined' && !_underscore2.default.isEmpty(this.state.recipe.recipe.photos)) {
+				thumbList = this.state.recipe.recipe.photos.map(function (thumb, index) {
+					return _react2.default.createElement(
+						'a',
+						{ key: thumb.photoId._id, href: 'javascript:void(0)', onClick: _this2.openPhotoSwipe.bind(_this2, index) },
+						_react2.default.createElement('img', { src: '/file/' + thumb.photoId.metadata.thumbs.s320.id })
+					);
+				});
+			}
+
+			var sameOwnerList = null;
+			var _props = this.props;
+			if (this.state.sameOwnerRecipes != null) {
+				sameOwnerList = this.state.sameOwnerRecipes.map(function (recipe, index) {
+					return _react2.default.createElement(_RecipeSmall2.default, {
+						key: recipe.contentId,
+						recipeUrl: '/recipe/' + recipe.contentId,
+						imgId: recipe.mainPhoto,
+						imgWidth: '150',
+						imgHeight: '121',
+						recipeTitle: recipe.recipe.title,
+						location: _props.location,
+						'class': 'recipe-small-item recipe-grid-item side-grid-item'
+					});
 				});
 			}
 
@@ -1213,7 +2409,12 @@ var Recipe = function (_React$Component) {
 					recipeDesc: this.state.recipe.recipe.description,
 					recipeOwner: this.state.recipe.userId,
 					recipeTime: this.state.recipe.createdAt,
-					likeCount: this.state.likeCount
+					likeCount: this.state.likeCount,
+					photoCount: this.state.photoCount,
+					madeCount: this.state.madeCount,
+					commentCount: this.state.commentCount,
+					onClickPhoto: this.openPhotoSwipe.bind(this, 0),
+					handleDelete: this.handleDelete.bind(this)
 				}),
 				_react2.default.createElement(
 					'div',
@@ -1242,14 +2443,28 @@ var Recipe = function (_React$Component) {
 									),
 									_react2.default.createElement(
 										'div',
+										{ className: 'ghim col-sm-3' },
+										_react2.default.createElement(
+											_reactRouter.Link,
+											{ state: { modal: true, returnTo: this.props.location.pathname }, to: '/recipe/' + this.state.recipe.contentId + '/ghim' },
+											_react2.default.createElement('i', { className: 'fa fa-thumb-tack' }),
+											_react2.default.createElement(
+												'span',
+												{ className: 'txt hidden-sm-down' },
+												'Ghim'
+											)
+										)
+									),
+									_react2.default.createElement(
+										'div',
 										{ className: 'imi col-sm-3' },
 										_react2.default.createElement(
 											'a',
-											{ href: '#' },
+											{ href: 'javascript:void(0)' },
 											_react2.default.createElement('i', { className: 'fa imadeit' }),
 											_react2.default.createElement(
 												'span',
-												{ className: 'txt' },
+												{ className: 'txt hidden-sm-down' },
 												'Tôi đã làm món này'
 											)
 										)
@@ -1263,7 +2478,7 @@ var Recipe = function (_React$Component) {
 											_react2.default.createElement('i', { className: 'fa fa-commenting' }),
 											_react2.default.createElement(
 												'span',
-												{ className: 'txt' },
+												{ className: 'txt hidden-sm-down' },
 												'Đánh giá'
 											)
 										)
@@ -1273,11 +2488,11 @@ var Recipe = function (_React$Component) {
 										{ className: 'share col-sm-3' },
 										_react2.default.createElement(
 											'a',
-											{ href: '#' },
+											{ href: 'javascript:void(0)' },
 											_react2.default.createElement('i', { className: 'fa fa-share-alt' }),
 											_react2.default.createElement(
 												'span',
-												{ className: 'txt' },
+												{ className: 'txt hidden-sm-down' },
 												'Chia sẻ'
 											)
 										)
@@ -1379,14 +2594,17 @@ var Recipe = function (_React$Component) {
 									{ className: 'i-made-it' },
 									_react2.default.createElement(
 										'button',
-										{ className: 'btn button-primary button-orange' },
+										{ onClick: this.addPhotoModal.bind(this), className: 'btn button-primary button-orange' },
 										_react2.default.createElement(
 											'span',
 											null,
 											'Tôi đã làm món này'
 										)
 									),
-									_react2.default.createElement(_AddRecipePhotoModal2.default, null)
+									_react2.default.createElement(_AddRecipePhotoModal2.default, {
+										recipeTitle: this.state.recipe.recipe.title,
+										handleSubmit: this.addPhotoHandler.bind(this)
+									})
 								),
 								_react2.default.createElement(
 									'section',
@@ -1415,7 +2633,8 @@ var Recipe = function (_React$Component) {
 												' Thêm đánh giá'
 											),
 											_react2.default.createElement(_AddReviewModal2.default, {
-												recipeTitle: this.state.recipe.recipe.title
+												recipeTitle: this.state.recipe.recipe.title,
+												handleSubmit: this.addReviewHandler.bind(this)
 											})
 										)
 									),
@@ -1441,58 +2660,14 @@ var Recipe = function (_React$Component) {
 										{ className: 'widget-title' },
 										'Ảnh'
 									),
-									_react2.default.createElement(
+									thumbList == null ? '' : _react2.default.createElement(
 										'div',
 										{ className: 'photo-grid' },
-										_react2.default.createElement(
-											'a',
-											{ href: '#' },
-											_react2.default.createElement('img', { src: '/file/5719ab33ba638a93cab48a98' })
-										),
-										_react2.default.createElement(
-											'a',
-											{ href: '#' },
-											_react2.default.createElement('img', { src: '/file/5719ab33ba638a93cab48a98' })
-										),
-										_react2.default.createElement(
-											'a',
-											{ href: '#' },
-											_react2.default.createElement('img', { src: '/file/5719ab33ba638a93cab48a98' })
-										),
-										_react2.default.createElement(
-											'a',
-											{ href: '#' },
-											_react2.default.createElement('img', { src: '/file/5719ab33ba638a93cab48a98' })
-										),
-										_react2.default.createElement(
-											'a',
-											{ href: '#' },
-											_react2.default.createElement('img', { src: '/file/5719ab33ba638a93cab48a98' })
-										),
-										_react2.default.createElement(
-											'a',
-											{ href: '#' },
-											_react2.default.createElement('img', { src: '/file/5719ab33ba638a93cab48a98' })
-										),
-										_react2.default.createElement(
-											'a',
-											{ href: '#' },
-											_react2.default.createElement('img', { src: '/file/5719ab33ba638a93cab48a98' })
-										),
-										_react2.default.createElement(
-											'a',
-											{ href: '#' },
-											_react2.default.createElement('img', { src: '/file/5719ab33ba638a93cab48a98' })
-										),
-										_react2.default.createElement(
-											'a',
-											{ href: '#' },
-											_react2.default.createElement('img', { src: '/file/5719ab33ba638a93cab48a98' })
-										)
+										thumbList
 									),
 									_react2.default.createElement(
 										'a',
-										{ href: '#', className: 'read-all photo-all' },
+										{ href: 'javascript:void(0)', className: 'read-all photo-all', onClick: this.openPhotoSwipe.bind(this, 0) },
 										'Xem toàn bộ..'
 									)
 								),
@@ -1507,35 +2682,19 @@ var Recipe = function (_React$Component) {
 									_react2.default.createElement(
 										'div',
 										{ className: 'list' },
-										_react2.default.createElement(_AddedToCollection2.default, {
-											user: {
-												username: "dinhtungdu",
-												name: "Du Dinh Tung",
-												facebook: {
-													id: 558377407664895
-												}
-											},
-											collectionUrl: '#',
-											collectionTitle: 'Bánh',
-											key: '2'
-										}),
-										_react2.default.createElement(_AddedToCollection2.default, {
-											user: {
-												username: "dinhtungdu",
-												name: "Du Dinh Tung",
-												facebook: {
-													id: 558377407664895
-												}
-											},
-											collectionUrl: '#',
-											collectionTitle: 'Bánh',
-											key: '1'
+										this.state.recipe.recipe.collections.map(function (collection) {
+											return _react2.default.createElement(_AddedToCollection2.default, {
+												user: collection.collectionId.userId,
+												collectionUrl: '/collection/' + collection.collectionId.collectionId,
+												collectionTitle: collection.collectionId.title,
+												key: collection._id
+											});
 										})
 									)
 								),
 								_react2.default.createElement(
 									'aside',
-									{ className: 'wg-related' },
+									{ className: 'wg-same-owner' },
 									_react2.default.createElement(
 										'h3',
 										{ className: 'widget-title' },
@@ -1546,38 +2705,7 @@ var Recipe = function (_React$Component) {
 										{ className: 'side-grid' },
 										_react2.default.createElement('div', { className: 'side-grid-sizer' }),
 										_react2.default.createElement('div', { className: 'side-gutter-sizer' }),
-										_react2.default.createElement(_RecipeSmall2.default, {
-											key: '1',
-											recipeUrl: '/recipe/ByxwDRTdg',
-											imgUrl: '/file/5719ab33ba638a93cab48a97',
-											imgWidth: '150',
-											imgHeight: '121',
-											recipeTitle: 'Bánh mỳ nướng'
-										}),
-										_react2.default.createElement(_RecipeSmall2.default, {
-											key: '2',
-											recipeUrl: '/recipe/ByxwDRTdg',
-											imgUrl: '/file/5719ab33ba638a93cab48a97',
-											imgWidth: '150',
-											imgHeight: '121',
-											recipeTitle: 'Bánh mỳ nướng'
-										}),
-										_react2.default.createElement(_RecipeSmall2.default, {
-											key: '3',
-											recipeUrl: '/recipe/ByxwDRTdg',
-											imgUrl: '/file/5719ab33ba638a93cab48a97',
-											imgWidth: '150',
-											imgHeight: '121',
-											recipeTitle: 'Bánh mỳ nướng'
-										}),
-										_react2.default.createElement(_RecipeSmall2.default, {
-											key: '4',
-											recipeUrl: '/recipe/ByxwDRTdg',
-											imgUrl: '/file/5719ab33ba638a93cab48a97',
-											imgWidth: '150',
-											imgHeight: '121',
-											recipeTitle: 'Bánh mỳ nướng'
-										})
+										sameOwnerList
 									),
 									_react2.default.createElement(
 										'a',
@@ -1598,7 +2726,7 @@ var Recipe = function (_React$Component) {
 
 exports.default = Recipe;
 
-},{"../actions/RecipeActions":5,"../helpers":28,"../stores/NavbarStore":32,"../stores/RecipeModalStore":35,"../stores/RecipeStore":36,"./RecipeModal":17,"./inc/AddRecipePhotoModal":19,"./inc/AddReviewModal":20,"./inc/AddedToCollection":21,"./inc/LikeButton":22,"./inc/RecipeHeaderCover":24,"./inc/RecipeSmall":25,"./inc/Review":26,"react":"react","react-router":"react-router","underscore":"underscore"}],17:[function(require,module,exports){
+},{"../actions/RecipeActions":9,"../helpers":42,"../stores/NavbarStore":49,"../stores/RecipeModalStore":53,"../stores/RecipeStore":54,"./RecipeModal":25,"./inc/AddRecipePhotoModal":29,"./inc/AddReviewModal":30,"./inc/AddedToCollection":31,"./inc/LikeButton":35,"./inc/RecipeHeaderCover":38,"./inc/RecipeSmall":39,"./inc/Review":40,"async":56,"moment":75,"react":"react","react-router":"react-router","underscore":"underscore"}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2138,7 +3266,7 @@ var RecipeModal = function (_React$Component) {
 
 exports.default = RecipeModal;
 
-},{"../actions/RecipeModalActions":6,"../stores/RecipeModalStore":35,"react":"react","react-select":64}],18:[function(require,module,exports){
+},{"../actions/RecipeModalActions":10,"../stores/RecipeModalStore":53,"react":"react","react-select":83}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2204,7 +3332,187 @@ var Recipes = function (_React$Component) {
 
 exports.default = Recipes;
 
-},{"react":"react","react-router":"react-router"}],19:[function(require,module,exports){
+},{"react":"react","react-router":"react-router"}],27:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AddCollectionButton = function (_React$Component) {
+	_inherits(AddCollectionButton, _React$Component);
+
+	function AddCollectionButton(props) {
+		_classCallCheck(this, AddCollectionButton);
+
+		return _possibleConstructorReturn(this, Object.getPrototypeOf(AddCollectionButton).call(this, props));
+	}
+
+	_createClass(AddCollectionButton, [{
+		key: "render",
+		value: function render() {
+			return _react2.default.createElement(
+				"div",
+				{ className: "AddCollectionButton grid-item" },
+				this.props.currentUser == this.props.currentCook ? _react2.default.createElement(
+					"a",
+					{ href: "javascript:void(0)", className: "add-recipe-toggle", "data-toggle": "modal", "data-target": "#addCollectionModal" },
+					_react2.default.createElement("i", { className: "fa fa-plus-circle" }),
+					_react2.default.createElement(
+						"span",
+						null,
+						"Thêm bộ sưu tập mới"
+					)
+				) : null
+			);
+		}
+	}]);
+
+	return AddCollectionButton;
+}(_react2.default.Component);
+
+exports.default = AddCollectionButton;
+
+},{"react":"react"}],28:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AddCollectionModal = function (_React$Component) {
+	_inherits(AddCollectionModal, _React$Component);
+
+	function AddCollectionModal(props) {
+		_classCallCheck(this, AddCollectionModal);
+
+		return _possibleConstructorReturn(this, Object.getPrototypeOf(AddCollectionModal).call(this, props));
+	}
+
+	_createClass(AddCollectionModal, [{
+		key: "componentDidMount",
+		value: function componentDidMount() {}
+	}, {
+		key: "render",
+		value: function render() {
+			return _react2.default.createElement(
+				"div",
+				{ className: "AddCollectionModal" },
+				_react2.default.createElement(
+					"div",
+					{ className: "modal fade", id: "addCollectionModal", tabIndex: "-1", role: "dialog", "aria-labelledby": "addCollectionModalLabel", "aria-hidden": "true" },
+					_react2.default.createElement(
+						"div",
+						{ className: "modal-dialog", role: "document" },
+						_react2.default.createElement(
+							"div",
+							{ className: "modal-content add-recipe" },
+							_react2.default.createElement("div", { id: "add-recipe-bg" }),
+							_react2.default.createElement(
+								"div",
+								{ className: "modal-header" },
+								_react2.default.createElement(
+									"button",
+									{ type: "button", className: "close", "data-dismiss": "modal", "aria-label": "Close" },
+									_react2.default.createElement(
+										"span",
+										{ "aria-hidden": "true" },
+										"×"
+									)
+								),
+								_react2.default.createElement(
+									"h4",
+									{ className: "modal-title", id: "addCollectionModalLabel" },
+									"Thêm bộ sưu tập mới"
+								)
+							),
+							_react2.default.createElement(
+								"div",
+								{ className: "modal-body" },
+								_react2.default.createElement(
+									"form",
+									{ className: "container-fluid clearfix", onSubmit: this.props.handleSubmit },
+									_react2.default.createElement(
+										"div",
+										{ className: "form-group row" },
+										_react2.default.createElement(
+											"label",
+											{ className: "col-sm-3 form-control-label" },
+											"Tên bộ sưu tập"
+										),
+										_react2.default.createElement(
+											"div",
+											{ className: "col-sm-9" },
+											_react2.default.createElement("input", {
+												className: "form-control",
+												type: "text",
+												name: "collectionName",
+												id: "collectionName"
+											})
+										)
+									),
+									_react2.default.createElement(
+										"div",
+										{ className: "form-group row" },
+										_react2.default.createElement(
+											"label",
+											{ className: "col-sm-3 form-control-label" },
+											"Giới thiệu về bộ sưu tập"
+										),
+										_react2.default.createElement(
+											"div",
+											{ className: "col-sm-9" },
+											_react2.default.createElement("textarea", { rows: "4", id: "collectionDesc", name: "collectionDesc", className: "form-control" })
+										)
+									),
+									_react2.default.createElement(
+										"button",
+										{ type: "submit", className: "btn btn-sm btn-primary recipe-submit pull-right" },
+										"Thêm bộ sưu tập"
+									)
+								)
+							)
+						)
+					)
+				)
+			);
+		}
+	}]);
+
+	return AddCollectionModal;
+}(_react2.default.Component);
+
+exports.default = AddCollectionModal;
+
+},{"react":"react"}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2240,7 +3548,9 @@ var AddRecipePhotoModal = function (_React$Component) {
 
 	_createClass(AddRecipePhotoModal, [{
 		key: 'componentDidMount',
-		value: function componentDidMount() {}
+		value: function componentDidMount() {
+			this.dropzoneControl();
+		}
 	}, {
 		key: 'dropzoneControl',
 		value: function dropzoneControl() {
@@ -2274,22 +3584,9 @@ var AddRecipePhotoModal = function (_React$Component) {
 				},
 				success: function success(file, response) {
 					file.previewElement.classList.add("dz-success");
-					$('#mainPhoto').val(response);
-					RecipeModalActions.changeMainPhoto(response);
+					$('#imadeitPhotoId').val(response);
 				}
 			});
-			if (typeof this.state.mockfile != 'undefined' && this.state.mockfile != "") {
-				var mockFile = { name: this.state.mockfile.filename, size: this.state.mockfile.chunkSize };
-				var imgUrl = '/file/' + this.state.mockfile._id;
-				myDropzone.emit("addedfile", mockFile);
-
-				myDropzone.createThumbnailFromUrl(mockFile, imgUrl);
-
-				myDropzone.emit("complete", mockFile);
-
-				var existingFileCount = 1; // The number of files already uploaded
-				myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
-			}
 		}
 	}, {
 		key: 'render',
@@ -2302,7 +3599,7 @@ var AddRecipePhotoModal = function (_React$Component) {
 					{ className: 'modal fade', id: 'addRecipePhotoModal', tabIndex: '-1', role: 'dialog', 'aria-labelledby': 'addRecipePhotoModalLabel', 'aria-hidden': 'true' },
 					_react2.default.createElement(
 						'div',
-						{ className: 'modal-dialog', role: 'document' },
+						{ className: 'modal-dialog modal-sm', role: 'document' },
 						_react2.default.createElement(
 							'div',
 							{ className: 'modal-content add-recipe' },
@@ -2328,17 +3625,31 @@ var AddRecipePhotoModal = function (_React$Component) {
 							),
 							_react2.default.createElement(
 								'div',
-								{ className: 'modal-body' },
+								{ className: 'modal-body clearfix' },
 								_react2.default.createElement(
-									'div',
-									{ id: 'dZAddRecipePhoto', className: 'dropzone' },
-									_react2.default.createElement('div', { className: 'dropzone-previews' })
-								),
-								_react2.default.createElement('input', { type: 'checkbox', className: 'form-control' }),
-								_react2.default.createElement(
-									'button',
-									{ className: 'btn btn-sm btn-primary recipe-submit pull-right' },
-									'Đăng'
+									'form',
+									{ onSubmit: this.props.handleSubmit },
+									_react2.default.createElement(
+										'div',
+										{ id: 'dZAddRecipePhoto', className: 'dropzone' },
+										_react2.default.createElement('div', { className: 'dropzone-previews' })
+									),
+									_react2.default.createElement(
+										'div',
+										{ className: 'checkbox' },
+										_react2.default.createElement(
+											'label',
+											null,
+											_react2.default.createElement('input', { type: 'checkbox', id: 'post-to-facebook', defaultChecked: true }),
+											' Đăng lên Facebook'
+										)
+									),
+									_react2.default.createElement('input', { type: 'hidden', id: 'imadeitPhotoId' }),
+									_react2.default.createElement(
+										'button',
+										{ type: 'submit', className: 'btn btn-sm btn-primary recipe-submit pull-right' },
+										'Đăng'
+									)
 								)
 							)
 						)
@@ -2353,7 +3664,7 @@ var AddRecipePhotoModal = function (_React$Component) {
 
 exports.default = AddRecipePhotoModal;
 
-},{"react":"react","react-star-rating-component":70}],20:[function(require,module,exports){
+},{"react":"react","react-star-rating-component":89}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2387,7 +3698,7 @@ var AddReviewModal = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AddReviewModal).call(this, props));
 
 		_this.state = {
-			rating: 1
+			rating: 0
 		};
 		return _this;
 	}
@@ -2397,8 +3708,8 @@ var AddReviewModal = function (_React$Component) {
 		value: function componentDidMount() {}
 	}, {
 		key: 'onStarClick',
-		value: function onStarClick(name, value) {
-			this.setState({ rating: value });
+		value: function onStarClick(next) {
+			this.setState({ rating: next });
 		}
 	}, {
 		key: 'render',
@@ -2440,7 +3751,7 @@ var AddReviewModal = function (_React$Component) {
 								{ className: 'modal-body' },
 								_react2.default.createElement(
 									'form',
-									{ className: 'container-fluid clearfix' },
+									{ className: 'container-fluid clearfix', onSubmit: this.props.handleSubmit },
 									_react2.default.createElement(
 										'div',
 										{ className: 'form-group row' },
@@ -2471,9 +3782,10 @@ var AddReviewModal = function (_React$Component) {
 										_react2.default.createElement(
 											'div',
 											{ className: 'col-sm-9' },
-											_react2.default.createElement('textarea', { rows: '4', name: 'recipeReview', className: 'form-control' })
+											_react2.default.createElement('textarea', { rows: '4', id: 'recipeReview', name: 'recipeReview', className: 'form-control' })
 										)
 									),
+									_react2.default.createElement('input', { type: 'hidden', id: 'review-star-rating', value: this.state.rating }),
 									_react2.default.createElement(
 										'button',
 										{ type: 'submit', className: 'btn btn-sm btn-primary recipe-submit pull-right' },
@@ -2493,7 +3805,7 @@ var AddReviewModal = function (_React$Component) {
 
 exports.default = AddReviewModal;
 
-},{"react":"react","react-star-rating-component":70}],21:[function(require,module,exports){
+},{"react":"react","react-star-rating-component":89}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2579,7 +3891,306 @@ var AddedToCollection = function (_React$Component) {
 
 exports.default = AddedToCollection;
 
-},{"../../helpers":28,"react":"react","react-router":"react-router"}],22:[function(require,module,exports){
+},{"../../helpers":42,"react":"react","react-router":"react-router"}],32:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _helpers = require('../../helpers');
+
+var _helpers2 = _interopRequireDefault(_helpers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AvatarUsername = function (_React$Component) {
+	_inherits(AvatarUsername, _React$Component);
+
+	function AvatarUsername() {
+		_classCallCheck(this, AvatarUsername);
+
+		return _possibleConstructorReturn(this, Object.getPrototypeOf(AvatarUsername).apply(this, arguments));
+	}
+
+	_createClass(AvatarUsername, [{
+		key: 'render',
+		value: function render() {
+			//let avatar = '/images/df-avatar-sm.png';
+			var avatar = _helpers2.default.fb_avatar(this.props.owner.facebook.id, 50, 50);
+			var nameStyle = {
+				color: '#333',
+				fontWeight: 'bold',
+				fontSize: '0.85rem'
+			};
+			var imgStyle = {
+				width: '25px',
+				height: '25px',
+				borderRadius: '100%',
+				marginRight: '5px'
+			};
+			return _react2.default.createElement(
+				_reactRouter.Link,
+				{ style: { marginBottom: '1rem', display: 'block' }, to: '/cook/' + this.props.owner.username, className: 'avatar-block' },
+				_react2.default.createElement('img', { style: imgStyle, src: avatar }),
+				_react2.default.createElement(
+					'span',
+					{ style: nameStyle },
+					this.props.owner.name
+				)
+			);
+		}
+	}]);
+
+	return AvatarUsername;
+}(_react2.default.Component);
+
+exports.default = AvatarUsername;
+
+},{"../../helpers":42,"react":"react","react-router":"react-router"}],33:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Collection = function (_React$Component) {
+	_inherits(Collection, _React$Component);
+
+	function Collection() {
+		_classCallCheck(this, Collection);
+
+		return _possibleConstructorReturn(this, Object.getPrototypeOf(Collection).apply(this, arguments));
+	}
+
+	_createClass(Collection, [{
+		key: 'render',
+		value: function render() {
+			if (this.props.collection.recipes.length == 0) {
+				return _react2.default.createElement(
+					_reactRouter.Link,
+					{ to: '/collections/' + this.props.collection.collectionId, className: this.props.class },
+					_react2.default.createElement(
+						'h2',
+						null,
+						this.props.collection.title
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'list' },
+						_react2.default.createElement(
+							'div',
+							{ className: 'big' },
+							_react2.default.createElement('img', { src: '/images/df-img.jpg', height: '193', width: '193' })
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'small' },
+							_react2.default.createElement('img', { src: '/images/df-img-sm.jpg' }),
+							_react2.default.createElement('img', { src: '/images/df-img-sm.jpg' }),
+							_react2.default.createElement('img', { src: '/images/df-img-sm.jpg' })
+						)
+					)
+				);
+			} else {
+				var smallImages = '';
+				smallImages = this.props.collection.recipes.map(function (recipe, index) {
+					if (index == 0) {
+						return;
+					}
+					var recipePhoto = '/images/df-img-sm.jpg';
+					if (recipe.recipeId.mainPhoto != null) {
+						recipePhoto = '/file/' + recipe.recipeId.mainPhoto.metadata.thumbs.s320.id;
+					}
+					return _react2.default.createElement('img', { key: recipe._id, src: recipePhoto });
+				});
+				return _react2.default.createElement(
+					_reactRouter.Link,
+					{ to: '/collections/' + this.props.collection.collectionId, className: this.props.class },
+					_react2.default.createElement(
+						'h2',
+						null,
+						this.props.collection.title
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'list' },
+						_react2.default.createElement(
+							'div',
+							{ className: 'big' },
+							_react2.default.createElement('img', { src: '/file/' + this.props.collection.recipes[0].recipeId.mainPhoto.metadata.thumbs.s320.id, height: '193', width: '193' })
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'small clearfix' },
+							smallImages,
+							_react2.default.createElement(
+								'div',
+								{ className: 'placehoder small' },
+								_react2.default.createElement('img', { src: '/images/df-img-sm.jpg' }),
+								_react2.default.createElement('img', { src: '/images/df-img-sm.jpg' }),
+								_react2.default.createElement('img', { src: '/images/df-img-sm.jpg' })
+							)
+						)
+					)
+				);
+			}
+		}
+	}]);
+
+	return Collection;
+}(_react2.default.Component);
+
+exports.default = Collection;
+
+},{"react":"react","react-router":"react-router"}],34:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _NavbarStore = require('../../stores/NavbarStore');
+
+var _NavbarStore2 = _interopRequireDefault(_NavbarStore);
+
+var _helpers = require('../../helpers');
+
+var _helpers2 = _interopRequireDefault(_helpers);
+
+var _underscore = require('underscore');
+
+var _underscore2 = _interopRequireDefault(_underscore);
+
+var _reactStarRatingComponent = require('react-star-rating-component');
+
+var _reactStarRatingComponent2 = _interopRequireDefault(_reactStarRatingComponent);
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Comment = function (_React$Component) {
+	_inherits(Comment, _React$Component);
+
+	function Comment(props) {
+		_classCallCheck(this, Comment);
+
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Comment).call(this, props));
+
+		_this.state = _NavbarStore2.default.getState();
+		_this.onChange = _this.onChange.bind(_this);
+		return _this;
+	}
+
+	_createClass(Comment, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			_NavbarStore2.default.listen(this.onChange);
+		}
+	}, {
+		key: 'onChange',
+		value: function onChange(state) {
+			this.setState(state);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var commentTime = (0, _moment2.default)(this.props.comment.createdAt);
+			var avatar = _helpers2.default.fb_avatar(this.props.comment.userId.facebook.id, 128, 128);
+			return _react2.default.createElement(
+				'div',
+				{ className: 'comment-item', key: this.props.key },
+				_react2.default.createElement(
+					_reactRouter.Link,
+					{ className: 'thumb', to: '/cook/' + this.props.comment.userId.username },
+					_react2.default.createElement('img', { className: 'avatar', src: avatar, width: '64', height: '64' })
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'comment-body' },
+					_react2.default.createElement(
+						_reactRouter.Link,
+						{ to: '/cook/' + this.props.comment.userId.username },
+						_react2.default.createElement(
+							'span',
+							{ className: 'username' },
+							this.props.comment.userId.name
+						)
+					),
+					_react2.default.createElement(
+						'span',
+						{ className: 'txt' },
+						this.props.comment.body
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'meta clearfix' },
+						_react2.default.createElement(
+							'span',
+							{ className: 'date' },
+							_react2.default.createElement('i', { className: 'fa fa-calendar-check-o' }),
+							' ',
+							commentTime.format('D/M/YYYY')
+						)
+					)
+				)
+			);
+		}
+	}]);
+
+	return Comment;
+}(_react2.default.Component);
+
+exports.default = Comment;
+
+},{"../../helpers":42,"../../stores/NavbarStore":49,"moment":75,"react":"react","react-router":"react-router","react-star-rating-component":89,"underscore":"underscore"}],35:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2645,7 +4256,7 @@ var LikeButton = function (_React$Component) {
 		value: function render() {
 			return _react2.default.createElement(
 				'a',
-				{ href: '#', className: this.state.likeState, onClick: this.props.handleLike },
+				{ href: '#', className: this.state.likeState + ' like-button', onClick: this.props.handleLike },
 				_react2.default.createElement('i', { className: 'fa fa-heart' }),
 				_react2.default.createElement(
 					'span',
@@ -2661,7 +4272,85 @@ var LikeButton = function (_React$Component) {
 
 exports.default = LikeButton;
 
-},{"react":"react","react-router":"react-router","underscore":"underscore"}],23:[function(require,module,exports){
+},{"react":"react","react-router":"react-router","underscore":"underscore"}],36:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _underscore = require('underscore');
+
+var _underscore2 = _interopRequireDefault(_underscore);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Modal = function (_React$Component) {
+	_inherits(Modal, _React$Component);
+
+	function Modal() {
+		_classCallCheck(this, Modal);
+
+		return _possibleConstructorReturn(this, Object.getPrototypeOf(Modal).apply(this, arguments));
+	}
+
+	_createClass(Modal, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var self = this;
+			$('#GeneralModal').modal('show');
+			$('#GeneralModal').on('hide.bs.modal', function (e) {
+				window.location.replace(self.props.returnTo);
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				{ className: 'ModalWrap' },
+				_react2.default.createElement('link', { to: this.props.returnTo, className: 'take-me-back' }),
+				_react2.default.createElement(
+					'div',
+					{ className: 'modal fade', id: 'GeneralModal', tabIndex: '-1', role: 'dialog', 'aria-labelledby': 'addReviewModalLabel', 'aria-hidden': 'true' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'modal-dialog', role: 'document' },
+						_react2.default.createElement(
+							'div',
+							{ className: 'modal-content add-recipe' },
+							this.props.children
+						)
+					)
+				)
+			);
+		}
+	}]);
+
+	return Modal;
+}(_react2.default.Component);
+
+exports.default = Modal;
+
+},{"react":"react","react-dom":"react-dom","react-router":"react-router","underscore":"underscore"}],37:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2730,7 +4419,7 @@ var NavUser = function (_React$Component) {
 					{ className: 'nav-item userblock' },
 					_react2.default.createElement(
 						'a',
-						{ className: 'nav-link', href: '#', onClick: this.facebookLogin },
+						{ className: 'nav-link', href: 'javascript:void(0)', onClick: this.facebookLogin },
 						'Đăng nhập'
 					)
 				);
@@ -2743,7 +4432,7 @@ var NavUser = function (_React$Component) {
 
 exports.default = NavUser;
 
-},{"../../../helpers":37,"react":"react","react-router":"react-router","underscore":"underscore"}],24:[function(require,module,exports){
+},{"../../../helpers":55,"react":"react","react-router":"react-router","underscore":"underscore"}],38:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2780,7 +4469,8 @@ var RecipeHeaderCover = function (_React$Component) {
 
 		_this.state = {
 			isOwner: false,
-			likeCount: props.likeCount
+			likeCount: props.likeCount,
+			photoCount: props.photoCount
 		};
 		return _this;
 	}
@@ -2791,7 +4481,8 @@ var RecipeHeaderCover = function (_React$Component) {
 			this.setState({
 				isOwner: nextProps.isOwner,
 				recipeOwner: nextProps.recipeOwner,
-				likeCount: nextProps.likeCount
+				likeCount: nextProps.likeCount,
+				photoCount: nextProps.photoCount
 			});
 		}
 	}, {
@@ -2813,18 +4504,18 @@ var RecipeHeaderCover = function (_React$Component) {
 						{ className: 'row' },
 						_react2.default.createElement(
 							'div',
-							{ className: 'col-sm-9' },
+							{ className: 'col-md-9 text-xs-center text-md-left' },
 							_react2.default.createElement(
 								'div',
 								{ className: 'row' },
 								_react2.default.createElement(
 									'div',
-									{ className: 'col-sm-4' },
+									{ className: 'col-md-4' },
 									_react2.default.createElement('img', { src: this.props.recipePhoto, width: '200', height: '200', className: 'recipe-thumb img-circle' })
 								),
 								_react2.default.createElement(
 									'div',
-									{ className: 'col-sm-8' },
+									{ className: 'col-md-8' },
 									_react2.default.createElement(
 										'div',
 										{ className: 'info' },
@@ -2833,12 +4524,25 @@ var RecipeHeaderCover = function (_React$Component) {
 											null,
 											this.props.recipeTitle,
 											this.state.isOwner ? _react2.default.createElement(
-												'a',
-												{ href: '#', className: 'edit-recipe-toggle', 'data-toggle': 'modal', 'data-target': '#myModal' },
+												'div',
+												{ className: 'owner-only' },
 												_react2.default.createElement(
-													'span',
-													null,
-													'Chỉnh sửa'
+													'a',
+													{ href: '#', className: 'edit-recipe-toggle', 'data-toggle': 'modal', 'data-target': '#myModal' },
+													_react2.default.createElement(
+														'span',
+														null,
+														'Chỉnh sửa'
+													)
+												),
+												_react2.default.createElement(
+													'a',
+													{ href: 'javascript:void(0)', className: 'delete-recipe edit-recipe-toggle', onClick: this.props.handleDelete },
+													_react2.default.createElement(
+														'span',
+														null,
+														'Xóa'
+													)
 												)
 											) : null
 										),
@@ -2865,8 +4569,8 @@ var RecipeHeaderCover = function (_React$Component) {
 												)
 											),
 											_react2.default.createElement(
-												'div',
-												{ className: 'item' },
+												'a',
+												{ href: 'javascript:void(0)', onClick: this.props.onClickPhoto, className: 'item' },
 												_react2.default.createElement(
 													'span',
 													{ className: 'bg' },
@@ -2875,12 +4579,12 @@ var RecipeHeaderCover = function (_React$Component) {
 												_react2.default.createElement(
 													'span',
 													{ className: 'number' },
-													'22'
+													this.state.photoCount
 												)
 											),
 											_react2.default.createElement(
-												'div',
-												{ className: 'item' },
+												'a',
+												{ href: 'javascript:void(0)', onClick: this.props.onClickPhoto, className: 'item' },
 												_react2.default.createElement(
 													'span',
 													{ className: 'bg' },
@@ -2889,7 +4593,7 @@ var RecipeHeaderCover = function (_React$Component) {
 												_react2.default.createElement(
 													'span',
 													{ className: 'number' },
-													'22'
+													this.props.madeCount
 												)
 											),
 											_react2.default.createElement(
@@ -2903,7 +4607,7 @@ var RecipeHeaderCover = function (_React$Component) {
 												_react2.default.createElement(
 													'span',
 													{ className: 'number' },
-													'22'
+													this.props.commentCount
 												)
 											)
 										)
@@ -2913,7 +4617,7 @@ var RecipeHeaderCover = function (_React$Component) {
 						),
 						_react2.default.createElement(
 							'div',
-							{ className: 'col-sm-3' },
+							{ className: 'col-md-3' },
 							_react2.default.createElement(
 								'div',
 								{ className: 'userInfo' },
@@ -2958,7 +4662,7 @@ var RecipeHeaderCover = function (_React$Component) {
 
 exports.default = RecipeHeaderCover;
 
-},{"moment":56,"react":"react","react-router":"react-router"}],25:[function(require,module,exports){
+},{"moment":75,"react":"react","react-router":"react-router"}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2970,6 +4674,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _helpers = require('../../helpers');
+
+var _helpers2 = _interopRequireDefault(_helpers);
 
 var _reactRouter = require('react-router');
 
@@ -2997,16 +4705,27 @@ var RecipeSmall = function (_React$Component) {
 	_createClass(RecipeSmall, [{
 		key: 'render',
 		value: function render() {
+			var imgUrl = _helpers2.default.img_url(this.props.imgId);
 			return _react2.default.createElement(
 				'div',
-				{ className: 'recipe-small-item recipe-grid-item side-grid-item', key: this.props.key },
+				{ className: this.props.class, key: this.props.key },
 				_react2.default.createElement(
 					'div',
 					{ className: 'photo' },
 					_react2.default.createElement(
 						_reactRouter.Link,
 						{ to: this.props.recipeUrl },
-						_react2.default.createElement('img', { src: this.props.imgUrl, width: this.props.imgWidth, height: this.props.imgHeight })
+						_react2.default.createElement('img', { src: imgUrl, width: this.props.imgWidth, height: this.props.imgHeight })
+					),
+					_react2.default.createElement(
+						_reactRouter.Link,
+						{ state: { modal: true, returnTo: this.props.location.pathname }, className: 'ghim-btn', to: this.props.recipeUrl + '/ghim' },
+						_react2.default.createElement('i', { className: 'fa fa-thumb-tack' }),
+						_react2.default.createElement(
+							'span',
+							{ className: 'txt' },
+							'Ghim'
+						)
 					)
 				),
 				_react2.default.createElement(
@@ -3037,7 +4756,7 @@ var RecipeSmall = function (_React$Component) {
 
 exports.default = RecipeSmall;
 
-},{"react":"react","react-router":"react-router","react-star-rating-component":70}],26:[function(require,module,exports){
+},{"../../helpers":42,"react":"react","react-router":"react-router","react-star-rating-component":89}],40:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3052,7 +4771,11 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = require('react-router');
 
-var _helpers = require('../../../helpers');
+var _NavbarStore = require('../../stores/NavbarStore');
+
+var _NavbarStore2 = _interopRequireDefault(_NavbarStore);
+
+var _helpers = require('../../helpers');
 
 var _helpers2 = _interopRequireDefault(_helpers);
 
@@ -3063,6 +4786,10 @@ var _underscore2 = _interopRequireDefault(_underscore);
 var _reactStarRatingComponent = require('react-star-rating-component');
 
 var _reactStarRatingComponent2 = _interopRequireDefault(_reactStarRatingComponent);
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3078,12 +4805,32 @@ var Review = function (_React$Component) {
 	function Review(props) {
 		_classCallCheck(this, Review);
 
-		return _possibleConstructorReturn(this, Object.getPrototypeOf(Review).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Review).call(this, props));
+
+		_this.state = _NavbarStore2.default.getState();
+		_this.onChange = _this.onChange.bind(_this);
+		return _this;
 	}
 
 	_createClass(Review, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			_NavbarStore2.default.listen(this.onChange);
+		}
+	}, {
+		key: 'onChange',
+		value: function onChange(state) {
+			this.setState(state);
+		}
+	}, {
 		key: 'render',
 		value: function render() {
+			var commentTime = (0, _moment2.default)(this.props.time);
+			var avatar = _helpers2.default.fb_avatar(this.props.user.facebook.id, 128, 128);
+			var likeClass = '';
+			if (_underscore2.default.indexOf(this.props.likes, this.state.currentUserId) >= 0) {
+				likeClass = 'liked';
+			}
 			return _react2.default.createElement(
 				'div',
 				{ className: 'review-item container-fluid', key: this.props.key },
@@ -3095,8 +4842,13 @@ var Review = function (_React$Component) {
 						{ className: 'col-sm-2' },
 						_react2.default.createElement(
 							'a',
-							{ href: '' },
-							_react2.default.createElement('img', { className: 'avatar', src: '/images/df-avatar.png', width: '64', height: '64' })
+							{ href: '/cook/' + this.props.user.username },
+							_react2.default.createElement('img', { className: 'avatar', src: avatar, width: '64', height: '64' }),
+							_react2.default.createElement(
+								'span',
+								{ className: 'username' },
+								this.props.user.name
+							)
 						)
 					),
 					_react2.default.createElement(
@@ -3114,7 +4866,7 @@ var Review = function (_React$Component) {
 									_react2.default.createElement(
 										'span',
 										{ className: 'score' },
-										'4'
+										this.props.rating
 									),
 									_react2.default.createElement(
 										'span',
@@ -3126,19 +4878,20 @@ var Review = function (_React$Component) {
 									name: 'recipeRating',
 									editing: false,
 									starCount: 5,
-									value: 4
+									value: this.props.rating
 								}),
 								_react2.default.createElement(
 									'span',
 									{ className: 'date pull-right' },
 									_react2.default.createElement('i', { className: 'fa fa-calendar-check-o' }),
-									' 26/10/2001'
+									' ',
+									commentTime.format('D/M/YYYY')
 								)
 							),
 							_react2.default.createElement(
 								'p',
 								null,
-								'I have ordered from coastal.com four times. The first time I got Vera Wang frames for only the price of shipping as an introductory offer. They arrived in less than a week, and I was very pleased. The second time I ordered contacts. The price wasn\'t very competitive, and they took a couple of weeks to arrive. The third time I ordered two sets of frames. The prices were more than reasonable, and one pair arrived in a little over two weeks, the second in three weeks. This last time, I ord...'
+								this.props.body
 							)
 						),
 						_react2.default.createElement(
@@ -3146,9 +4899,13 @@ var Review = function (_React$Component) {
 							{ className: 'like' },
 							_react2.default.createElement(
 								'a',
-								{ href: '#' },
-								_react2.default.createElement('i', { className: 'fa fa-thumbs-o-up' }),
-								' Hữu ích'
+								{ className: likeClass, href: 'javascript:void(0)', onClick: this.props.handleLike },
+								_react2.default.createElement('i', { className: 'fa fa-heart-o' })
+							),
+							_react2.default.createElement(
+								'span',
+								{ className: 'count' },
+								this.props.likeCount
 							)
 						)
 					)
@@ -3162,7 +4919,7 @@ var Review = function (_React$Component) {
 
 exports.default = Review;
 
-},{"../../../helpers":37,"react":"react","react-router":"react-router","react-star-rating-component":70,"underscore":"underscore"}],27:[function(require,module,exports){
+},{"../../helpers":42,"../../stores/NavbarStore":49,"moment":75,"react":"react","react-router":"react-router","react-star-rating-component":89,"underscore":"underscore"}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3221,6 +4978,28 @@ var UserCover = function (_React$Component) {
 						'span',
 						{ className: 'user-name' },
 						this.props.userName
+					),
+					_react2.default.createElement(
+						'ul',
+						{ className: 'nav nav-inline' },
+						'/cook/' + this.props.userId == this.props.current ? _react2.default.createElement(
+							_reactRouter.Link,
+							{ to: '/cook/' + this.props.userId, className: 'active nav-link' },
+							'Bộ sưu tập'
+						) : _react2.default.createElement(
+							_reactRouter.Link,
+							{ to: '/cook/' + this.props.userId, className: 'nav-link' },
+							'Bộ sưu tập'
+						),
+						'/cook/' + this.props.userId + '/recipes' == this.props.current ? _react2.default.createElement(
+							_reactRouter.Link,
+							{ to: '/cook/' + this.props.userId + '/recipes', className: 'active nav-link' },
+							'Công thức'
+						) : _react2.default.createElement(
+							_reactRouter.Link,
+							{ to: '/cook/' + this.props.userId + '/recipes', className: 'nav-link' },
+							'Công thức'
+						)
 					)
 				)
 			);
@@ -3232,8 +5011,8 @@ var UserCover = function (_React$Component) {
 
 exports.default = UserCover;
 
-},{"../../../helpers":37,"react":"react","react-router":"react-router","underscore":"underscore"}],28:[function(require,module,exports){
-"use strict";
+},{"../../../helpers":55,"react":"react","react-router":"react-router","underscore":"underscore"}],42:[function(require,module,exports){
+'use strict';
 
 module.exports = {
 	strip: function strip(html) {
@@ -3252,10 +5031,42 @@ module.exports = {
 	},
 	fb_avatar: function fb_avatar(id, width, height) {
 		return 'http://graph.facebook.com/v2.5/' + id + '/picture?height=' + height + '&width=' + width;
+	},
+	img_url: function img_url(imgId) {
+		if (imgId == null) {
+			return '/images/meal-icon.png';
+		}
+		return '/file/' + imgId;
+	},
+	facebookLogin: function facebookLogin() {
+		var url = '/auth/facebook',
+		    width = 400,
+		    height = 500,
+		    top = (window.outerHeight - height) / 2,
+		    left = (window.outerWidth - width) / 2;
+		window.open(url, 'facebook_login', 'width=' + width + ',height=' + height + ',scrollbars=0,top=' + top + ',left=' + left);
+	},
+	nl2br: function nl2br(text) {
+		return text.replace(/(?:\r\n|\r|\n)/g, '<br />');
 	}
 };
 
-},{}],29:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createHistory = require('history/lib/createHistory');
+
+var _createHistory2 = _interopRequireDefault(_createHistory);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = (0, _createHistory2.default)();
+
+},{"history/lib/createHistory":68}],44:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -3284,11 +5095,13 @@ var history = (0, _createBrowserHistory2.default)();
 
 _reactDom2.default.render(_react2.default.createElement(
 	_reactRouter2.default,
-	{ history: history },
+	{ onUpdate: function onUpdate() {
+			return window.scrollTo(0, 0);
+		}, history: history },
 	_routes2.default
 ), document.getElementById('app'));
 
-},{"./routes":30,"history/lib/createBrowserHistory":47,"react":"react","react-dom":"react-dom","react-router":"react-router"}],30:[function(require,module,exports){
+},{"./routes":45,"history/lib/createBrowserHistory":66,"react":"react","react-dom":"react-dom","react-router":"react-router"}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3337,6 +5150,18 @@ var _NotFound = require('./components/NotFound');
 
 var _NotFound2 = _interopRequireDefault(_NotFound);
 
+var _ProfileCollections = require('./components/ProfileCollections');
+
+var _ProfileCollections2 = _interopRequireDefault(_ProfileCollections);
+
+var _Collection = require('./components/Collection');
+
+var _Collection2 = _interopRequireDefault(_Collection);
+
+var _Ghim = require('./components/Ghim');
+
+var _Ghim2 = _interopRequireDefault(_Ghim);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _react2.default.createElement(
@@ -3349,14 +5174,199 @@ exports.default = _react2.default.createElement(
 	_react2.default.createElement(_reactRouter.Route, { path: '/category/:id', component: _Category2.default }),
 	_react2.default.createElement(
 		_reactRouter.Route,
-		{ path: '/cook/:id', component: _Profile2.default },
+		{ path: '/cook/:id', component: _Profile2.default, ignoreScrollBehavior: true },
+		_react2.default.createElement(_reactRouter.IndexRoute, { component: _ProfileCollections2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'recipes', component: _ProfileRecipes2.default })
 	),
+	_react2.default.createElement(_reactRouter.Route, { path: '/recipe/:recipeId/ghim', component: _Ghim2.default }),
 	_react2.default.createElement(_reactRouter.Route, { path: '/recipe/:recipeId', component: _Recipe2.default }),
+	_react2.default.createElement(_reactRouter.Route, { path: '/collections/:collectionId', component: _Collection2.default }),
 	_react2.default.createElement(_reactRouter.Redirect, { from: '/*', to: '/khong-tim-thay' })
 );
 
-},{"./components/App":8,"./components/AuthSuccess":9,"./components/Category":10,"./components/Home":11,"./components/NotFound":13,"./components/Profile":14,"./components/ProfileRecipes":15,"./components/Recipe":16,"./components/Recipes":18,"react":"react","react-router":"react-router"}],31:[function(require,module,exports){
+},{"./components/App":12,"./components/AuthSuccess":13,"./components/Category":14,"./components/Collection":15,"./components/Ghim":17,"./components/Home":18,"./components/NotFound":20,"./components/Profile":21,"./components/ProfileCollections":22,"./components/ProfileRecipes":23,"./components/Recipe":24,"./components/Recipes":26,"react":"react","react-router":"react-router"}],46:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var _CollectionActions = require('../actions/CollectionActions');
+
+var _CollectionActions2 = _interopRequireDefault(_CollectionActions);
+
+var _NavbarStore = require('./NavbarStore');
+
+var _NavbarStore2 = _interopRequireDefault(_NavbarStore);
+
+var _NavbarActions = require('../actions/NavbarActions');
+
+var _NavbarActions2 = _interopRequireDefault(_NavbarActions);
+
+var _CommentFormActions = require('../actions/CommentFormActions');
+
+var _CommentFormActions2 = _interopRequireDefault(_CommentFormActions);
+
+var _underscore = require('underscore');
+
+var _underscore2 = _interopRequireDefault(_underscore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var CollectionStore = function () {
+	function CollectionStore() {
+		_classCallCheck(this, CollectionStore);
+
+		this.bindActions(_CollectionActions2.default);
+		this.bindListeners({
+			updateLikeState: _NavbarActions2.default.getMyInfoSuccess,
+			appendComment: _CommentFormActions2.default.addCommentSuccess
+		});
+		this.likeState = 'dislike';
+		this.likeCount = 0;
+		this.followCount = 0;
+		this.followState = 'not-followed-yet';
+		this.commentCount = 0;
+		this.collection = {
+			title: '',
+			description: '',
+			recipes: [],
+			loves: [],
+			comments: [],
+			followers: [],
+			userId: {
+				name: '',
+				username: '',
+				facebook: {
+					id: ''
+				}
+			}
+		};
+	}
+
+	_createClass(CollectionStore, [{
+		key: 'onGetCollectionSuccess',
+		value: function onGetCollectionSuccess(data) {
+			this.collection = data;
+			this.likeCount = data.loves.length;
+			this.followCount = data.followers.length;
+			this.commentCount = data.comments.length;
+			if (_underscore2.default.indexOf(data.loves, _NavbarStore2.default.getState().currentUserId) >= 0) {
+				this.likeState = 'like';
+			}
+			if (_underscore2.default.indexOf(data.followers, _NavbarStore2.default.getState().currentUserId) >= 0) {
+				this.followState = 'followed';
+			}
+		}
+	}, {
+		key: 'onLikeSuccess',
+		value: function onLikeSuccess(data) {
+			this.likeState = data;
+			if (data == 'like') {
+				this.likeCount++;
+			} else {
+				this.likeCount--;
+			}
+		}
+	}, {
+		key: 'onFollowSuccess',
+		value: function onFollowSuccess(data) {
+			this.followState = data;
+			if (data == 'followed') {
+				this.followCount++;
+			} else {
+				this.followCount--;
+			}
+		}
+	}, {
+		key: 'updateLikeState',
+		value: function updateLikeState(data) {
+			if (_underscore2.default.indexOf(this.collection.loves, data._id) >= 0) {
+				this.likeState = 'like';
+			}
+			if (_underscore2.default.indexOf(this.collection.followers, data._id) >= 0) {
+				this.followState = 'followed';
+			}
+		}
+	}, {
+		key: 'appendComment',
+		value: function appendComment(data) {
+			data.userId = _NavbarStore2.default.getState().myInfo;
+			this.collection.comments.unshift(data);
+			this.commentCount++;
+			$('#commentBody').val('');
+		}
+	}]);
+
+	return CollectionStore;
+}();
+
+exports.default = _alt2.default.createStore(CollectionStore);
+
+},{"../actions/CollectionActions":1,"../actions/CommentFormActions":2,"../actions/NavbarActions":5,"../alt":11,"./NavbarStore":49,"underscore":"underscore"}],47:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var _GhimActions = require('../actions/GhimActions');
+
+var _GhimActions2 = _interopRequireDefault(_GhimActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var GhimStore = function () {
+	function GhimStore() {
+		_classCallCheck(this, GhimStore);
+
+		this.bindActions(_GhimActions2.default);
+		this.recipe = {
+			title: '',
+			description: '',
+			photo: '/images/df-img.jpg',
+			_id: ''
+		};
+		this.collections = [];
+	}
+
+	_createClass(GhimStore, [{
+		key: 'onGetRecipeSuccess',
+		value: function onGetRecipeSuccess(data) {
+			this.recipe.title = data.recipe.title;
+			this.recipe.photo = '/file/' + data.mainPhoto._id;
+			this.recipe._id = data._id;
+			this.recipe.description = data.recipe.description;
+		}
+	}, {
+		key: 'onGetCollectionsSuccess',
+		value: function onGetCollectionsSuccess(data) {
+			this.collections = data;
+		}
+	}]);
+
+	return GhimStore;
+}();
+
+exports.default = _alt2.default.createStore(GhimStore);
+
+},{"../actions/GhimActions":3,"../alt":11}],48:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3397,7 +5407,7 @@ var HomeStore = function () {
 
 exports.default = _alt2.default.createStore(HomeStore);
 
-},{"../actions/HomeActions":1,"../alt":7}],32:[function(require,module,exports){
+},{"../actions/HomeActions":4,"../alt":11}],49:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3442,7 +5452,52 @@ var NavbarStore = function () {
 
 exports.default = _alt2.default.createStore(NavbarStore);
 
-},{"../actions/NavbarActions":2,"../alt":7}],33:[function(require,module,exports){
+},{"../actions/NavbarActions":5,"../alt":11}],50:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var _ProfileCollectionsActions = require('../actions/ProfileCollectionsActions');
+
+var _ProfileCollectionsActions2 = _interopRequireDefault(_ProfileCollectionsActions);
+
+var _underscore = require('underscore');
+
+var _underscore2 = _interopRequireDefault(_underscore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ProfileCollectionsStore = function () {
+	function ProfileCollectionsStore() {
+		_classCallCheck(this, ProfileCollectionsStore);
+
+		this.bindActions(_ProfileCollectionsActions2.default);
+		this.collections = null;
+	}
+
+	_createClass(ProfileCollectionsStore, [{
+		key: 'onGetCollectionsSuccess',
+		value: function onGetCollectionsSuccess(data) {
+			this.collections = data;
+		}
+	}]);
+
+	return ProfileCollectionsStore;
+}();
+
+exports.default = _alt2.default.createStore(ProfileCollectionsStore);
+
+},{"../actions/ProfileCollectionsActions":7,"../alt":11,"underscore":"underscore"}],51:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3502,7 +5557,7 @@ var ProfileRecipesStore = function () {
 
 exports.default = _alt2.default.createStore(ProfileRecipesStore);
 
-},{"../actions/ProfileRecipesActions":4,"../alt":7,"underscore":"underscore"}],34:[function(require,module,exports){
+},{"../actions/ProfileRecipesActions":8,"../alt":11,"underscore":"underscore"}],52:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3543,7 +5598,7 @@ var ProfileStore = function () {
 
 exports.default = _alt2.default.createStore(ProfileStore);
 
-},{"../actions/ProfileActions":3,"../alt":7}],35:[function(require,module,exports){
+},{"../actions/ProfileActions":6,"../alt":11}],53:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3647,7 +5702,7 @@ var RecipeModalStore = function () {
 
 exports.default = _alt2.default.createStore(RecipeModalStore);
 
-},{"../actions/RecipeModalActions":6,"../alt":7,"underscore":"underscore"}],36:[function(require,module,exports){
+},{"../actions/RecipeModalActions":10,"../alt":11,"underscore":"underscore"}],54:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3692,13 +5747,19 @@ var RecipeStore = function () {
 			mainPhoto: '',
 			recipe: {
 				title: '',
-				description: ''
+				description: '',
+				collections: []
 			},
+			createdAt: null,
 			loves: []
 		};
 		this.categories = [];
 		this.likeState = 'dislike';
 		this.likeCount = 0;
+		this.photoCount = 0;
+		this.madeCount = 0;
+		this.commentCount = 0;
+		this.sameOwnerRecipes = null;
 	}
 
 	_createClass(RecipeStore, [{
@@ -3706,9 +5767,17 @@ var RecipeStore = function () {
 		value: function onGetRecipeSuccess(data) {
 			this.recipe = data;
 			this.likeCount = data.loves.length;
+			this.commentCount = data.comments.length;
+			this.photoCount = data.recipe.photos.length;
 			if (_underscore2.default.indexOf(data.loves, _NavbarStore2.default.getState().currentUserId) >= 0) {
 				this.likeState = 'like';
 			}
+			var _photosObjectCompact = [];
+			data.recipe.photos.map(function (photo, index) {
+				_photosObjectCompact.push(photo.peopleId._id);
+			});
+			_photosObjectCompact = _underscore2.default.uniq(_photosObjectCompact);
+			this.madeCount = _photosObjectCompact.length;
 		}
 	}, {
 		key: 'updateLikeState',
@@ -3732,6 +5801,11 @@ var RecipeStore = function () {
 				this.likeCount--;
 			}
 		}
+	}, {
+		key: 'onGetSameOwnerRecipesSuccess',
+		value: function onGetSameOwnerRecipesSuccess(data) {
+			this.sameOwnerRecipes = data;
+		}
 	}]);
 
 	return RecipeStore;
@@ -3739,7 +5813,7 @@ var RecipeStore = function () {
 
 exports.default = _alt2.default.createStore(RecipeStore);
 
-},{"../actions/NavbarActions":2,"../actions/RecipeActions":5,"../alt":7,"./NavbarStore":32,"underscore":"underscore"}],37:[function(require,module,exports){
+},{"../actions/NavbarActions":5,"../actions/RecipeActions":9,"../alt":11,"./NavbarStore":49,"underscore":"underscore"}],55:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -3791,11 +5865,1291 @@ module.exports = {
 	extractUsername: function extractUsername(email) {
 		var emailArr = email.split('@');
 		return emailArr[0];
+	},
+
+	findObjectInArray: function findObjectInArray(arr, key, val) {
+		for (var i = arr.length - 1; i > -1; i--) {
+			//console.log(arr[i][key]);
+			if (arr[i][key].toString() == val.toString()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 };
 
-},{}],38:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
+(function (process,global){
+/*!
+ * async
+ * https://github.com/caolan/async
+ *
+ * Copyright 2010-2014 Caolan McMahon
+ * Released under the MIT license
+ */
+(function () {
+
+    var async = {};
+    function noop() {}
+    function identity(v) {
+        return v;
+    }
+    function toBool(v) {
+        return !!v;
+    }
+    function notId(v) {
+        return !v;
+    }
+
+    // global on the server, window in the browser
+    var previous_async;
+
+    // Establish the root object, `window` (`self`) in the browser, `global`
+    // on the server, or `this` in some virtual machines. We use `self`
+    // instead of `window` for `WebWorker` support.
+    var root = typeof self === 'object' && self.self === self && self ||
+            typeof global === 'object' && global.global === global && global ||
+            this;
+
+    if (root != null) {
+        previous_async = root.async;
+    }
+
+    async.noConflict = function () {
+        root.async = previous_async;
+        return async;
+    };
+
+    function only_once(fn) {
+        return function() {
+            if (fn === null) throw new Error("Callback was already called.");
+            fn.apply(this, arguments);
+            fn = null;
+        };
+    }
+
+    function _once(fn) {
+        return function() {
+            if (fn === null) return;
+            fn.apply(this, arguments);
+            fn = null;
+        };
+    }
+
+    //// cross-browser compatiblity functions ////
+
+    var _toString = Object.prototype.toString;
+
+    var _isArray = Array.isArray || function (obj) {
+        return _toString.call(obj) === '[object Array]';
+    };
+
+    // Ported from underscore.js isObject
+    var _isObject = function(obj) {
+        var type = typeof obj;
+        return type === 'function' || type === 'object' && !!obj;
+    };
+
+    function _isArrayLike(arr) {
+        return _isArray(arr) || (
+            // has a positive integer length property
+            typeof arr.length === "number" &&
+            arr.length >= 0 &&
+            arr.length % 1 === 0
+        );
+    }
+
+    function _arrayEach(arr, iterator) {
+        var index = -1,
+            length = arr.length;
+
+        while (++index < length) {
+            iterator(arr[index], index, arr);
+        }
+    }
+
+    function _map(arr, iterator) {
+        var index = -1,
+            length = arr.length,
+            result = Array(length);
+
+        while (++index < length) {
+            result[index] = iterator(arr[index], index, arr);
+        }
+        return result;
+    }
+
+    function _range(count) {
+        return _map(Array(count), function (v, i) { return i; });
+    }
+
+    function _reduce(arr, iterator, memo) {
+        _arrayEach(arr, function (x, i, a) {
+            memo = iterator(memo, x, i, a);
+        });
+        return memo;
+    }
+
+    function _forEachOf(object, iterator) {
+        _arrayEach(_keys(object), function (key) {
+            iterator(object[key], key);
+        });
+    }
+
+    function _indexOf(arr, item) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === item) return i;
+        }
+        return -1;
+    }
+
+    var _keys = Object.keys || function (obj) {
+        var keys = [];
+        for (var k in obj) {
+            if (obj.hasOwnProperty(k)) {
+                keys.push(k);
+            }
+        }
+        return keys;
+    };
+
+    function _keyIterator(coll) {
+        var i = -1;
+        var len;
+        var keys;
+        if (_isArrayLike(coll)) {
+            len = coll.length;
+            return function next() {
+                i++;
+                return i < len ? i : null;
+            };
+        } else {
+            keys = _keys(coll);
+            len = keys.length;
+            return function next() {
+                i++;
+                return i < len ? keys[i] : null;
+            };
+        }
+    }
+
+    // Similar to ES6's rest param (http://ariya.ofilabs.com/2013/03/es6-and-rest-parameter.html)
+    // This accumulates the arguments passed into an array, after a given index.
+    // From underscore.js (https://github.com/jashkenas/underscore/pull/2140).
+    function _restParam(func, startIndex) {
+        startIndex = startIndex == null ? func.length - 1 : +startIndex;
+        return function() {
+            var length = Math.max(arguments.length - startIndex, 0);
+            var rest = Array(length);
+            for (var index = 0; index < length; index++) {
+                rest[index] = arguments[index + startIndex];
+            }
+            switch (startIndex) {
+                case 0: return func.call(this, rest);
+                case 1: return func.call(this, arguments[0], rest);
+            }
+            // Currently unused but handle cases outside of the switch statement:
+            // var args = Array(startIndex + 1);
+            // for (index = 0; index < startIndex; index++) {
+            //     args[index] = arguments[index];
+            // }
+            // args[startIndex] = rest;
+            // return func.apply(this, args);
+        };
+    }
+
+    function _withoutIndex(iterator) {
+        return function (value, index, callback) {
+            return iterator(value, callback);
+        };
+    }
+
+    //// exported async module functions ////
+
+    //// nextTick implementation with browser-compatible fallback ////
+
+    // capture the global reference to guard against fakeTimer mocks
+    var _setImmediate = typeof setImmediate === 'function' && setImmediate;
+
+    var _delay = _setImmediate ? function(fn) {
+        // not a direct alias for IE10 compatibility
+        _setImmediate(fn);
+    } : function(fn) {
+        setTimeout(fn, 0);
+    };
+
+    if (typeof process === 'object' && typeof process.nextTick === 'function') {
+        async.nextTick = process.nextTick;
+    } else {
+        async.nextTick = _delay;
+    }
+    async.setImmediate = _setImmediate ? _delay : async.nextTick;
+
+
+    async.forEach =
+    async.each = function (arr, iterator, callback) {
+        return async.eachOf(arr, _withoutIndex(iterator), callback);
+    };
+
+    async.forEachSeries =
+    async.eachSeries = function (arr, iterator, callback) {
+        return async.eachOfSeries(arr, _withoutIndex(iterator), callback);
+    };
+
+
+    async.forEachLimit =
+    async.eachLimit = function (arr, limit, iterator, callback) {
+        return _eachOfLimit(limit)(arr, _withoutIndex(iterator), callback);
+    };
+
+    async.forEachOf =
+    async.eachOf = function (object, iterator, callback) {
+        callback = _once(callback || noop);
+        object = object || [];
+
+        var iter = _keyIterator(object);
+        var key, completed = 0;
+
+        while ((key = iter()) != null) {
+            completed += 1;
+            iterator(object[key], key, only_once(done));
+        }
+
+        if (completed === 0) callback(null);
+
+        function done(err) {
+            completed--;
+            if (err) {
+                callback(err);
+            }
+            // Check key is null in case iterator isn't exhausted
+            // and done resolved synchronously.
+            else if (key === null && completed <= 0) {
+                callback(null);
+            }
+        }
+    };
+
+    async.forEachOfSeries =
+    async.eachOfSeries = function (obj, iterator, callback) {
+        callback = _once(callback || noop);
+        obj = obj || [];
+        var nextKey = _keyIterator(obj);
+        var key = nextKey();
+        function iterate() {
+            var sync = true;
+            if (key === null) {
+                return callback(null);
+            }
+            iterator(obj[key], key, only_once(function (err) {
+                if (err) {
+                    callback(err);
+                }
+                else {
+                    key = nextKey();
+                    if (key === null) {
+                        return callback(null);
+                    } else {
+                        if (sync) {
+                            async.setImmediate(iterate);
+                        } else {
+                            iterate();
+                        }
+                    }
+                }
+            }));
+            sync = false;
+        }
+        iterate();
+    };
+
+
+
+    async.forEachOfLimit =
+    async.eachOfLimit = function (obj, limit, iterator, callback) {
+        _eachOfLimit(limit)(obj, iterator, callback);
+    };
+
+    function _eachOfLimit(limit) {
+
+        return function (obj, iterator, callback) {
+            callback = _once(callback || noop);
+            obj = obj || [];
+            var nextKey = _keyIterator(obj);
+            if (limit <= 0) {
+                return callback(null);
+            }
+            var done = false;
+            var running = 0;
+            var errored = false;
+
+            (function replenish () {
+                if (done && running <= 0) {
+                    return callback(null);
+                }
+
+                while (running < limit && !errored) {
+                    var key = nextKey();
+                    if (key === null) {
+                        done = true;
+                        if (running <= 0) {
+                            callback(null);
+                        }
+                        return;
+                    }
+                    running += 1;
+                    iterator(obj[key], key, only_once(function (err) {
+                        running -= 1;
+                        if (err) {
+                            callback(err);
+                            errored = true;
+                        }
+                        else {
+                            replenish();
+                        }
+                    }));
+                }
+            })();
+        };
+    }
+
+
+    function doParallel(fn) {
+        return function (obj, iterator, callback) {
+            return fn(async.eachOf, obj, iterator, callback);
+        };
+    }
+    function doParallelLimit(fn) {
+        return function (obj, limit, iterator, callback) {
+            return fn(_eachOfLimit(limit), obj, iterator, callback);
+        };
+    }
+    function doSeries(fn) {
+        return function (obj, iterator, callback) {
+            return fn(async.eachOfSeries, obj, iterator, callback);
+        };
+    }
+
+    function _asyncMap(eachfn, arr, iterator, callback) {
+        callback = _once(callback || noop);
+        arr = arr || [];
+        var results = _isArrayLike(arr) ? [] : {};
+        eachfn(arr, function (value, index, callback) {
+            iterator(value, function (err, v) {
+                results[index] = v;
+                callback(err);
+            });
+        }, function (err) {
+            callback(err, results);
+        });
+    }
+
+    async.map = doParallel(_asyncMap);
+    async.mapSeries = doSeries(_asyncMap);
+    async.mapLimit = doParallelLimit(_asyncMap);
+
+    // reduce only has a series version, as doing reduce in parallel won't
+    // work in many situations.
+    async.inject =
+    async.foldl =
+    async.reduce = function (arr, memo, iterator, callback) {
+        async.eachOfSeries(arr, function (x, i, callback) {
+            iterator(memo, x, function (err, v) {
+                memo = v;
+                callback(err);
+            });
+        }, function (err) {
+            callback(err, memo);
+        });
+    };
+
+    async.foldr =
+    async.reduceRight = function (arr, memo, iterator, callback) {
+        var reversed = _map(arr, identity).reverse();
+        async.reduce(reversed, memo, iterator, callback);
+    };
+
+    async.transform = function (arr, memo, iterator, callback) {
+        if (arguments.length === 3) {
+            callback = iterator;
+            iterator = memo;
+            memo = _isArray(arr) ? [] : {};
+        }
+
+        async.eachOf(arr, function(v, k, cb) {
+            iterator(memo, v, k, cb);
+        }, function(err) {
+            callback(err, memo);
+        });
+    };
+
+    function _filter(eachfn, arr, iterator, callback) {
+        var results = [];
+        eachfn(arr, function (x, index, callback) {
+            iterator(x, function (v) {
+                if (v) {
+                    results.push({index: index, value: x});
+                }
+                callback();
+            });
+        }, function () {
+            callback(_map(results.sort(function (a, b) {
+                return a.index - b.index;
+            }), function (x) {
+                return x.value;
+            }));
+        });
+    }
+
+    async.select =
+    async.filter = doParallel(_filter);
+
+    async.selectLimit =
+    async.filterLimit = doParallelLimit(_filter);
+
+    async.selectSeries =
+    async.filterSeries = doSeries(_filter);
+
+    function _reject(eachfn, arr, iterator, callback) {
+        _filter(eachfn, arr, function(value, cb) {
+            iterator(value, function(v) {
+                cb(!v);
+            });
+        }, callback);
+    }
+    async.reject = doParallel(_reject);
+    async.rejectLimit = doParallelLimit(_reject);
+    async.rejectSeries = doSeries(_reject);
+
+    function _createTester(eachfn, check, getResult) {
+        return function(arr, limit, iterator, cb) {
+            function done() {
+                if (cb) cb(getResult(false, void 0));
+            }
+            function iteratee(x, _, callback) {
+                if (!cb) return callback();
+                iterator(x, function (v) {
+                    if (cb && check(v)) {
+                        cb(getResult(true, x));
+                        cb = iterator = false;
+                    }
+                    callback();
+                });
+            }
+            if (arguments.length > 3) {
+                eachfn(arr, limit, iteratee, done);
+            } else {
+                cb = iterator;
+                iterator = limit;
+                eachfn(arr, iteratee, done);
+            }
+        };
+    }
+
+    async.any =
+    async.some = _createTester(async.eachOf, toBool, identity);
+
+    async.someLimit = _createTester(async.eachOfLimit, toBool, identity);
+
+    async.all =
+    async.every = _createTester(async.eachOf, notId, notId);
+
+    async.everyLimit = _createTester(async.eachOfLimit, notId, notId);
+
+    function _findGetResult(v, x) {
+        return x;
+    }
+    async.detect = _createTester(async.eachOf, identity, _findGetResult);
+    async.detectSeries = _createTester(async.eachOfSeries, identity, _findGetResult);
+    async.detectLimit = _createTester(async.eachOfLimit, identity, _findGetResult);
+
+    async.sortBy = function (arr, iterator, callback) {
+        async.map(arr, function (x, callback) {
+            iterator(x, function (err, criteria) {
+                if (err) {
+                    callback(err);
+                }
+                else {
+                    callback(null, {value: x, criteria: criteria});
+                }
+            });
+        }, function (err, results) {
+            if (err) {
+                return callback(err);
+            }
+            else {
+                callback(null, _map(results.sort(comparator), function (x) {
+                    return x.value;
+                }));
+            }
+
+        });
+
+        function comparator(left, right) {
+            var a = left.criteria, b = right.criteria;
+            return a < b ? -1 : a > b ? 1 : 0;
+        }
+    };
+
+    async.auto = function (tasks, concurrency, callback) {
+        if (typeof arguments[1] === 'function') {
+            // concurrency is optional, shift the args.
+            callback = concurrency;
+            concurrency = null;
+        }
+        callback = _once(callback || noop);
+        var keys = _keys(tasks);
+        var remainingTasks = keys.length;
+        if (!remainingTasks) {
+            return callback(null);
+        }
+        if (!concurrency) {
+            concurrency = remainingTasks;
+        }
+
+        var results = {};
+        var runningTasks = 0;
+
+        var hasError = false;
+
+        var listeners = [];
+        function addListener(fn) {
+            listeners.unshift(fn);
+        }
+        function removeListener(fn) {
+            var idx = _indexOf(listeners, fn);
+            if (idx >= 0) listeners.splice(idx, 1);
+        }
+        function taskComplete() {
+            remainingTasks--;
+            _arrayEach(listeners.slice(0), function (fn) {
+                fn();
+            });
+        }
+
+        addListener(function () {
+            if (!remainingTasks) {
+                callback(null, results);
+            }
+        });
+
+        _arrayEach(keys, function (k) {
+            if (hasError) return;
+            var task = _isArray(tasks[k]) ? tasks[k]: [tasks[k]];
+            var taskCallback = _restParam(function(err, args) {
+                runningTasks--;
+                if (args.length <= 1) {
+                    args = args[0];
+                }
+                if (err) {
+                    var safeResults = {};
+                    _forEachOf(results, function(val, rkey) {
+                        safeResults[rkey] = val;
+                    });
+                    safeResults[k] = args;
+                    hasError = true;
+
+                    callback(err, safeResults);
+                }
+                else {
+                    results[k] = args;
+                    async.setImmediate(taskComplete);
+                }
+            });
+            var requires = task.slice(0, task.length - 1);
+            // prevent dead-locks
+            var len = requires.length;
+            var dep;
+            while (len--) {
+                if (!(dep = tasks[requires[len]])) {
+                    throw new Error('Has nonexistent dependency in ' + requires.join(', '));
+                }
+                if (_isArray(dep) && _indexOf(dep, k) >= 0) {
+                    throw new Error('Has cyclic dependencies');
+                }
+            }
+            function ready() {
+                return runningTasks < concurrency && _reduce(requires, function (a, x) {
+                    return (a && results.hasOwnProperty(x));
+                }, true) && !results.hasOwnProperty(k);
+            }
+            if (ready()) {
+                runningTasks++;
+                task[task.length - 1](taskCallback, results);
+            }
+            else {
+                addListener(listener);
+            }
+            function listener() {
+                if (ready()) {
+                    runningTasks++;
+                    removeListener(listener);
+                    task[task.length - 1](taskCallback, results);
+                }
+            }
+        });
+    };
+
+
+
+    async.retry = function(times, task, callback) {
+        var DEFAULT_TIMES = 5;
+        var DEFAULT_INTERVAL = 0;
+
+        var attempts = [];
+
+        var opts = {
+            times: DEFAULT_TIMES,
+            interval: DEFAULT_INTERVAL
+        };
+
+        function parseTimes(acc, t){
+            if(typeof t === 'number'){
+                acc.times = parseInt(t, 10) || DEFAULT_TIMES;
+            } else if(typeof t === 'object'){
+                acc.times = parseInt(t.times, 10) || DEFAULT_TIMES;
+                acc.interval = parseInt(t.interval, 10) || DEFAULT_INTERVAL;
+            } else {
+                throw new Error('Unsupported argument type for \'times\': ' + typeof t);
+            }
+        }
+
+        var length = arguments.length;
+        if (length < 1 || length > 3) {
+            throw new Error('Invalid arguments - must be either (task), (task, callback), (times, task) or (times, task, callback)');
+        } else if (length <= 2 && typeof times === 'function') {
+            callback = task;
+            task = times;
+        }
+        if (typeof times !== 'function') {
+            parseTimes(opts, times);
+        }
+        opts.callback = callback;
+        opts.task = task;
+
+        function wrappedTask(wrappedCallback, wrappedResults) {
+            function retryAttempt(task, finalAttempt) {
+                return function(seriesCallback) {
+                    task(function(err, result){
+                        seriesCallback(!err || finalAttempt, {err: err, result: result});
+                    }, wrappedResults);
+                };
+            }
+
+            function retryInterval(interval){
+                return function(seriesCallback){
+                    setTimeout(function(){
+                        seriesCallback(null);
+                    }, interval);
+                };
+            }
+
+            while (opts.times) {
+
+                var finalAttempt = !(opts.times-=1);
+                attempts.push(retryAttempt(opts.task, finalAttempt));
+                if(!finalAttempt && opts.interval > 0){
+                    attempts.push(retryInterval(opts.interval));
+                }
+            }
+
+            async.series(attempts, function(done, data){
+                data = data[data.length - 1];
+                (wrappedCallback || opts.callback)(data.err, data.result);
+            });
+        }
+
+        // If a callback is passed, run this as a controll flow
+        return opts.callback ? wrappedTask() : wrappedTask;
+    };
+
+    async.waterfall = function (tasks, callback) {
+        callback = _once(callback || noop);
+        if (!_isArray(tasks)) {
+            var err = new Error('First argument to waterfall must be an array of functions');
+            return callback(err);
+        }
+        if (!tasks.length) {
+            return callback();
+        }
+        function wrapIterator(iterator) {
+            return _restParam(function (err, args) {
+                if (err) {
+                    callback.apply(null, [err].concat(args));
+                }
+                else {
+                    var next = iterator.next();
+                    if (next) {
+                        args.push(wrapIterator(next));
+                    }
+                    else {
+                        args.push(callback);
+                    }
+                    ensureAsync(iterator).apply(null, args);
+                }
+            });
+        }
+        wrapIterator(async.iterator(tasks))();
+    };
+
+    function _parallel(eachfn, tasks, callback) {
+        callback = callback || noop;
+        var results = _isArrayLike(tasks) ? [] : {};
+
+        eachfn(tasks, function (task, key, callback) {
+            task(_restParam(function (err, args) {
+                if (args.length <= 1) {
+                    args = args[0];
+                }
+                results[key] = args;
+                callback(err);
+            }));
+        }, function (err) {
+            callback(err, results);
+        });
+    }
+
+    async.parallel = function (tasks, callback) {
+        _parallel(async.eachOf, tasks, callback);
+    };
+
+    async.parallelLimit = function(tasks, limit, callback) {
+        _parallel(_eachOfLimit(limit), tasks, callback);
+    };
+
+    async.series = function(tasks, callback) {
+        _parallel(async.eachOfSeries, tasks, callback);
+    };
+
+    async.iterator = function (tasks) {
+        function makeCallback(index) {
+            function fn() {
+                if (tasks.length) {
+                    tasks[index].apply(null, arguments);
+                }
+                return fn.next();
+            }
+            fn.next = function () {
+                return (index < tasks.length - 1) ? makeCallback(index + 1): null;
+            };
+            return fn;
+        }
+        return makeCallback(0);
+    };
+
+    async.apply = _restParam(function (fn, args) {
+        return _restParam(function (callArgs) {
+            return fn.apply(
+                null, args.concat(callArgs)
+            );
+        });
+    });
+
+    function _concat(eachfn, arr, fn, callback) {
+        var result = [];
+        eachfn(arr, function (x, index, cb) {
+            fn(x, function (err, y) {
+                result = result.concat(y || []);
+                cb(err);
+            });
+        }, function (err) {
+            callback(err, result);
+        });
+    }
+    async.concat = doParallel(_concat);
+    async.concatSeries = doSeries(_concat);
+
+    async.whilst = function (test, iterator, callback) {
+        callback = callback || noop;
+        if (test()) {
+            var next = _restParam(function(err, args) {
+                if (err) {
+                    callback(err);
+                } else if (test.apply(this, args)) {
+                    iterator(next);
+                } else {
+                    callback.apply(null, [null].concat(args));
+                }
+            });
+            iterator(next);
+        } else {
+            callback(null);
+        }
+    };
+
+    async.doWhilst = function (iterator, test, callback) {
+        var calls = 0;
+        return async.whilst(function() {
+            return ++calls <= 1 || test.apply(this, arguments);
+        }, iterator, callback);
+    };
+
+    async.until = function (test, iterator, callback) {
+        return async.whilst(function() {
+            return !test.apply(this, arguments);
+        }, iterator, callback);
+    };
+
+    async.doUntil = function (iterator, test, callback) {
+        return async.doWhilst(iterator, function() {
+            return !test.apply(this, arguments);
+        }, callback);
+    };
+
+    async.during = function (test, iterator, callback) {
+        callback = callback || noop;
+
+        var next = _restParam(function(err, args) {
+            if (err) {
+                callback(err);
+            } else {
+                args.push(check);
+                test.apply(this, args);
+            }
+        });
+
+        var check = function(err, truth) {
+            if (err) {
+                callback(err);
+            } else if (truth) {
+                iterator(next);
+            } else {
+                callback(null);
+            }
+        };
+
+        test(check);
+    };
+
+    async.doDuring = function (iterator, test, callback) {
+        var calls = 0;
+        async.during(function(next) {
+            if (calls++ < 1) {
+                next(null, true);
+            } else {
+                test.apply(this, arguments);
+            }
+        }, iterator, callback);
+    };
+
+    function _queue(worker, concurrency, payload) {
+        if (concurrency == null) {
+            concurrency = 1;
+        }
+        else if(concurrency === 0) {
+            throw new Error('Concurrency must not be zero');
+        }
+        function _insert(q, data, pos, callback) {
+            if (callback != null && typeof callback !== "function") {
+                throw new Error("task callback must be a function");
+            }
+            q.started = true;
+            if (!_isArray(data)) {
+                data = [data];
+            }
+            if(data.length === 0 && q.idle()) {
+                // call drain immediately if there are no tasks
+                return async.setImmediate(function() {
+                    q.drain();
+                });
+            }
+            _arrayEach(data, function(task) {
+                var item = {
+                    data: task,
+                    callback: callback || noop
+                };
+
+                if (pos) {
+                    q.tasks.unshift(item);
+                } else {
+                    q.tasks.push(item);
+                }
+
+                if (q.tasks.length === q.concurrency) {
+                    q.saturated();
+                }
+            });
+            async.setImmediate(q.process);
+        }
+        function _next(q, tasks) {
+            return function(){
+                workers -= 1;
+
+                var removed = false;
+                var args = arguments;
+                _arrayEach(tasks, function (task) {
+                    _arrayEach(workersList, function (worker, index) {
+                        if (worker === task && !removed) {
+                            workersList.splice(index, 1);
+                            removed = true;
+                        }
+                    });
+
+                    task.callback.apply(task, args);
+                });
+                if (q.tasks.length + workers === 0) {
+                    q.drain();
+                }
+                q.process();
+            };
+        }
+
+        var workers = 0;
+        var workersList = [];
+        var q = {
+            tasks: [],
+            concurrency: concurrency,
+            payload: payload,
+            saturated: noop,
+            empty: noop,
+            drain: noop,
+            started: false,
+            paused: false,
+            push: function (data, callback) {
+                _insert(q, data, false, callback);
+            },
+            kill: function () {
+                q.drain = noop;
+                q.tasks = [];
+            },
+            unshift: function (data, callback) {
+                _insert(q, data, true, callback);
+            },
+            process: function () {
+                while(!q.paused && workers < q.concurrency && q.tasks.length){
+
+                    var tasks = q.payload ?
+                        q.tasks.splice(0, q.payload) :
+                        q.tasks.splice(0, q.tasks.length);
+
+                    var data = _map(tasks, function (task) {
+                        return task.data;
+                    });
+
+                    if (q.tasks.length === 0) {
+                        q.empty();
+                    }
+                    workers += 1;
+                    workersList.push(tasks[0]);
+                    var cb = only_once(_next(q, tasks));
+                    worker(data, cb);
+                }
+            },
+            length: function () {
+                return q.tasks.length;
+            },
+            running: function () {
+                return workers;
+            },
+            workersList: function () {
+                return workersList;
+            },
+            idle: function() {
+                return q.tasks.length + workers === 0;
+            },
+            pause: function () {
+                q.paused = true;
+            },
+            resume: function () {
+                if (q.paused === false) { return; }
+                q.paused = false;
+                var resumeCount = Math.min(q.concurrency, q.tasks.length);
+                // Need to call q.process once per concurrent
+                // worker to preserve full concurrency after pause
+                for (var w = 1; w <= resumeCount; w++) {
+                    async.setImmediate(q.process);
+                }
+            }
+        };
+        return q;
+    }
+
+    async.queue = function (worker, concurrency) {
+        var q = _queue(function (items, cb) {
+            worker(items[0], cb);
+        }, concurrency, 1);
+
+        return q;
+    };
+
+    async.priorityQueue = function (worker, concurrency) {
+
+        function _compareTasks(a, b){
+            return a.priority - b.priority;
+        }
+
+        function _binarySearch(sequence, item, compare) {
+            var beg = -1,
+                end = sequence.length - 1;
+            while (beg < end) {
+                var mid = beg + ((end - beg + 1) >>> 1);
+                if (compare(item, sequence[mid]) >= 0) {
+                    beg = mid;
+                } else {
+                    end = mid - 1;
+                }
+            }
+            return beg;
+        }
+
+        function _insert(q, data, priority, callback) {
+            if (callback != null && typeof callback !== "function") {
+                throw new Error("task callback must be a function");
+            }
+            q.started = true;
+            if (!_isArray(data)) {
+                data = [data];
+            }
+            if(data.length === 0) {
+                // call drain immediately if there are no tasks
+                return async.setImmediate(function() {
+                    q.drain();
+                });
+            }
+            _arrayEach(data, function(task) {
+                var item = {
+                    data: task,
+                    priority: priority,
+                    callback: typeof callback === 'function' ? callback : noop
+                };
+
+                q.tasks.splice(_binarySearch(q.tasks, item, _compareTasks) + 1, 0, item);
+
+                if (q.tasks.length === q.concurrency) {
+                    q.saturated();
+                }
+                async.setImmediate(q.process);
+            });
+        }
+
+        // Start with a normal queue
+        var q = async.queue(worker, concurrency);
+
+        // Override push to accept second parameter representing priority
+        q.push = function (data, priority, callback) {
+            _insert(q, data, priority, callback);
+        };
+
+        // Remove unshift function
+        delete q.unshift;
+
+        return q;
+    };
+
+    async.cargo = function (worker, payload) {
+        return _queue(worker, 1, payload);
+    };
+
+    function _console_fn(name) {
+        return _restParam(function (fn, args) {
+            fn.apply(null, args.concat([_restParam(function (err, args) {
+                if (typeof console === 'object') {
+                    if (err) {
+                        if (console.error) {
+                            console.error(err);
+                        }
+                    }
+                    else if (console[name]) {
+                        _arrayEach(args, function (x) {
+                            console[name](x);
+                        });
+                    }
+                }
+            })]));
+        });
+    }
+    async.log = _console_fn('log');
+    async.dir = _console_fn('dir');
+    /*async.info = _console_fn('info');
+    async.warn = _console_fn('warn');
+    async.error = _console_fn('error');*/
+
+    async.memoize = function (fn, hasher) {
+        var memo = {};
+        var queues = {};
+        var has = Object.prototype.hasOwnProperty;
+        hasher = hasher || identity;
+        var memoized = _restParam(function memoized(args) {
+            var callback = args.pop();
+            var key = hasher.apply(null, args);
+            if (has.call(memo, key)) {   
+                async.setImmediate(function () {
+                    callback.apply(null, memo[key]);
+                });
+            }
+            else if (has.call(queues, key)) {
+                queues[key].push(callback);
+            }
+            else {
+                queues[key] = [callback];
+                fn.apply(null, args.concat([_restParam(function (args) {
+                    memo[key] = args;
+                    var q = queues[key];
+                    delete queues[key];
+                    for (var i = 0, l = q.length; i < l; i++) {
+                        q[i].apply(null, args);
+                    }
+                })]));
+            }
+        });
+        memoized.memo = memo;
+        memoized.unmemoized = fn;
+        return memoized;
+    };
+
+    async.unmemoize = function (fn) {
+        return function () {
+            return (fn.unmemoized || fn).apply(null, arguments);
+        };
+    };
+
+    function _times(mapper) {
+        return function (count, iterator, callback) {
+            mapper(_range(count), iterator, callback);
+        };
+    }
+
+    async.times = _times(async.map);
+    async.timesSeries = _times(async.mapSeries);
+    async.timesLimit = function (count, limit, iterator, callback) {
+        return async.mapLimit(_range(count), limit, iterator, callback);
+    };
+
+    async.seq = function (/* functions... */) {
+        var fns = arguments;
+        return _restParam(function (args) {
+            var that = this;
+
+            var callback = args[args.length - 1];
+            if (typeof callback == 'function') {
+                args.pop();
+            } else {
+                callback = noop;
+            }
+
+            async.reduce(fns, args, function (newargs, fn, cb) {
+                fn.apply(that, newargs.concat([_restParam(function (err, nextargs) {
+                    cb(err, nextargs);
+                })]));
+            },
+            function (err, results) {
+                callback.apply(that, [err].concat(results));
+            });
+        });
+    };
+
+    async.compose = function (/* functions... */) {
+        return async.seq.apply(null, Array.prototype.reverse.call(arguments));
+    };
+
+
+    function _applyEach(eachfn) {
+        return _restParam(function(fns, args) {
+            var go = _restParam(function(args) {
+                var that = this;
+                var callback = args.pop();
+                return eachfn(fns, function (fn, _, cb) {
+                    fn.apply(that, args.concat([cb]));
+                },
+                callback);
+            });
+            if (args.length) {
+                return go.apply(this, args);
+            }
+            else {
+                return go;
+            }
+        });
+    }
+
+    async.applyEach = _applyEach(async.eachOf);
+    async.applyEachSeries = _applyEach(async.eachOfSeries);
+
+
+    async.forever = function (fn, callback) {
+        var done = only_once(callback || noop);
+        var task = ensureAsync(fn);
+        function next(err) {
+            if (err) {
+                return done(err);
+            }
+            task(next);
+        }
+        next();
+    };
+
+    function ensureAsync(fn) {
+        return _restParam(function (args) {
+            var callback = args.pop();
+            args.push(function () {
+                var innerArgs = arguments;
+                if (sync) {
+                    async.setImmediate(function () {
+                        callback.apply(null, innerArgs);
+                    });
+                } else {
+                    callback.apply(null, innerArgs);
+                }
+            });
+            var sync = true;
+            fn.apply(this, args);
+            sync = false;
+        });
+    }
+
+    async.ensureAsync = ensureAsync;
+
+    async.constant = _restParam(function(values) {
+        var args = [null].concat(values);
+        return function (callback) {
+            return callback.apply(this, args);
+        };
+    });
+
+    async.wrapSync =
+    async.asyncify = function asyncify(func) {
+        return _restParam(function (args) {
+            var callback = args.pop();
+            var result;
+            try {
+                result = func.apply(this, args);
+            } catch (e) {
+                return callback(e);
+            }
+            // if result is Promise object
+            if (_isObject(result) && typeof result.then === "function") {
+                result.then(function(value) {
+                    callback(null, value);
+                })["catch"](function(err) {
+                    callback(err.message ? err : new Error(err));
+                });
+            } else {
+                callback(null, result);
+            }
+        });
+    };
+
+    // Node.js
+    if (typeof module === 'object' && module.exports) {
+        module.exports = async;
+    }
+    // AMD / RequireJS
+    else if (typeof define === 'function' && define.amd) {
+        define([], function () {
+            return async;
+        });
+    }
+    // included directly via <script> tag
+    else {
+        root.async = async;
+    }
+
+}());
+
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"_process":77}],57:[function(require,module,exports){
 /*!
   Copyright (c) 2016 Jed Watson.
   Licensed under the MIT License (MIT), see
@@ -3845,7 +7199,7 @@ module.exports = {
 	}
 }());
 
-},{}],39:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -3941,7 +7295,7 @@ function objEquiv(a, b, opts) {
   return typeof a === typeof b;
 }
 
-},{"./lib/is_arguments.js":40,"./lib/keys.js":41}],40:[function(require,module,exports){
+},{"./lib/is_arguments.js":59,"./lib/keys.js":60}],59:[function(require,module,exports){
 var supportsArgumentsClass = (function(){
   return Object.prototype.toString.call(arguments)
 })() == '[object Arguments]';
@@ -3963,7 +7317,7 @@ function unsupported(object){
     false;
 };
 
-},{}],41:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
@@ -3974,7 +7328,7 @@ function shim (obj) {
   return keys;
 }
 
-},{}],42:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 /**
  * Indicates that navigation was caused by a call to history.push.
  */
@@ -4006,7 +7360,7 @@ exports['default'] = {
   REPLACE: REPLACE,
   POP: POP
 };
-},{}],43:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -4033,7 +7387,7 @@ function loopAsync(turns, work, callback) {
 
   next();
 }
-},{}],44:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 (function (process){
 /*eslint-disable no-empty */
 'use strict';
@@ -4105,7 +7459,7 @@ function readState(key) {
 }
 }).call(this,require('_process'))
 
-},{"_process":58,"warning":71}],45:[function(require,module,exports){
+},{"_process":77,"warning":90}],64:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4186,13 +7540,13 @@ function supportsGoWithoutReloadUsingHash() {
   var ua = navigator.userAgent;
   return ua.indexOf('Firefox') === -1;
 }
-},{}],46:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 exports.canUseDOM = canUseDOM;
-},{}],47:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -4374,7 +7728,7 @@ exports['default'] = createBrowserHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./Actions":42,"./DOMStateStorage":44,"./DOMUtils":45,"./ExecutionEnvironment":46,"./createDOMHistory":48,"./parsePath":53,"_process":58,"invariant":55}],48:[function(require,module,exports){
+},{"./Actions":61,"./DOMStateStorage":63,"./DOMUtils":64,"./ExecutionEnvironment":65,"./createDOMHistory":67,"./parsePath":72,"_process":77,"invariant":74}],67:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -4418,7 +7772,7 @@ exports['default'] = createDOMHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./DOMUtils":45,"./ExecutionEnvironment":46,"./createHistory":49,"_process":58,"invariant":55}],49:[function(require,module,exports){
+},{"./DOMUtils":64,"./ExecutionEnvironment":65,"./createHistory":68,"_process":77,"invariant":74}],68:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -4710,7 +8064,7 @@ function createHistory() {
 
 exports['default'] = createHistory;
 module.exports = exports['default'];
-},{"./Actions":42,"./AsyncUtils":43,"./createLocation":50,"./deprecate":51,"./parsePath":53,"./runTransitionHook":54,"deep-equal":39}],50:[function(require,module,exports){
+},{"./Actions":61,"./AsyncUtils":62,"./createLocation":69,"./deprecate":70,"./parsePath":72,"./runTransitionHook":73,"deep-equal":58}],69:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -4765,7 +8119,7 @@ function createLocation() {
 
 exports['default'] = createLocation;
 module.exports = exports['default'];
-},{"./Actions":42,"./parsePath":53}],51:[function(require,module,exports){
+},{"./Actions":61,"./parsePath":72}],70:[function(require,module,exports){
 //import warning from 'warning'
 
 "use strict";
@@ -4781,7 +8135,7 @@ function deprecate(fn) {
 
 exports["default"] = deprecate;
 module.exports = exports["default"];
-},{}],52:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -4795,7 +8149,7 @@ function extractPath(string) {
 
 exports["default"] = extractPath;
 module.exports = exports["default"];
-},{}],53:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -4843,7 +8197,7 @@ exports['default'] = parsePath;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./extractPath":52,"_process":58,"warning":71}],54:[function(require,module,exports){
+},{"./extractPath":71,"_process":77,"warning":90}],73:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -4871,7 +8225,7 @@ exports['default'] = runTransitionHook;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"_process":58,"warning":71}],55:[function(require,module,exports){
+},{"_process":77,"warning":90}],74:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -4927,7 +8281,7 @@ module.exports = invariant;
 
 }).call(this,require('_process'))
 
-},{"_process":58}],56:[function(require,module,exports){
+},{"_process":77}],75:[function(require,module,exports){
 //! moment.js
 //! version : 2.13.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -8968,7 +12322,7 @@ module.exports = invariant;
     return _moment;
 
 }));
-},{}],57:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 /* eslint-disable no-unused-vars */
 'use strict';
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -9009,7 +12363,7 @@ module.exports = Object.assign || function (target, source) {
 	return to;
 };
 
-},{}],58:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -9102,7 +12456,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],59:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -9622,7 +12976,7 @@ var SideEffect = (0, _reactSideEffect2["default"])(reducePropsToState, handleCli
 // PlainComponent is used to be a blank component decorated by react-side-effect
 exports["default"] = Helmet(SideEffect(_PlainComponent2["default"]));
 module.exports = exports["default"];
-},{"./HelmetConstants.js":60,"./PlainComponent":61,"deep-equal":39,"object-assign":57,"react":"react","react-side-effect":67}],60:[function(require,module,exports){
+},{"./HelmetConstants.js":79,"./PlainComponent":80,"deep-equal":58,"object-assign":76,"react":"react","react-side-effect":86}],79:[function(require,module,exports){
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -9653,7 +13007,7 @@ var REACT_TAG_MAP = {
     "http-equiv": "httpEquiv"
 };
 exports.REACT_TAG_MAP = REACT_TAG_MAP;
-},{}],61:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -9693,7 +13047,7 @@ var PlainComponent = (function (_React$Component) {
 
 exports["default"] = PlainComponent;
 module.exports = exports["default"];
-},{"react":"react"}],62:[function(require,module,exports){
+},{"react":"react"}],81:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -9820,7 +13174,7 @@ var AutosizeInput = React.createClass({
 });
 
 module.exports = AutosizeInput;
-},{"react":"react"}],63:[function(require,module,exports){
+},{"react":"react"}],82:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -9885,7 +13239,7 @@ var Option = React.createClass({
 });
 
 module.exports = Option;
-},{"classnames":38,"react":"react"}],64:[function(require,module,exports){
+},{"classnames":57,"react":"react"}],83:[function(require,module,exports){
 /* disable some rules until we refactor more completely; fixing them now would
    cause conflicts with some open PRs unnecessarily. */
 /* eslint react/jsx-sort-prop-types: 0, react/sort-comp: 0, react/prop-types: 0 */
@@ -10833,7 +14187,7 @@ var Select = React.createClass({
 });
 
 module.exports = Select;
-},{"./Option":63,"./SingleValue":65,"./Value":66,"classnames":38,"react":"react","react-dom":"react-dom","react-input-autosize":62}],65:[function(require,module,exports){
+},{"./Option":82,"./SingleValue":84,"./Value":85,"classnames":57,"react":"react","react-dom":"react-dom","react-input-autosize":81}],84:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -10861,7 +14215,7 @@ var SingleValue = React.createClass({
 });
 
 module.exports = SingleValue;
-},{"classnames":38,"react":"react"}],66:[function(require,module,exports){
+},{"classnames":57,"react":"react"}],85:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -10945,7 +14299,7 @@ var Value = React.createClass({
 });
 
 module.exports = Value;
-},{"classnames":38,"react":"react"}],67:[function(require,module,exports){
+},{"classnames":57,"react":"react"}],86:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -11070,7 +14424,7 @@ module.exports = function withSideEffect(reducePropsToState, handleStateChangeOn
     return SideEffect;
   };
 };
-},{"fbjs/lib/ExecutionEnvironment":68,"fbjs/lib/shallowEqual":69,"react":"react"}],68:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":87,"fbjs/lib/shallowEqual":88,"react":"react"}],87:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -11107,7 +14461,7 @@ var ExecutionEnvironment = {
 };
 
 module.exports = ExecutionEnvironment;
-},{}],69:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -11158,7 +14512,7 @@ function shallowEqual(objA, objB) {
 }
 
 module.exports = shallowEqual;
-},{}],70:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -11317,7 +14671,7 @@ StarRatingComponent.defaultProps = {
 exports.default = StarRatingComponent;
 module.exports = exports['default'];
 
-},{"classnames":38,"react":"react"}],71:[function(require,module,exports){
+},{"classnames":57,"react":"react"}],90:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -11382,7 +14736,7 @@ module.exports = warning;
 
 }).call(this,require('_process'))
 
-},{"_process":58}]},{},[29])
+},{"_process":77}]},{},[44])
 
 
 //# sourceMappingURL=bundle.js.map

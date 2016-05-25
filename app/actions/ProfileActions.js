@@ -9,7 +9,14 @@ class ProfileActions {
 	}
 
 	getCook(userId) {
-		$.ajax({url: '/auth/user/' + userId})
+		$.ajax({
+			url: '/auth/user/' + userId,
+			statusCode: {
+				404: function() {
+					window.location.replace('/khong-tim-thay');
+				}
+			}
+		})
 			.done((data) => {
 				this.actions.getCookSuccess(data);
 			});

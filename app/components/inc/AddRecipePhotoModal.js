@@ -7,6 +7,7 @@ class AddRecipePhotoModal extends React.Component {
 	}
 
 	componentDidMount() {
+		this.dropzoneControl();
 	}
 
 	dropzoneControl() {
@@ -40,29 +41,16 @@ class AddRecipePhotoModal extends React.Component {
 			},
 			success: function (file, response) {
 				file.previewElement.classList.add("dz-success");
-				$('#mainPhoto').val(response);
-				RecipeModalActions.changeMainPhoto(response);
+				$('#imadeitPhotoId').val(response);
 			}
 		});
-		if( typeof this.state.mockfile != 'undefined' && this.state.mockfile != "" ) {
-			var mockFile = { name: this.state.mockfile.filename, size: this.state.mockfile.chunkSize };
-			var imgUrl = '/file/' + this.state.mockfile._id;
-			myDropzone.emit("addedfile", mockFile);
-
-			myDropzone.createThumbnailFromUrl(mockFile, imgUrl);
-
-			myDropzone.emit("complete", mockFile);
-
-			var existingFileCount = 1; // The number of files already uploaded
-			myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
-		}
 	}
 
 	render() {
 		return (
 			<div className="AddRecipePhotoModal">
 				<div className="modal fade" id="addRecipePhotoModal" tabIndex="-1" role="dialog" aria-labelledby="addRecipePhotoModalLabel" aria-hidden="true">
-					<div className="modal-dialog" role="document">
+					<div className="modal-dialog modal-sm" role="document">
 						<div className="modal-content add-recipe">
 							<div id="add-recipe-bg"></div>
 							<div className="modal-header">
@@ -71,12 +59,19 @@ class AddRecipePhotoModal extends React.Component {
 								</button>
 								<h4 className="modal-title" id="addRecipePhotoModalLabel">Thêm ảnh của bạn cho món {this.props.recipeTitle}</h4>
 							</div>
-							<div className="modal-body">
-								<div id="dZAddRecipePhoto" className="dropzone">
-									<div className="dropzone-previews"></div>
-								</div>
-								<input type="checkbox" className="form-control"/>
-								<button className="btn btn-sm btn-primary recipe-submit pull-right">Đăng</button>
+							<div className="modal-body clearfix">
+								<form onSubmit={this.props.handleSubmit}>
+									<div id="dZAddRecipePhoto" className="dropzone">
+										<div className="dropzone-previews"></div>
+									</div>
+									<div className="checkbox">
+										<label>
+											<input type="checkbox" id="post-to-facebook" defaultChecked /> Đăng lên Facebook
+										</label>
+									</div>
+									<input type="hidden" id="imadeitPhotoId"/>
+									<button type="submit" className="btn btn-sm btn-primary recipe-submit pull-right">Đăng</button>
+								</form>
 							</div>
 						</div>
 					</div>

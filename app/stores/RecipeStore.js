@@ -15,21 +15,35 @@ class RecipeStore {
 			mainPhoto: '',
 			recipe: {
 				title: '',
-				description: ''
+				description: '',
+				collections: []
 			},
+			createdAt: null,
 			loves: []
 		};
 		this.categories = [];
 		this.likeState = 'dislike';
 		this.likeCount = 0;
+		this.photoCount = 0;
+		this.madeCount = 0;
+		this.commentCount = 0;
+		this.sameOwnerRecipes = null;
 	}
 
 	onGetRecipeSuccess(data) {
 		this.recipe = data;
 		this.likeCount = data.loves.length;
+		this.commentCount = data.comments.length;
+		this.photoCount = data.recipe.photos.length;
 		if( _.indexOf( data.loves, NavbarStore.getState().currentUserId) >= 0) {
 			this.likeState = 'like';
 		}
+		let _photosObjectCompact = [];
+		data.recipe.photos.map((photo, index) => {
+			_photosObjectCompact.push(photo.peopleId._id);
+		});
+		_photosObjectCompact = _.uniq(_photosObjectCompact);
+		this.madeCount = _photosObjectCompact.length;
 	}
 
 	updateLikeState(data) {
@@ -50,6 +64,10 @@ class RecipeStore {
 		} else {
 			this.likeCount--;
 		}
+	}
+
+	onGetSameOwnerRecipesSuccess(data) {
+		this.sameOwnerRecipes = data;
 	}
 
 }

@@ -4,6 +4,7 @@ var GFS = require('./gfs');
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 var shortid = require('shortid');
+var Collect = require('./collect');
 
 var hotpotSchema = mongoose.Schema({
 	contentId: {
@@ -14,7 +15,7 @@ var hotpotSchema = mongoose.Schema({
 	userId: { type: String, ref: 'User'},
 	type: {
 		type: String,
-		enum: [ 'recipe', 'photo', 'recipeCollection', 'note' ],
+		enum: [ 'recipe', 'note' ],
 		default: 'recipe'
 	},
 	visible: {
@@ -62,12 +63,15 @@ var hotpotSchema = mongoose.Schema({
 			type: String,
 			default: ''
 		},
-		ingredientsTags: [ {type: String} ]
-	},
-	recipeCollection: {
-		title: String,
-		description: String,
-		recipes: [{ type: String, ref: 'Hotpot'}]
+		ingredientsTags: [ {type: String} ],
+		photos: {type: Array, default: [] },
+		collections:  [{
+			collectionId: { type: String, ref: 'Collect'},
+			addedAt: {
+				type: Date,
+				default: Date.now
+			}
+		}]
 	},
 	mainPhoto: { type: String, ref: 'GFS', default: null }
 }, {

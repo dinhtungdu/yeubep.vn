@@ -6,11 +6,11 @@ class ProfileRecipesActions {
 			'handleChanges',
 			'handleCategoryChange',
 			'addRecipeSuccess',
-			'addRecipeError',
+			'addRecipeFail',
 			'getRecipesSuccess',
-			'getRecipesError',
+			'getRecipesFail',
 			'getAllRecipesSuccess',
-			'getAllRecipesError'
+			'getAllRecipesFail'
 		);
 	}
 

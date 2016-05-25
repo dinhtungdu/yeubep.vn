@@ -30,7 +30,7 @@ class NavUser extends React.Component {
 		else {
 			return(
 				<li className='nav-item userblock'>
-					<a className="nav-link" href="#" onClick={this.facebookLogin}>
+					<a className="nav-link" href="javascript:void(0)" onClick={this.facebookLogin}>
 						Đăng nhập
 					</a>
 				</li>

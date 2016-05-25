@@ -40,11 +40,11 @@ module.exports = function(app, passport) {
 	app.get('/auth/user/:id',
 		function(req, res, next) {
 			User.findOne( { username: req.params.id }, function(err, user) {
-				if(err) { return next(err); }
-				if(!user) {
-					return res.sendStatus(404).send({message: 'User not found.'});
+				//if(err) { return next(err); }
+				if(user == null) {
+					return res.status(404).send({message: 'User not found.'});
 				}
-				res.send(user);
+				return res.send(user);
 			});
 		});
 };

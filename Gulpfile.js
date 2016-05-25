@@ -45,7 +45,9 @@ gulp.task('vendor', function() {
 		//'bower_components/bootstrap/js/dist/popover.js',
 		'bower_components/toastr/toastr.js',
 		'bower_components/dropzone/dist/dropzone.js',
-		'bower_components/masonry/dist/masonry.pkgd.js'
+		'bower_components/masonry/dist/masonry.pkgd.js',
+		'bower_components/photoswipe/dist/photoswipe.js',
+		'bower_components/photoswipe/dist/photoswipe-ui-default.js'
 	]).pipe(concat('vendor.js'))
 		.pipe(gulpif(production, uglify({ mangle: false })))
 		.pipe(gulp.dest('public/js'));

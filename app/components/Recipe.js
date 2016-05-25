@@ -14,6 +14,8 @@ import AddedToCollection from './inc/AddedToCollection';
 import LikeButton from './inc/LikeButton';
 import Helpers from '../helpers';
 import AddRecipePhotoModal from './inc/AddRecipePhotoModal';
+import moment from 'moment';
+import async from 'async';
 
 class Recipe extends React.Component {
 	constructor(props) {
@@ -23,6 +25,7 @@ class Recipe extends React.Component {
 	}
 
 	componentDidMount() {
+		let self = this;
 		RecipeStore.listen(this.onChange);
 		RecipeModalStore.listen(this.onChange);
 		NavbarStore.listen(this.onChange);
@@ -30,8 +33,7 @@ class Recipe extends React.Component {
 		this.masonry = $('.side-grid').masonry({
 			columnWidth: '.side-grid-sizer',
 			gutter: '.side-gutter-sizer',
-			itemSelector: '.side-grid-item',
-			fitWidth: true
+			itemSelector: '.side-grid-item'
 		});
 	}
 
@@ -64,10 +66,50 @@ class Recipe extends React.Component {
 		RecipeActions.handleLike(this.state.recipe._id);
 	}
 
+	addPhotoModal(event) {
+		let self = this;
+		event.preventDefault();
+		if( self.state.currentUserId == '' ) {
+			toastr.info('Bạn cần đăng nhập để thêm ảnh', '', {
+				onclick: function() {
+					self.facebookLogin();
+				}
+			});
+			return;
+		}
+		$('#addRecipePhotoModal').modal();
+	}
+
+	addPhotoHandler(event) {
+		event.preventDefault();
+		let photoId = $('#imadeitPhotoId').val();
+		let postToFacebook = false;
+		if( $('#post-to-facebook').is(':checked') ) {
+			postToFacebook = true;
+		}
+		let dataToSend = {
+			photoId: photoId,
+			postFace: postToFacebook,
+			recipeId: this.state.recipe._id
+		};
+		//console.log(dataToSend);
+		RecipeActions.addRecipePhoto(dataToSend);
+	}
+
+	addReviewHandler(event) {
+		event.preventDefault();
+		let dataToSend = {
+			postId: this.state.recipe._id,
+			comment: $('#recipeReview').val(),
+			rating: $('#review-star-rating').val()
+		}
+		RecipeActions.addComment(dataToSend);
+	}
+
 	reviewModal(event) {
 		let self = this;
 		event.preventDefault();
-		if( this.state.currentUserId == '' ) {
+		if( self.state.currentUserId == '' ) {
 			toastr.info('Bạn cần đăng nhập để thêm đánh giá', '', {
 				onclick: function() {
 					self.facebookLogin();
@@ -85,6 +127,56 @@ class Recipe extends React.Component {
 			{ id: this.state.recipe._id }, dataToSend
 		);
 		RecipeActions.updateRecipe(dataToSend) ;
+	}
+
+	openPhotoSwipe(pos) {
+		var pswpElement = document.querySelectorAll('.pswp')[0];
+
+		var items = [];
+		this.state.recipe.recipe.photos.map((thumb, index) => {
+			if( index < 9 ) {
+				items.push({
+					src: '/file/' + thumb.photoId._id,
+					w: thumb.photoId.metadata.width,
+					h: thumb.photoId.metadata.height,
+					title: thumb.peopleId.name,
+					avatar: Helpers.fb_avatar(thumb.peopleId.facebook.id, 100, 100),
+					profile: '/cook/' + thumb.peopleId.username,
+					time: moment(thumb.photoId.uploadDate).format('D/M/YYYY')
+				});
+			}
+		});
+
+		var options = {
+			index: pos,
+			addCaptionHTMLFn: function(item, captionEl, isFake) {
+				if(!item.title) {
+					captionEl.children[0].innerText = '';
+					return false;
+				}
+				captionEl.children[0].innerHTML = '<a href="' + item.profile + '"><img src="' + item.avatar + '"><span class="info"><span class="username">' + item.title + '</span><time class="date">'+ item.time +'</time></span></a>';
+				return true;
+			}
+		};
+
+		var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+		gallery.init();
+	}
+
+	likeReview(id, event) {
+		console.log(event);
+		$(event.currentTarget).toggleClass('liked');
+		RecipeActions.likeReview(id);
+	}
+
+	handleDelete(event) {
+		var r = confirm('Bạn có chắc chắn muốn xóa công thức này không?');
+		if( r == true ) {
+			RecipeActions.deleteRecipe({
+				recipeId: this.state.recipe._id,
+				username: this.state.myInfo.username
+			});
+		}
 	}
 
 	render() {
@@ -127,7 +219,44 @@ class Recipe extends React.Component {
 		if( typeof this.state.recipe.comments != 'undefined') {
 			reviewList = this.state.recipe.comments.map((review, index) => {
 				return (
-					<Review key={review._id} />
+					<Review
+						key={review._id}
+						rating={review.rating}
+						body={review.body}
+						time={review.createdAt}
+						user={review.userId}
+						likes={review.loves}
+						likeCount={review.loves.length}
+						handleLike={this.likeReview.bind(this, review._id)}
+					/>
+				);
+			});
+		}
+
+		let thumbList = null;
+		if( typeof this.state.recipe.recipe.photos != 'undefined' && !_.isEmpty(this.state.recipe.recipe.photos) ) {
+			thumbList = this.state.recipe.recipe.photos.map((thumb, index) => {
+				return(
+					<a key={thumb.photoId._id} href="javascript:void(0)" onClick={this.openPhotoSwipe.bind(this, index)}><img src={'/file/' + thumb.photoId.metadata.thumbs.s320.id} /></a>
+				);
+			});
+		}
+
+		let sameOwnerList = null;
+		let _props = this.props;
+		if( this.state.sameOwnerRecipes != null ) {
+			sameOwnerList = this.state.sameOwnerRecipes.map((recipe, index) => {
+				return(
+					<RecipeSmall
+						key={recipe.contentId}
+						recipeUrl={'/recipe/' + recipe.contentId}
+						imgId={recipe.mainPhoto}
+						imgWidth="150"
+						imgHeight="121"
+						recipeTitle={recipe.recipe.title}
+						location={_props.location}
+						class="recipe-small-item recipe-grid-item side-grid-item"
+					/>
 				);
 			});
 		}
@@ -149,6 +278,11 @@ class Recipe extends React.Component {
 					recipeOwner={this.state.recipe.userId}
 					recipeTime={this.state.recipe.createdAt}
 					likeCount={this.state.likeCount}
+					photoCount={this.state.photoCount}
+					madeCount={this.state.madeCount}
+					commentCount={this.state.commentCount}
+					onClickPhoto={this.openPhotoSwipe.bind(this, 0)}
+					handleDelete={this.handleDelete.bind(this)}
 				/>
 				<div className="main container">
 					<div className="row">
@@ -163,22 +297,28 @@ class Recipe extends React.Component {
 										likes={this.state.recipe.loves}
 									/>
 								</div>
+								<div className="ghim col-sm-3">
+									<Link state={{ modal: true, returnTo: this.props.location.pathname }} to={'/recipe/' + this.state.recipe.contentId + '/ghim'}>
+										<i className="fa fa-thumb-tack"></i>
+										<span className="txt hidden-sm-down">Ghim</span>
+									</Link>
+								</div>
 								<div className="imi col-sm-3">
-									<a href="#">
+									<a href="javascript:void(0)">
 										<i className="fa imadeit"></i>
-										<span className="txt">Tôi đã làm món này</span>
+										<span className="txt hidden-sm-down">Tôi đã làm món này</span>
 									</a>
 								</div>
 								<div className="review col-sm-3">
 									<a href="#review-section">
 										<i className="fa fa-commenting"></i>
-										<span className="txt">Đánh giá</span>
+										<span className="txt hidden-sm-down">Đánh giá</span>
 									</a>
 								</div>
 								<div className="share col-sm-3">
-									<a href="#">
+									<a href="javascript:void(0)">
 										<i className="fa fa-share-alt"></i>
-										<span className="txt">Chia sẻ</span>
+										<span className="txt hidden-sm-down">Chia sẻ</span>
 									</a>
 								</div>
 							</div>
@@ -225,9 +365,10 @@ class Recipe extends React.Component {
 								: null }
 							</section>
 							<section className="i-made-it">
-								<button className="btn button-primary button-orange"><span>Tôi đã làm món này</span></button>
+								<button onClick={this.addPhotoModal.bind(this)} className="btn button-primary button-orange"><span>Tôi đã làm món này</span></button>
 								<AddRecipePhotoModal
-
+									recipeTitle={this.state.recipe.recipe.title}
+									handleSubmit={this.addPhotoHandler.bind(this)}
 								/>
 							</section>
 							<section id="review-section" className="review-rating clearfix">
@@ -240,6 +381,7 @@ class Recipe extends React.Component {
 										<button className="btn button-small button-orange-lighter" onClick={this.reviewModal.bind(this)}><i className="fa fa-pencil"></i> Thêm đánh giá</button>
 										<AddReviewModal
 											recipeTitle={this.state.recipe.recipe.title}
+											handleSubmit={this.addReviewHandler.bind(this)}
 										/>
 									</div>
 								</div>
@@ -255,89 +397,36 @@ class Recipe extends React.Component {
 								<h3 className="widget-title">
 									Ảnh
 								</h3>
-								<div className="photo-grid">
-									<a href="#"><img src="/file/5719ab33ba638a93cab48a98" /></a>
-									<a href="#"><img src="/file/5719ab33ba638a93cab48a98" /></a>
-									<a href="#"><img src="/file/5719ab33ba638a93cab48a98" /></a>
-									<a href="#"><img src="/file/5719ab33ba638a93cab48a98" /></a>
-									<a href="#"><img src="/file/5719ab33ba638a93cab48a98" /></a>
-									<a href="#"><img src="/file/5719ab33ba638a93cab48a98" /></a>
-									<a href="#"><img src="/file/5719ab33ba638a93cab48a98" /></a>
-									<a href="#"><img src="/file/5719ab33ba638a93cab48a98" /></a>
-									<a href="#"><img src="/file/5719ab33ba638a93cab48a98" /></a>
-								</div>
-								<a href="#" className="read-all photo-all">Xem toàn bộ..</a>
+								{thumbList == null ? '' :
+									<div className="photo-grid">
+										{thumbList}
+									</div>
+								}
+								<a href="javascript:void(0)" className="read-all photo-all" onClick={this.openPhotoSwipe.bind(this, 0)}>Xem toàn bộ..</a>
 							</aside>
 							<aside className="wg-collection">
 								<h3 className="widget-title">
 									Bộ sưu tập
 								</h3>
 								<div className="list">
-									<AddedToCollection
-										user={{
-										username: "dinhtungdu",
-										name: "Du Dinh Tung",
-										facebook: {
-											id: 558377407664895
-										}
-										}}
-										collectionUrl="#"
-										collectionTitle="Bánh"
-										key="2"
-									/>
-									<AddedToCollection
-										user={{
-										username: "dinhtungdu",
-										name: "Du Dinh Tung",
-										facebook: {
-											id: 558377407664895
-										}
-										}}
-										collectionUrl="#"
-										collectionTitle="Bánh"
-										key="1"
-									/>
+									{this.state.recipe.recipe.collections.map(collection =>
+										<AddedToCollection
+										user={collection.collectionId.userId}
+										collectionUrl={'/collection/' + collection.collectionId.collectionId}
+										collectionTitle={collection.collectionId.title}
+										key={collection._id}
+										/>
+									)}
 								</div>
 							</aside>
-							<aside className="wg-related">
+							<aside className="wg-same-owner">
 								<h3 className="widget-title">
 									Cùng đầu bếp
 								</h3>
 								<div className="side-grid">
 									<div className="side-grid-sizer"></div>
 									<div className="side-gutter-sizer"></div>
-									<RecipeSmall
-										key="1"
-										recipeUrl="/recipe/ByxwDRTdg"
-										imgUrl="/file/5719ab33ba638a93cab48a97"
-										imgWidth="150"
-										imgHeight="121"
-										recipeTitle="Bánh mỳ nướng"
-									/>
-									<RecipeSmall
-										key="2"
-										recipeUrl="/recipe/ByxwDRTdg"
-										imgUrl="/file/5719ab33ba638a93cab48a97"
-										imgWidth="150"
-										imgHeight="121"
-										recipeTitle="Bánh mỳ nướng"
-									/>
-									<RecipeSmall
-										key="3"
-										recipeUrl="/recipe/ByxwDRTdg"
-										imgUrl="/file/5719ab33ba638a93cab48a97"
-										imgWidth="150"
-										imgHeight="121"
-										recipeTitle="Bánh mỳ nướng"
-									/>
-									<RecipeSmall
-										key="4"
-										recipeUrl="/recipe/ByxwDRTdg"
-										imgUrl="/file/5719ab33ba638a93cab48a97"
-										imgWidth="150"
-										imgHeight="121"
-										recipeTitle="Bánh mỳ nướng"
-									/>
+									{sameOwnerList}
 								</div>
 								<a href="#" className="read-all photo-all">Xem toàn bộ..</a>
 							</aside>

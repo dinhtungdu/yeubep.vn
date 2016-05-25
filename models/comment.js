@@ -3,8 +3,10 @@ var Schema = mongoose.Schema;
 
 var commentSchema = mongoose.Schema({
 	body: String,
-	hotpotId: { type: Schema.Types.ObjectId, ref: 'Hotpot' },
-	userId: { type: Schema.Types.ObjectId, ref: 'User' }
+	rating: Number,
+	hotpotId: { type: String },
+	loves: [{ type: String, ref: 'User'}],
+	userId: { type: String, ref: 'User' }
 }, {
 	timestamps: true
 });

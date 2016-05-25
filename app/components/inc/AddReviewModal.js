@@ -5,15 +5,15 @@ class AddReviewModal extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			rating: 1
+			rating: 0
 		}
 	}
 
 	componentDidMount() {
 	}
 
-	onStarClick(name, value) {
-		this.setState({rating: value});
+	onStarClick(next) {
+		this.setState({rating: next});
 	}
 
 	render() {
@@ -30,7 +30,7 @@ class AddReviewModal extends React.Component {
 								<h4 className="modal-title" id="addReviewModalLabel">Đánh giá công thức: {this.props.recipeTitle}</h4>
 							</div>
 							<div className="modal-body">
-								<form className="container-fluid clearfix">
+								<form className="container-fluid clearfix" onSubmit={this.props.handleSubmit}>
 									<div className="form-group row">
 										<label className="col-sm-3 form-control-label">Bạn cho công thức này mấy sao?</label>
 										<div className="col-sm-9">
@@ -45,9 +45,10 @@ class AddReviewModal extends React.Component {
 									<div className="form-group row">
 										<label className="col-sm-3 form-control-label">Nhận xét của bạn về công thức này?</label>
 										<div className="col-sm-9">
-											<textarea rows="4" name="recipeReview" className="form-control"></textarea>
+											<textarea rows="4" id="recipeReview" name="recipeReview" className="form-control"></textarea>
 										</div>
 									</div>
+									<input type="hidden" id="review-star-rating" value={this.state.rating} />
 									<button type="submit" className="btn btn-sm btn-primary recipe-submit pull-right">Nhận xét</button>
 								</form>
 							</div>

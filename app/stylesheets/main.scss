@@ -2,7 +2,9 @@
 @import '../../bower_components/bootstrap/scss/bootstrap.scss';
 @import '../../bower_components/toastr/toastr.scss';
 @import '../../bower_components/font-awesome/scss/font-awesome';
-@import '../../bower_components/dropzone/dist/dropzone.css';
+@import '../../bower_components/dropzone/dist/dropzone';
+@import '../../bower_components/photoswipe/src/css/main';
+@import '../../bower_components/photoswipe/src/css/default-skin/default-skin';
 @import "animated-radio";
 @import './react-select/default';
 @import "mixins";
@@ -15,6 +17,12 @@
 .button-small {
   padding: 0.5rem 2rem;
   color: #fff;
+}
+
+.button-tiny {
+  padding: rem(4) rem(6);
+  color: #fff;
+  font-size: rem(11);
 }
 
 .button-orange {
@@ -64,6 +72,25 @@
   @include gradient-vertical(transparent, #000);
   margin-top: -3rem;
 
+  .nav {
+    margin-top: 3rem;
+    margin-bottom: -3rem;
+    .nav-link {
+      color: #fff;
+      position: relative;
+      &.active::after {
+        position: absolute;
+        content: ' ';
+        border-bottom: 8px solid #f5f8fa;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -16px;
+        left: 50%;
+        margin-left: -8px;
+      }
+    }
+  }
+
   .user-cover {
     position: absolute;
     background-size: cover;
@@ -92,7 +119,7 @@
     z-index: 999;
     width: 100%;
     img {
-      border-radius:100%;
+      border-radius: 100%;
       border: 3px solid #fff;
     }
     span.user-name {
@@ -145,7 +172,7 @@
   }
 }
 
-#dZUpload.dropzone {
+.dropzone {
   border-style: dashed;
   background: url(../images/meal-icon.png) no-repeat;
   background-position: center 1rem;
@@ -193,7 +220,7 @@
   }
 }
 
-.recipe-grid-item {
+.collection-grid-item, .recipe-grid-item {
   background: #fff;
   border-radius: 5px;
   overflow: hidden;
@@ -300,7 +327,7 @@
         color: #fff;
         text-shadow: none;
         font-weight: 400;
-        border-radius: 4px;
+        border-radius: 3px;
         border: 1px solid #fff;
         padding: 3px 5px;
         margin-left: 10px;
@@ -384,6 +411,9 @@
     margin-left: -2rem;
     margin-right: -2rem;
     border-bottom: 1px solid #eee;
+    .col-sm-3 {
+      flex: 0 0 20% !important;
+    }
     a {
       color: #666;
       display: flex;
@@ -559,17 +589,27 @@
   .overview {
     border-bottom: 1px dotted #eee;
     padding-bottom: 1rem;
-    margin-bottom: 1rem;
   }
 }
 
 .review-item {
   border-bottom: 1px dotted #eee;
-  padding-bottom: rem(10);
+  padding: rem(10) 0;
 
+  .col-sm-2 {
+    text-align: center;
+  }
   .avatar {
     border-radius: 100%;
     border: 2px solid #eee;
+    margin-bottom: rem(5);
+  }
+  .username {
+    display: block;
+    color: #333;
+    font-size: rem(12);
+    font-weight: bold;
+    text-align: center;
   }
   .meta {
     .rating-score {
@@ -602,11 +642,19 @@
     }
     span {
       color: #666;
-      font-weight: 700;
-      font-size: 11px;
       line-height: 14px;
       vertical-align: middle;
       display: inline-block;
+      font-weight: 400;
+      font-size: 12px;
+    }
+    .liked {
+      i {
+        color: #ed3554;
+        &::before {
+          content: "\f004";
+        }
+      }
     }
   }
 }
@@ -632,10 +680,10 @@ aside {
   .photo-grid {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     a {
       margin-bottom: 10px;
       flex: 0 1 31%;
+      margin: 1%;
       img {
         border-radius: $border-radius;
         border: 1px solid #f5f5f5;
@@ -681,5 +729,279 @@ aside {
     display: block;
     font-size: rem(11);
     color: #ccc;
+  }
+}
+
+#dZAddRecipePhoto {
+  margin-bottom: 1rem;
+}
+
+.pswp__caption__center {
+  background: #fff;
+  border-radius: $border-radius $border-radius 0 0;
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    margin-right: rem(10);
+  }
+  .info {
+    display: inline-block;
+    vertical-align: middle;
+    .username {
+      font-weight: bold;
+      color: #333;
+    }
+    time {
+      display: block;
+      font-size: rem(11);
+      color: #666;
+    }
+  }
+}
+
+.collection-grid-item {
+  &:hover {
+    text-decoration: none;
+  }
+  color: #333;
+  padding: rem(10) !important;
+  h2 {
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .big {
+    margin-bottom: rem(6);
+  }
+  .small {
+    height: 60px;
+    position: relative;
+    .placehoder {
+      position: absolute;
+      top: 0;
+      z-index: 0;
+    }
+    img {
+      z-index: 1;
+      position: relative;
+      width: 31%;
+      float: left;
+      margin-right: 3.5%;
+      &:last-child {
+        margin-right: 0%;
+      }
+    }
+  }
+}
+.grid .AddCollectionButton .add-recipe-toggle {
+  height: rem(310);
+  padding-top: rem(100);
+  background: #fff;
+}
+
+#Collection {
+  padding-top: 1rem;
+
+  header {
+    text-align: center;
+    h1 {
+      font-size: rem(22);
+      font-weight: bold;
+    }
+    p {
+      font-size: rem(14);
+      font-style: italic;
+      color: #666;
+    }
+  }
+}
+
+.collection-counter .item {
+  display: inline-block;
+  padding: 0 1rem 0.5rem;
+  border-right: 1px solid #eee;
+  &:last-child {
+    border-right: 0;
+  }
+  & > a {
+    color: #666;
+    i {
+      margin-right: rem(3)
+    }
+    .txt {
+      font-size: rem(12);
+      font-weight: bold;
+      vertical-align: middle;
+    }
+    &.like, &.followed {
+      color: #ed3554;
+    }
+  }
+  .count {
+    display: block;
+    color: #aaa;
+  }
+}
+.collection-counter {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1rem;
+}
+
+#Collection {
+  &>.container {
+    padding-bottom: 1.5rem;
+  }
+}
+
+#collection-comments {
+  .inside {
+    background: #fff;
+    padding: rem(10);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.07);
+    border-radius: $border-radius;
+    h2 {
+      font-size: rem(15);
+      font-weight: 700;
+    }
+  }
+}
+
+#master-comment-form {
+  margin-bottom: rem(10);
+  textarea {
+    font-size: rem(12);
+  }
+  .btn {
+    margin-top: rem(8);
+    font-weight: bold;
+  }
+}
+
+.comment-item {
+  border-bottom: 1px solid rgba(238, 238, 238, 0.53);
+  padding-bottom: rem(6);
+  margin-bottom: rem(6);
+
+  .thumb {
+    float: left;
+    margin-right: rem(10);
+    img {
+      border-radius: 100%;
+      height: auto;
+      width: rem(32);
+    }
+  }
+  .comment-body {
+    padding-left: rem(42);
+    font-size: rem(12);
+    a {
+      font-weight: bold;
+      color: #333;
+      margin-right: rem(6);
+    }
+    .meta {
+      font-size: rem(11);
+      color: #999;
+    }
+  }
+  .txt {
+    white-space: pre-wrap;
+  }
+}
+.take-me-back {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #ccc;
+  z-index: 1040;
+}
+
+#Ghim {
+  padding: 1rem;
+  .col-sm-5 {
+    border-right: 1px solid #eee;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    padding: 10px;
+    border-radius: $border-radius;
+    position: relative;
+    &:hover {
+      background: #f5f5f5;
+      .ghim-btn {
+        display: block;
+      }
+    }
+    img {
+      width: 64px;
+      border-radius: $border-radius;
+      margin-right: 1rem;
+    }
+  }
+  img {
+    max-width: 100%;
+  }
+  h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0.8rem 0 1rem;
+  }
+  .col-sm-7 {
+    h3 {
+      margin-top: 0;
+    }
+  }
+  p {
+    font-size: rem(13);
+  }
+}
+.ghim-btn {
+  display: none;
+  background: #ed3554;
+  border: none;
+  border-radius: $border-radius;
+  position: absolute;
+  right: 1rem;
+  color: #fff;
+  top: 50%;
+  margin-top: -15px;
+  span {
+    font-size: rem(13);
+    font-weight:bold;
+    margin-left: 4px;
+  }
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+    background: darken(#ed3554, 10%);
+  }
+}
+.photo {
+  position: relative;
+}
+.photo:hover {
+  .ghim-btn {
+    display: block;
+    padding: rem(4) rem(6);
+    position: absolute;
+    top: 1rem !important;
+    margin-top: 0;
+    left: 50%;
+    right: auto;
+    margin-left: -1rem;
+  }
+}
+.owner-only {
+  display: inline;
+  .delete-recipe {
+    &:hover {
+      background: #ed3554;
+    }
   }
 }

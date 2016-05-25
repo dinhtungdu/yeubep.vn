@@ -7,7 +7,8 @@ class RecipeHeaderCover extends React.Component {
 		super(props);
 		this.state = {
 			isOwner: false,
-			likeCount: props.likeCount
+			likeCount: props.likeCount,
+			photoCount: props.photoCount
 		}
 	}
 
@@ -15,7 +16,8 @@ class RecipeHeaderCover extends React.Component {
 		this.setState({
 			isOwner: nextProps.isOwner,
 			recipeOwner: nextProps.recipeOwner,
-			likeCount: nextProps.likeCount
+			likeCount: nextProps.likeCount,
+			photoCount: nextProps.photoCount
 		});
 	}
 
@@ -29,19 +31,24 @@ class RecipeHeaderCover extends React.Component {
 				<div className="user-cover recipe-cover" style={coverStyle}></div>
 				<div className="container">
 					<div className="row">
-						<div className="col-sm-9">
+						<div className="col-md-9 text-xs-center text-md-left">
 							<div className="row">
-								<div className="col-sm-4">
+								<div className="col-md-4">
 									<img src={this.props.recipePhoto} width="200" height="200" className="recipe-thumb img-circle" />
 								</div>
-								<div className="col-sm-8">
+								<div className="col-md-8">
 									<div className="info">
 										<h1>
 											{this.props.recipeTitle}
 											{this.state.isOwner ?
-												<a href="#" className="edit-recipe-toggle" data-toggle="modal" data-target="#myModal">
-													<span>Chỉnh sửa</span>
-												</a>
+												<div className="owner-only">
+													<a href="#" className="edit-recipe-toggle" data-toggle="modal" data-target="#myModal">
+														<span>Chỉnh sửa</span>
+													</a>
+													<a href="javascript:void(0)" className="delete-recipe edit-recipe-toggle" onClick={this.props.handleDelete}>
+														<span>Xóa</span>
+													</a>
+												</div>
 												: null
 											}
 										</h1>
@@ -53,30 +60,30 @@ class RecipeHeaderCover extends React.Component {
 												</span>
 												<span className="number">{this.state.likeCount}</span>
 											</div>
-											<div className="item">
+											<a href="javascript:void(0)" onClick={this.props.onClickPhoto} className="item">
 												<span className="bg">
 													<i className="fa fa-photo"></i>
 												</span>
-												<span className="number">22</span>
-											</div>
-											<div className="item">
+												<span className="number">{this.state.photoCount}</span>
+											</a>
+											<a href="javascript:void(0)" onClick={this.props.onClickPhoto} className="item">
 												<span className="bg">
 													<i className="spoon"></i>
 												</span>
-												<span className="number">22</span>
-											</div>
+												<span className="number">{this.props.madeCount}</span>
+											</a>
 											<div className="item">
 												<span className="bg">
 													<i className="fa fa-comment"></i>
 												</span>
-												<span className="number">22</span>
+												<span className="number">{this.props.commentCount}</span>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div className="col-sm-3">
+						<div className="col-md-3">
 							<div className="userInfo">
 								{ typeof this.state.recipeOwner == 'undefined' ? null :
 									<Link to={'/cook/' + this.state.recipeOwner.username} className="avatar clearfix">

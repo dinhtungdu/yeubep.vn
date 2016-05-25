@@ -4,10 +4,13 @@ var User = require('../models/user');
 var helpers = require('../helpers');
 var upload = require('../controllers/upload');
 var async = require('async');
+var Collect = require('../models/collect');
 //var Busboy = require('busboy');
 //var validator = require('validator');
 
 module.exports = function(app, passport) {
+
+	// Add a recipe
 	app.post('/api/recipes',
 		helpers.isLoggedIn,
 		function(req, res, next) {
@@ -63,6 +66,27 @@ module.exports = function(app, passport) {
 			]);
 	});
 
+	app.get('/api/recipes/:id/same/:userId',
+		function (req, res, next) {
+			Hotpot.find({
+				userId: req.params.userId,
+				contentId: { $ne: req.params.id },
+				type: 'recipe',
+				visible: 'public'
+			})
+			.limit(4)
+			.exec( function(err, hotpots) {
+				if(err) return next(err);
+
+				if(!hotpots) {
+					return res.status(404).send(null);
+				}
+
+				res.send(hotpots);
+			});
+		});
+
+	// Get a recipe
 	app.get('/api/recipes/:id',
 		function(req, res, next) {
 			Hotpot.findOne({contentId: req.params.id})
@@ -71,6 +95,31 @@ module.exports = function(app, passport) {
 					path: 'comments',
 					options: {
 						createdAt: -1
+					},
+					populate: {
+						path: 'userId',
+						model: 'User',
+						select: 'facebook.id username name'
+					}
+				})
+				.populate({
+					path: 'recipe.photos.peopleId',
+					model: 'User',
+					select: 'username name facebook.id'
+				})
+				.populate({
+					path: 'recipe.photos.photoId',
+					model: 'GFS',
+					select: 'metadata.thumbs.s320.id metadata.width metadata.height uploadDate'
+				})
+				.populate({
+					path: 'recipe.collections.collectionId',
+					model: 'Collect',
+					select: 'title collectionId userId',
+					populate: {
+						path: 'userId',
+						model: 'User',
+						'select': 'facebook.id username name'
 					}
 				})
 				.exec( function(err, hotpot) {
@@ -89,6 +138,7 @@ module.exports = function(app, passport) {
 		}
 	);
 
+	// Delete a recipe
 	app.delete('/api/recipes/:id',
 		helpers.isLoggedIn,
 		function(req, res, next) {
@@ -97,10 +147,31 @@ module.exports = function(app, passport) {
 				userId: req.user._id
 			})
 			.remove()
-			.exec();
+			.exec(function(err) {
+				if(err) return next(err);
+				return res.send('Xóa công thức thành công!');
+			});
 		}
 	);
 
+	app.put('/api/recipes/:id/photo/:photoId',
+		helpers.isLoggedIn,
+		function (req, res, next) {
+			Hotpot.findById(req.params.id, function(err, hotpot) {
+				if(err) { return next(err); }
+				hotpot.recipe.photos.push({
+					photoId: req.params.photoId,
+					peopleId: req.user._id.toString()
+				});
+				hotpot.save(function (err) {
+					if(err) { res.send(err) }
+					res.status(200).send('Thêm ảnh thành công');
+				});
+			});
+		}
+	);
+
+	// Update a recipe
 	app.put('/api/recipes/:id',
 		//helpers.isLoggedIn,
 		function(req, res, next) {
@@ -113,8 +184,6 @@ module.exports = function(app, passport) {
 				}
 				async.waterfall([
 					function(cb) {
-						console.log('before hotpot', hotpot);
-						console.log('body', req.body);
 						hotpot.visible  = req.body.visible;
 						hotpot.recipe.prepTime = req.body.prepTime;
 						hotpot.recipe.cookTime = req.body.cookTime;
@@ -143,27 +212,16 @@ module.exports = function(app, passport) {
 	// Get user's recipes
 	app.get('/api/:userid/recipes',
 		function(req, res, next) {
-			User.findOne({
-				username: req.params.userid
-			}, function(err, user) {
-				if(err) return next(err);
-				var userid = user._id;
-				Hotpot.find({
-						userId: userid,
-						type: 'recipe',
-						visible: 'public'
-					})
-					.populate( 'userId mainPhoto' )
-					.exec( function(err, hotpots) {
-						if(err) return next(err);
-
-						if(!hotpots) {
-							return res.status(404).send({ message: 'Đầu bếp này chưa có công thức nào.'});
-						}
-
-						res.send(hotpots);
-					});
-			});
+			Hotpot.find({
+					userId: req.params.userid,
+					type: 'recipe',
+					visible: 'public'
+				})
+				.populate( 'userId mainPhoto' )
+				.exec( function(err, hotpots) {
+					if(err) return next(err);
+					res.send(hotpots);
+				});
 		}
 	);
 
@@ -171,34 +229,21 @@ module.exports = function(app, passport) {
 	app.get('/api/:userid/allrecipes',
 		helpers.isLoggedIn,
 		function(req, res, next) {
-			async.waterfall([
-				function(cb) {
-					User.findOne({
-						username: req.params.userid
-					}, function(err, user) {
-						if(err) return next(err);
-						var userid = user._id;
-						console.log(userid);
-						cb(null, userid);
-					});
-				},
-				function( userid ) {
-					Hotpot.find({
-						userId: userid,
-						type: 'recipe',
-					})
-					.populate( 'mainPhoto userId' )
-					.exec( function(err, hotpots) {
-						if(err) return next(err);
+			Hotpot.find({
+					userId: req.params.userid,
+					type: 'recipe',
+				})
+				.populate('mainPhoto userId')
+				.exec(function (err, hotpots) {
+					if (err) return next(err);
 
-						if(!hotpots) {
-							return res.status(404).send({ message: 'Bạn chưa có công thức nào.'});
-						}
+					if (!hotpots) {
+						return res.status(404).send('Bạn chưa có công thức nào.');
+					}
 
-						res.send(hotpots);
-					});
-				}
-			]);
+					res.send(hotpots);
+				});
 		}
 	);
+
 };

@@ -51,8 +51,11 @@ app.use(passport.session()); // persistent login sessions
 require('./api/auth')(app, passport);
 require('./api/recipe')(app, passport);
 require('./api/file')(app, passport);
+require('./api/comment')(app, passport);
 require('./api/love')(app, passport);
 require('./api/category')(app);
+require('./api/collection')(app, passport);
+require('./api/follow')(app, passport);
 
 // React Routes
 app.use(function(req, res) {
@@ -72,8 +75,10 @@ app.use(function(req, res) {
 	});
 });
 
-app.use(function(err, req, res, next) {
-});
+//app.use(function(err, req, res, next) {
+//	//res.status(500);
+//	//res.render('error', { error: err });
+//});
 
 // Socket.io stuffs
 var server = require('http').createServer(app);

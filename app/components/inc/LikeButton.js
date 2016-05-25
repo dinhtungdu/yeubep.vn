@@ -31,7 +31,7 @@ class LikeButton extends React.Component {
 
 	render() {
 		return(
-			<a href="#" className={this.state.likeState} onClick={this.props.handleLike}>
+			<a href="#" className={this.state.likeState + ' like-button'} onClick={this.props.handleLike}>
 				<i className="fa fa-heart"></i>
 				<span className="txt">{this.state.likeLabel}</span>
 			</a>

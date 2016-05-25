@@ -1,4 +1,5 @@
 import React from 'react';
+import Helpers from '../../helpers';
 import {Link} from 'react-router';
 import StarRatingComponent from 'react-star-rating-component';
 
@@ -8,11 +9,16 @@ class RecipeSmall extends React.Component {
 	}
 
 	render() {
+		var imgUrl = Helpers.img_url(this.props.imgId);
 		return(
-			<div className="recipe-small-item recipe-grid-item side-grid-item" key={this.props.key}>
+			<div className={this.props.class} key={this.props.key}>
 				<div className="photo">
 					<Link to={this.props.recipeUrl}>
-						<img src={this.props.imgUrl} width={this.props.imgWidth} height={this.props.imgHeight} />
+						<img src={imgUrl} width={this.props.imgWidth} height={this.props.imgHeight} />
+					</Link>
+					<Link state={{ modal: true, returnTo: this.props.location.pathname }} className="ghim-btn" to={this.props.recipeUrl + '/ghim'}>
+						<i className="fa fa-thumb-tack"></i>
+						<span className="txt">Ghim</span>
 					</Link>
 				</div>
 				<div className="recipe-info">

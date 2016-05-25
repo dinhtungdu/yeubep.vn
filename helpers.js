@@ -47,6 +47,16 @@ module.exports = {
 	extractUsername: function(email) {
 		var emailArr = email.split('@');
 		return emailArr[0];
+	},
+
+	findObjectInArray: function(arr, key, val) {
+		for (var i = arr.length - 1; i > -1; i--) {
+			//console.log(arr[i][key]);
+			if (arr[i][key].toString() == val.toString()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

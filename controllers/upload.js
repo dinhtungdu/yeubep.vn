@@ -7,7 +7,7 @@ var async = require('async');
 var Grid = require('gridfs-stream');
 var Busboy = require('busboy');
 var configDB = require('../config/db');
-var im = require('imagemagick-stream');
+//var im = require('imagemagick-stream');
 
 if( mongoose.connection.readyState = 0) {
 	mongoose.connect(configDB.database);
@@ -51,8 +51,8 @@ exports.create = function( req, res, cb ) {
 							},
 							s320: {
 								id: squareThumbId.toString(),
-								width: 300,
-								height: 300
+								width: 320,
+								height: 320
 							}
 						}
 					}
@@ -63,7 +63,7 @@ exports.create = function( req, res, cb ) {
 
 				var thumbWriteStream = gfs.createWriteStream({
 					_id: thumbId,
-					filename: 'thumb_' + filename,
+					filename: 'thumb_320_' + filename,
 					mode: 'w',
 					content_type: mimetype,
 					metadata: {

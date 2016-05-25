@@ -23,7 +23,7 @@
     "express-session": "^1.13.0",
     "gm": "^1.22.0",
     "gridfs-stream": "^1.1.1",
-    "history": "^1.13.0",
+    "history": "^1.17.0",
     "imagemagick-stream": "^4.0.1",
     "imagemin": "^4.0.0",
     "iso": "^5.2.0",

@@ -27,13 +27,23 @@ class ProfileRecipes extends React.Component {
 		ProfileRecipesStore.listen(this.onChange);
 		NavbarStore.listen(this.onChange);
 		RecipeModalStore.listen(this.onChange);
-		ProfileRecipesActions.getRecipes(this.props.params.id);
+		ProfileRecipesActions.getRecipes(this.props.cookId);
 		window.addEventListener('message', function(event){
 			if(event.data == 'loggedIn') {
 				NavbarActions.getMyInfo();
-				ProfileRecipesActions.getAllRecipes(this.props.params.id);
+				ProfileRecipesActions.getAllRecipes(this.props.cookId);
 			}
 		}.bind(this));
+	}
+
+	componentWillUnmount() {
+		ProfileRecipesStore.unlisten(this.onChange);
+		NavbarStore.unlisten(this.onChange);
+		RecipeModalStore.unlisten(this.onChange);
+	}
+
+	componentWillReceiveProps(newProps) {
+		ProfileRecipesActions.getRecipes(newProps.cookId);
 	}
 
 	onChange(state) {
@@ -68,6 +78,10 @@ class ProfileRecipes extends React.Component {
 						<Link to={recipeUrl}>
 							<img src={imgUrl} width={imgWidth} height={imgHeight} />
 						</Link>
+						<Link state={{ modal: true, returnTo: this.props.location.pathname }} className="ghim-btn" to={recipeUrl + '/ghim'}>
+							<i className="fa fa-thumb-tack"></i>
+							<span className="txt">Ghim</span>
+						</Link>
 					</div>
 					<div className="recipe-info">
 						<h3 className="recipe-title">
@@ -94,8 +108,8 @@ class ProfileRecipes extends React.Component {
 						<div className="grid">
 							<div className="grid-sizer"></div>
 							<div className="gutter-sizer"></div>
-							{ _.isEmpty(this.state.myInfo) && this.state.myInfo.username == this.props.params.id ? null :
-								<div className="grid-item">
+							{ _.isEmpty(this.state.myInfo) && this.state.myInfo.username != this.props.params.id ? null :
+								<div className="grid-item recipe-grid-item">
 									<a href="#" className="add-recipe-toggle" data-toggle="modal" data-target="#myModal">
 										<i className="fa fa-plus-circle"></i>
 										<span>Thêm công thức mới</span>
