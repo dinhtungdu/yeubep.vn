@@ -37,15 +37,6 @@ class Recipe extends React.Component {
 		});
 	}
 
-	facebookLogin() {
-		var url = '/auth/facebook',
-		width = 400,
-		height = 500,
-		top = (window.outerHeight - height) / 2,
-		left = (window.outerWidth - width) / 2;
-		window.open(url, 'facebook_login', 'width=' + width + ',height=' + height + ',scrollbars=0,top=' + top + ',left=' + left);
-	}
-
 	onChange(state) {
 		this.setState(state);
 		this.masonry.masonry('reloadItems');
@@ -58,7 +49,7 @@ class Recipe extends React.Component {
 		if( this.state.currentUserId == '' ) {
 			toastr.info('Bạn cần đăng nhập!', '', {
 				onclick: function () {
-					self.facebookLogin();
+					Helpers.facebookLogin();
 				}
 			});
 			return;
@@ -72,7 +63,7 @@ class Recipe extends React.Component {
 		if( self.state.currentUserId == '' ) {
 			toastr.info('Bạn cần đăng nhập để thêm ảnh', '', {
 				onclick: function() {
-					self.facebookLogin();
+					Helpers.facebookLogin();
 				}
 			});
 			return;
@@ -112,7 +103,7 @@ class Recipe extends React.Component {
 		if( self.state.currentUserId == '' ) {
 			toastr.info('Bạn cần đăng nhập để thêm đánh giá', '', {
 				onclick: function() {
-					self.facebookLogin();
+					Helpers.facebookLogin();
 				}
 			});
 			return;

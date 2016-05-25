@@ -8,6 +8,7 @@ import LikeButton from './inc/LikeButton';
 import CommentForm from './CommentForm';
 import Comment from './inc/Comment';
 import RecipeSmall from './inc/RecipeSmall';
+import Helpers from '../helpers';
 
 class Collection extends React.Component {
 	constructor(props) {
@@ -40,22 +41,13 @@ class Collection extends React.Component {
 		});
 	}
 
-	facebookLogin() {
-		var url = '/auth/facebook',
-			width = 400,
-			height = 500,
-			top = (window.outerHeight - height) / 2,
-			left = (window.outerWidth - width) / 2;
-		window.open(url, 'facebook_login', 'width=' + width + ',height=' + height + ',scrollbars=0,top=' + top + ',left=' + left);
-	}
-
 	handleLike(event) {
 		let self = this;
 		event.preventDefault();
 		if( this.state.currentUserId == '' ) {
 			toastr.info('Bạn cần đăng nhập!', '', {
 				onclick: function () {
-					self.facebookLogin();
+					Helpers.facebookLogin();
 				}
 			});
 			return;
@@ -68,7 +60,7 @@ class Collection extends React.Component {
 		if( this.state.currentUserId == '' ) {
 			toastr.info('Bạn cần đăng nhập!', '', {
 				onclick: function () {
-					self.facebookLogin();
+					Helpers.facebookLogin();
 				}
 			});
 			return;

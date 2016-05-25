@@ -1,20 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router';
-import Helper from '../../../helpers';
+import Helper from '../../helpers';
 import _ from 'underscore';
 
 class NavUser extends React.Component {
 	constructor(props) {
 		super(props);
-	}
-
-	facebookLogin() {
-		var url = '/auth/facebook',
-			width = 400,
-			height = 500,
-			top = (window.outerHeight - height) / 2,
-			left = (window.outerWidth - width) / 2;
-		window.open(url, 'facebook_login', 'width=' + width + ',height=' + height + ',scrollbars=0,top=' + top + ',left=' + left);
 	}
 
 	render() {
@@ -30,7 +21,7 @@ class NavUser extends React.Component {
 		else {
 			return(
 				<li className='nav-item userblock'>
-					<a className="nav-link" href="javascript:void(0)" onClick={this.facebookLogin}>
+					<a className="nav-link" href="javascript:void(0)" onClick={Helper.facebookLogin}>
 						Đăng nhập
 					</a>
 				</li>

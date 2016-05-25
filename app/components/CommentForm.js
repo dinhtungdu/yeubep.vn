@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router';
 import CommentFormActions from '../actions/CommentFormActions';
-import Helper from '../helpers';
+import Helpers from '../helpers';
 import _ from 'underscore';
 import NavbarStore from '../stores/NavbarStore';
 
@@ -27,7 +27,7 @@ class CommentForm extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 		if(this.state.currentUserId == '') {
-			Helper.facebookLogin();
+			Helpers.facebookLogin();
 			return;
 		}
 		if(this.props.type == 'collection') {

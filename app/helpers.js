@@ -23,15 +23,15 @@ module.exports = {
 		}
 		return '/file/' + imgId;
 	},
+	nl2br: function(text) {
+		return text.replace(/(?:\r\n|\r|\n)/g, '<br />');
+	},
 	facebookLogin: function() {
 		var url = '/auth/facebook',
-			width = 400,
-			height = 500,
+			width = 540,
+			height = 600,
 			top = (window.outerHeight - height) / 2,
 			left = (window.outerWidth - width) / 2;
 		window.open(url, 'facebook_login', 'width=' + width + ',height=' + height + ',scrollbars=0,top=' + top + ',left=' + left);
-	},
-	nl2br: function(text) {
-		return text.replace(/(?:\r\n|\r|\n)/g, '<br />');
 	}
 }
