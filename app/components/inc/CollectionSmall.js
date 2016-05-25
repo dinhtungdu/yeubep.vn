@@ -22,10 +22,13 @@ class Collection extends React.Component {
 		} else {
 			let smallImages = '';
 			smallImages = this.props.collection.recipes.map((recipe, index) => {
+				console.log(recipe);
 				if(index == 0 ) { return; }
 				let recipePhoto = '/images/df-img-sm.jpg';
-				if(recipe.recipeId.mainPhoto != null) {
-					recipePhoto = '/file/' + recipe.recipeId.mainPhoto.metadata.thumbs.s320.id;
+				if(recipe.recipeId != null) {
+					if(recipe.recipeId.mainPhoto != null) {
+						recipePhoto = '/file/' + recipe.recipeId.mainPhoto.metadata.thumbs.s320.id;
+					}
 				}
 				return(<img key={recipe._id} src={recipePhoto} />);
 			});

@@ -412,7 +412,7 @@ class Recipe extends React.Component {
 									{this.state.recipe.recipe.collections.map(collection =>
 										<AddedToCollection
 										user={collection.collectionId.userId}
-										collectionUrl={'/collection/' + collection.collectionId.collectionId}
+										collectionUrl={'/collections/' + collection.collectionId.collectionId}
 										collectionTitle={collection.collectionId.title}
 										key={collection._id}
 										/>
