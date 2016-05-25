@@ -77,6 +77,23 @@ class Collection extends React.Component {
 	}
 	
 	render() {
+		let recipesList = null;
+		recipesList = this.state.collection.recipes.map((recipe) => {
+			if( recipe.recipeId != null) {
+				return(
+					<RecipeSmall
+						key={recipe._id}
+						recipeUrl={'/recipe/' + recipe.recipeId.contentId}
+						imgId={recipe.recipeId.mainPhoto}
+						imgWidth="213"
+						imgHeight="171"
+						recipeTitle={recipe.recipeId.recipe.title}
+						class="recipe-grid-item grid-item"
+						location={this.props.location}
+					/>
+				);
+			}
+		});
 		return (
 			<div id="Collection">
 				<header className="collection-header">
@@ -117,18 +134,7 @@ class Collection extends React.Component {
 							<div className="grid">
 								<div className="grid-sizer"></div>
 								<div className="gutter-sizer"></div>
-								{this.state.collection.recipes.map(recipe =>
-									<RecipeSmall
-										key={recipe._id}
-										recipeUrl={'/recipe/' + recipe.recipeId.contentId}
-										imgId={recipe.recipeId.mainPhoto}
-										imgWidth="213"
-										imgHeight="171"
-										recipeTitle={recipe.recipeId.recipe.title}
-										class="recipe-grid-item grid-item"
-										location={this.props.location}
-									/>
-								)}
+								{recipesList}
 								</div>
 						</div>
 						<div className="col-sm-4" id="collection-comments">
