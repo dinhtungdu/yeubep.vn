@@ -1,5 +1,5 @@
 {
-  "name": "yeubepvn",
+  "name": "yeubep",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
