@@ -6,6 +6,10 @@
     "watch": "nodemon server.js",
     "postinstall": "bower install && gulp build"
   },
+  "engines": {
+    "node": "5.1.0",
+    "npm": "3.3.12"
+  },
   "babel": {
     "presets": [
       "es2015",
