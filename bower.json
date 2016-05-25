@@ -5,6 +5,7 @@
     "toastr": "^2.1.2",
     "font-awesome": "^4.5.0",
     "masonry": "^4.0.0",
-    "photoswipe": "^4.1.1"
+    "photoswipe": "^4.1.1",
+    "bootstrap": "v4.0.0-alpha.2"
   }
 }
