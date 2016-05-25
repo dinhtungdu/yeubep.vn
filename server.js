@@ -33,7 +33,7 @@ mongoose.connection.on('error', function() {
 
 require('./config/passport')(passport);
 app.set('port', process.env.PORT || 3000);
-app.set('view engine', 'jade')
+//app.set('view engine', 'jade')
 app.set('views', path.join(__dirname, 'views'))
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -66,9 +66,9 @@ app.use(function(req, res) {
 			res.status(302).redirect(redirectLocation.pathname + redirectLocation.search)
 		} else if (renderProps) {
 			var html = ReactDOM.renderToString(React.createElement(Router.RoutingContext, renderProps));
-			//var page = swig.renderFile('views/index.html', { html: html });
-			//res.status(200).send(page);
-			res.status(200).render('layout', { html: html});
+			var page = swig.renderFile('views/index.html', { html: html });
+			res.status(200).send(page);
+			//res.status(200).render('layout', { html: html});
 		} else {
 			res.status(404).send('Page Not Found')
 		}

@@ -125,17 +125,16 @@ class Recipe extends React.Component {
 
 		var items = [];
 		this.state.recipe.recipe.photos.map((thumb, index) => {
-			if( index < 9 ) {
-				items.push({
-					src: '/file/' + thumb.photoId._id,
-					w: thumb.photoId.metadata.width,
-					h: thumb.photoId.metadata.height,
-					title: thumb.peopleId.name,
-					avatar: Helpers.fb_avatar(thumb.peopleId.facebook.id, 100, 100),
-					profile: '/cook/' + thumb.peopleId.username,
-					time: moment(thumb.photoId.uploadDate).format('D/M/YYYY')
-				});
-			}
+			if(thumb.peopleId == null) return;
+			items.push({
+				src: '/file/' + thumb.photoId._id,
+				w: thumb.photoId.metadata.width,
+				h: thumb.photoId.metadata.height,
+				title: thumb.peopleId.name,
+				avatar: Helpers.fb_avatar(thumb.peopleId.facebook.id, 100, 100),
+				profile: '/cook/' + thumb.peopleId.username,
+				time: moment(thumb.photoId.uploadDate).format('D/M/YYYY')
+			});
 		});
 
 		var options = {
@@ -177,7 +176,7 @@ class Recipe extends React.Component {
 		}
 
 		let isOwner = false;
-		if ( !_.isEmpty(this.state.myInfo) && !this.state.notGetRecipeYet && this.state.myInfo._id == this.state.recipe.userId._id ) {
+		if ( !this.state.notGetRecipeYet && this.state.currentUserId == this.state.recipe.userId._id ) {
 			isOwner = true;
 		}
 
@@ -227,6 +226,8 @@ class Recipe extends React.Component {
 		let thumbList = null;
 		if( typeof this.state.recipe.recipe.photos != 'undefined' && !_.isEmpty(this.state.recipe.recipe.photos) ) {
 			thumbList = this.state.recipe.recipe.photos.map((thumb, index) => {
+				if(thumb.peopleId == null) return;
+				if( index >= 9 ) return;
 				return(
 					<a key={thumb.photoId._id} href="javascript:void(0)" onClick={this.openPhotoSwipe.bind(this, index)}><img src={'/file/' + thumb.photoId.metadata.thumbs.s320.id} /></a>
 				);
@@ -254,7 +255,7 @@ class Recipe extends React.Component {
 
 		return (
 			<div className="Recipe recipe-detail">
-				{ ( !_.isEmpty(this.state.myInfo) && !this.state.notGetRecipeYet && this.state.myInfo._id == this.state.recipe.userId._id ) ?
+				{ ( !this.state.notGetRecipeYet && this.state.currentUserId == this.state.recipe.userId._id ) ?
 					<RecipeModal
 						handleSubmit={this.UpdateRecipeHandler.bind(this)}
 						edit="1"

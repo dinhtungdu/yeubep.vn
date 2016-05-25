@@ -40,6 +40,9 @@ class RecipeStore {
 		}
 		let _photosObjectCompact = [];
 		data.recipe.photos.map((photo, index) => {
+			if(photo.peopleId == null) {
+				return;
+			}
 			_photosObjectCompact.push(photo.peopleId._id);
 		});
 		_photosObjectCompact = _.uniq(_photosObjectCompact);
