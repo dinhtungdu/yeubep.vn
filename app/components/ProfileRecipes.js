@@ -9,6 +9,7 @@ import Helmet from 'react-helmet';
 import _ from 'underscore';
 import RecipeModal from './RecipeModal';
 import RecipeModalStore from '../stores/RecipeModalStore';
+import Helpers from '../helpers';
 
 class ProfileRecipes extends React.Component {
 	constructor(props) {
@@ -69,7 +70,7 @@ class ProfileRecipes extends React.Component {
 				imgWidth = 213;
 			}
 			let recipeUrl = '/recipe/' + recipe.contentId;
-			let recipeDesc = trim_words(recipe.recipe.description, 17, '..' );
+			let recipeDesc = Helpers.trim_words(recipe.recipe.description, 17, '..' );
 			let recipeImg = null;
 
 			return(
