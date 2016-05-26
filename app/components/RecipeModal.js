@@ -214,6 +214,7 @@ class RecipeModal extends React.Component {
 				RecipeModalActions.changeMainPhoto(response);
 			},
 			removedfile: function(file) {
+				RecipeModalActions.deleteImage($('#mainPhoto').val());
 				var _ref;
 				if (file.previewElement) {
 					if ((_ref = file.previewElement) != null) {
@@ -221,7 +222,6 @@ class RecipeModal extends React.Component {
 					}
 				}
 				//return this._updateMaxFilesReachedClass();
-				this.myDropzone.options.maxFiles = this.myDropzone.options.maxFiles + 1;
 				$('#mainPhoto').val('');
 			}
 		});

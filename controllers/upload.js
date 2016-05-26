@@ -155,3 +155,36 @@ exports.read = function( req, res ) {
 		readstream.pipe(res);
 	});
 };
+
+exports.delete = function( req, res ) {
+	async.waterfall([
+		function(cb) {
+			gfs.findOne({ _id: req.params.id }, function (err, file) {
+				if (err) return res.status(400).send(err);
+				cb(null, file.metadata.thumbs.w320.id, file.metadata.thumbs.s320.id);
+			});
+		}, function(w320, s320) {
+			gfs.remove({
+				_id: req.params.id,
+				'metadata.userId': req.user._id
+			}, function(err) {
+				if(err) { return next(err);}
+				console.log('Deleted file with ID ', req.params.id);
+			});
+			gfs.remove({
+				_id: w320,
+				'metadata.userId': req.user._id
+			}, function(err) {
+				if(err) { return next(err);}
+				console.log('Deleted file with ID ', w320);
+			});
+			gfs.remove({
+				_id: s320,
+				'metadata.userId': req.user._id
+			}, function(err) {
+				if(err) { return next(err);}
+				console.log('Deleted file with ID ', s320);
+			});
+		}
+	]);
+}

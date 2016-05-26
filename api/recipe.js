@@ -182,29 +182,27 @@ module.exports = function(app, passport) {
 				if( hotpot.userId != req.user._id ) {
 					return res.status(401).send({ message: 'Cheating, uh?'});
 				}
-				async.waterfall([
-					function(cb) {
-						hotpot.visible  = req.body.visible;
-						hotpot.recipe.prepTime = req.body.prepTime;
-						hotpot.recipe.cookTime = req.body.cookTime;
-						hotpot.recipe.title = req.body.title;
-						hotpot.recipe.numberOfServings = req.body.numberOfServings;
-						hotpot.recipe.description = req.body.description;
-						hotpot.recipe.directions = req.body.directions;
-						hotpot.recipe.ingredients = req.body.ingredients;
-						hotpot.recipe.note = req.body.note;
-						hotpot.mainPhoto = req.body.mainPhoto;
-						cb(null, hotpot);
-					},
-					function(hotpot) {
-						hotpot.save(function(err) {
-							if(err) {
-								return next(err);
-							}
-							res.status(200).send({message: 'Recipe Updated!', id: hotpot.contentId});
-						});
-					}
-				]);
+
+					hotpot.visible  = req.body.visible;
+					hotpot.recipe.prepTime = req.body.prepTime;
+					hotpot.recipe.cookTime = req.body.cookTime;
+					hotpot.recipe.title = req.body.title;
+					hotpot.recipe.numberOfServings = req.body.numberOfServings;
+					hotpot.recipe.description = req.body.description;
+					hotpot.recipe.directions = req.body.directions;
+					hotpot.recipe.ingredients = req.body.ingredients;
+					hotpot.recipe.note = req.body.note;
+				if( typeof req.body.mainPhoto == 'undifined' ) {
+					hotpot.mainPhoto = '';
+				} else {
+					hotpot.mainPhoto = req.body.mainPhoto;
+				}
+					hotpot.save(function(err) {
+						if(err) {
+							return next(err);
+						}
+						res.status(200).send({message: 'Recipe Updated!', id: hotpot.contentId});
+					});
 			});
 		}
 	);

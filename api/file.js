@@ -12,4 +12,9 @@ module.exports = function(app, passport) {
 		helpers.isLoggedIn,
 		upload.create
 	);
+
+	app.delete('/file/:id',
+		helpers.isLoggedIn,
+		upload.delete
+	);
 };
