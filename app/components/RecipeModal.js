@@ -17,6 +17,16 @@ class RecipeModal extends React.Component {
 		this.dropzoneControl();
 	}
 
+	componentWillUnmount() {
+		RecipeModalStore.unlisten(this.onChange);
+	}
+
+	componentWillReceiveProps() {
+		this.myDropzone.destroy();
+		$('#dzwrap').html('<div id="dZUpload" class="dropzone"><div class="dropzone-previews"></div></div>');
+		this.dropzoneControl();
+	}
+
 	onChange(state) {
 		this.setState(state);
 	}
@@ -163,7 +173,7 @@ class RecipeModal extends React.Component {
 
 	dropzoneControl() {
 		Dropzone.autoDiscover = false;
-		var myDropzone = new Dropzone('#dZUpload', {
+		this.myDropzone = new Dropzone('#dZUpload', {
 			url: "/file/add",
 			maxFiles: 1,
 			addRemoveLinks: true,
@@ -199,14 +209,14 @@ class RecipeModal extends React.Component {
 		if( typeof this.state.mockfile != 'undefined' && this.state.mockfile != "" ) {
 			var mockFile = { name: this.state.mockfile.filename, size: this.state.mockfile.chunkSize };
 			var imgUrl = '/file/' + this.state.mockfile._id;
-			myDropzone.emit("addedfile", mockFile);
+			this.myDropzone.emit("addedfile", mockFile);
 
-			myDropzone.createThumbnailFromUrl(mockFile, imgUrl);
+			this.myDropzone.createThumbnailFromUrl(mockFile, imgUrl);
 
-			myDropzone.emit("complete", mockFile);
+			this.myDropzone.emit("complete", mockFile);
 
 			var existingFileCount = 1; // The number of files already uploaded
-			myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+			this.myDropzone.options.maxFiles = this.myDropzone.options.maxFiles - existingFileCount;
 		}
 	}
 
@@ -229,8 +239,10 @@ class RecipeModal extends React.Component {
 									<form className="row" onSubmit={this.props.handleSubmit}>
 										<div className="col-sm-4 small-col">
 											<div className="form-group">
-												<div id="dZUpload" className="dropzone">
-													<div className="dropzone-previews"></div>
+												<div id="dzwrap">
+													<div id="dZUpload" className="dropzone">
+														<div className="dropzone-previews"></div>
+													</div>
 												</div>
 											</div>
 											<div className="row">

@@ -20,7 +20,7 @@ class RecipeModalStore {
 			mainPhoto: '',
 			category: '56fc95543397ccb6ce6614af'
 		};
-		this.mockfile = [];
+		this.mockfile = '';
 		this.notGetRecipeYet = true;
 	}
 
