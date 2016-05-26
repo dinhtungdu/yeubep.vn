@@ -2,7 +2,7 @@
 var request = require('request');
 var mongoose = require('mongoose'),
 	_ = require('lodash');
-var gm = require('gm');
+var gm = require('gm'), imageMagick = gm.subClass({ imageMagick: true });;
 var async = require('async');
 var Grid = require('gridfs-stream');
 var Busboy = require('busboy');
@@ -30,7 +30,7 @@ exports.create = function( req, res, cb ) {
 		fileId = new mongoose.Types.ObjectId();
 		thumbId = new mongoose.Types.ObjectId();
 		squareThumbId = new mongoose.Types.ObjectId();
-		gm(file)
+		imageMagick(file)
 			.size({bufferStream: true}, function(err, size) {
 				var thumbWidth = 320;
 				var thumbHeight = (thumbWidth * size.height) / size.width;
