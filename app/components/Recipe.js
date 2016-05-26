@@ -269,6 +269,7 @@ class Recipe extends React.Component {
 					<RecipeModal
 						handleSubmit={this.UpdateRecipeHandler.bind(this)}
 						edit="1"
+						currentRecipe={this.state.recipe._id}
 					/>
 					: null
 				}

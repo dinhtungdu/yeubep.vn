@@ -8,7 +8,7 @@ class GhimStore {
 		this.recipe = {
 			title: '',
 			description: '',
-			photo: '/images/df-img.jpg',
+			photo: '/images/df-img-sm.jpg',
 			_id: ''
 		}
 		this.collections = [];
@@ -16,7 +16,9 @@ class GhimStore {
 
 	onGetRecipeSuccess(data) {
 		this.recipe.title = data.recipe.title;
-		this.recipe.photo = '/file/' + data.mainPhoto._id;
+		if(data.mainPhoto != null) {
+			this.recipe.photo = '/file/' + data.mainPhoto._id;
+		}
 		this.recipe._id = data._id;
 		this.recipe.description = data.recipe.description;
 	}

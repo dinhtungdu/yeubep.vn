@@ -8,6 +8,7 @@ class RecipeModal extends React.Component {
 		super(props);
 		this.state = RecipeModalStore.getState();
 		this.onChange = this.onChange.bind(this);
+		this.oneTime = false;
 	}
 
 	componentDidMount() {
@@ -21,10 +22,17 @@ class RecipeModal extends React.Component {
 		RecipeModalStore.unlisten(this.onChange);
 	}
 
-	componentWillReceiveProps() {
-		this.myDropzone.destroy();
-		$('#dzwrap').html('<div id="dZUpload" class="dropzone"><div class="dropzone-previews"></div></div>');
-		this.dropzoneControl();
+	shouldComponentUpdate(newprops, newstates) {
+		if( this.oneTime) {
+			this.myDropzone.destroy();
+			$('#dzwrap').html('<div id="dZUpload" class="dropzone"><div class="dropzone-previews"></div></div>');
+			this.dropzoneControl();
+			this.oneTime = false;
+		}
+		if(newstates.mockfile == null || newstates.mockfile._id != this.state.mockfile._id) {
+			this.oneTime = true;
+		}
+		return true;
 	}
 
 	onChange(state) {
@@ -204,10 +212,21 @@ class RecipeModal extends React.Component {
 				file.previewElement.classList.add("dz-success");
 				$('#mainPhoto').val(response);
 				RecipeModalActions.changeMainPhoto(response);
+			},
+			removedfile: function(file) {
+				var _ref;
+				if (file.previewElement) {
+					if ((_ref = file.previewElement) != null) {
+						_ref.parentNode.removeChild(file.previewElement);
+					}
+				}
+				//return this._updateMaxFilesReachedClass();
+				this.myDropzone.options.maxFiles = this.myDropzone.options.maxFiles + 1;
+				$('#mainPhoto').val('');
 			}
 		});
 		if( typeof this.state.mockfile != 'undefined' && this.state.mockfile != "" ) {
-			var mockFile = { name: this.state.mockfile.filename, size: this.state.mockfile.chunkSize };
+			var mockFile = { name: this.state.mockfile.filename, size: this.state.mockfile.chunkSize, accepted: true };
 			var imgUrl = '/file/' + this.state.mockfile._id;
 			this.myDropzone.emit("addedfile", mockFile);
 
@@ -215,8 +234,8 @@ class RecipeModal extends React.Component {
 
 			this.myDropzone.emit("complete", mockFile);
 
-			var existingFileCount = 1; // The number of files already uploaded
-			this.myDropzone.options.maxFiles = this.myDropzone.options.maxFiles - existingFileCount;
+			//var existingFileCount = 1; // The number of files already uploaded
+			this.myDropzone.options.maxFiles = 1;
 		}
 	}
 
