@@ -90,7 +90,7 @@ module.exports = function(app, passport) {
 	app.get('/api/recipes/:id',
 		function(req, res, next) {
 			Hotpot.findOne({contentId: req.params.id})
-				.populate('mainPhoto userId')
+				.populate('mainPhoto userId recipe.category')
 				.populate({
 					path: 'comments',
 					options: {
@@ -243,6 +243,24 @@ module.exports = function(app, passport) {
 
 					res.send(hotpots);
 				});
+		}
+	);
+
+	app.get('/api/categoryrecipes/:categoryId',
+		function(req, res, next) {
+			Hotpot.find({
+				type: 'recipe',
+				visible: 'public',
+				'recipe.category': req.params.categoryId
+			})
+			.populate('mainPhoto userId')
+			.exec(function(err, hotpots) {
+				if (err) return next(err);
+				if (!hotpots) {
+					return res.status(404).send({'notfound': 'Chuyên mục chưa có công thức nào'});
+				}
+				res.send(hotpots);
+			});
 		}
 	);
 

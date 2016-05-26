@@ -19,7 +19,7 @@ export default (
 		<Route path='/auth-okay' component={AuthSuccess} />
 		<Route path='/khong-tim-thay' component={NotFound} />
 		<Route path='/recipes' component={Recipes}/>
-		<Route path='/category/:id' component={Category} />
+		<Route path='/category/:categoryId' component={Category} />
 		<Route path='/cook/:id' component={Profile} ignoreScrollBehavior>
 			<IndexRoute component={ProfileCollections} />
 			<Route path='recipes' component={ProfileRecipes} />

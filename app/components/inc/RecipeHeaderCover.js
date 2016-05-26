@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router';
 import moment from 'moment';
+import Breadcrumb from './Breadcrumb';
 
 class RecipeHeaderCover extends React.Component {
 	constructor(props) {
@@ -30,6 +31,10 @@ class RecipeHeaderCover extends React.Component {
 			<div className="user-cover-wrap">
 				<div className="user-cover recipe-cover" style={coverStyle}></div>
 				<div className="container">
+					<Breadcrumb
+						current={this.props.recipeTitle}
+						category={this.props.category}
+					/>
 					<div className="row">
 						<div className="col-md-9 text-xs-center text-md-left">
 							<div className="row">

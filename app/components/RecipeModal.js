@@ -263,7 +263,7 @@ class RecipeModal extends React.Component {
 														<label htmlFor="category" className="form-control-label">Chuyên mục</label>
 														<Select
 															name="category"
-															value="56fc95543397ccb6ce6614af"
+															value={this.state.formData.category}
 															options={categoriesOptions}
 															onChange={RecipeModalActions.handleCategoryChange}
 														/>

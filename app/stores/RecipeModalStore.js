@@ -54,9 +54,11 @@ class RecipeModalStore {
 			note: data.recipe.note,
 			prepTime: data.recipe.prepTime,
 			cookTime: data.recipe.cookTime,
-			numberOfServings: data.recipe.numberOfServings,
-			category: data.recipe.category
+			numberOfServings: data.recipe.numberOfServings
 		};
+		if(data.recipe.category != null) {
+			this.formData.category = data.recipe.category._id;
+		}
 		if( data.mainPhoto != null && typeof( data.mainPhoto ) == 'object') {
 			this.formData.mainPhoto = data.mainPhoto._id;
 			this.mockfile = data.mainPhoto;

@@ -37,6 +37,16 @@ class Recipe extends React.Component {
 		});
 	}
 
+	componentWillUnmount() {
+		RecipeStore.unlisten(this.onChange);
+		RecipeModalStore.unlisten(this.onChange);
+		NavbarStore.unlisten(this.onChange);
+	}
+
+	componentWillReceiveProps(newprops) {
+		RecipeActions.getRecipe(newprops.params.recipeId);
+	}
+
 	onChange(state) {
 		this.setState(state);
 		this.masonry.masonry('reloadItems');
@@ -170,7 +180,7 @@ class Recipe extends React.Component {
 	}
 
 	render() {
-		let imgUrl = '/images/meal-icon.png';
+		let imgUrl = '/images/df-img-sm.jpg';
 		if( this.state.recipe.mainPhoto != "" && this.state.recipe.mainPhoto != null ) {
 			imgUrl = '/file/' + this.state.recipe.mainPhoto.metadata.thumbs.s320.id;
 		}
@@ -275,6 +285,7 @@ class Recipe extends React.Component {
 					commentCount={this.state.commentCount}
 					onClickPhoto={this.openPhotoSwipe.bind(this, 0)}
 					handleDelete={this.handleDelete.bind(this)}
+					category={this.state.recipe.recipe.category}
 				/>
 				<div className="main container">
 					<div className="row">

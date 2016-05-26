@@ -325,7 +325,6 @@
         font-size: 12px;
         text-transform: uppercase;
         color: #fff;
-        text-shadow: none;
         font-weight: 400;
         border-radius: 3px;
         border: 1px solid #fff;
@@ -800,7 +799,7 @@ aside {
   background: #fff;
 }
 
-#Collection {
+#Collection, #Category {
   padding-top: 1rem;
 
   header {
@@ -823,7 +822,7 @@ aside {
   border-right: 1px solid #eee;
   &:last-child {
     border-right: 0;
-  }
+}
   & > a {
     color: #666;
     i {
@@ -999,9 +998,20 @@ aside {
 }
 .owner-only {
   display: inline;
+  a {
+    text-shadow: 1px 1px 3px #666;
+    box-shadow: 1px 1px 3px rgba(102, 102, 102, 0.48);
+  }
   .delete-recipe {
     &:hover {
       background: #ed3554;
     }
+  }
+}
+
+.user-cover-wrap {
+  .Breadcrumb {
+    margin-top: -1rem;
+    margin-bottom: 1rem;
   }
 }

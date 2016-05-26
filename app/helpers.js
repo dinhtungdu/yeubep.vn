@@ -19,7 +19,7 @@ module.exports = {
 	},
 	img_url: function(imgId) {
 		if( imgId == null ) {
-			return '/images/meal-icon.png';
+			return '/images/df-img-sm.jpg';
 		}
 		return '/file/' + imgId;
 	},
@@ -33,5 +33,13 @@ module.exports = {
 			top = (window.outerHeight - height) / 2,
 			left = (window.outerWidth - width) / 2;
 		window.open(url, 'facebook_login', 'width=' + width + ',height=' + height + ',scrollbars=0,top=' + top + ',left=' + left);
+	},
+	masterMasonry: function() {
+		$('.grid').masonry({
+			columnWidth: '.grid-sizer',
+			gutter: '.gutter-sizer',
+			itemSelector: '.grid-item',
+			fitWidth: true
+		});
 	}
 }

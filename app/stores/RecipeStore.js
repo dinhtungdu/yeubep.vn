@@ -16,7 +16,8 @@ class RecipeStore {
 			recipe: {
 				title: '',
 				description: '',
-				collections: []
+				collections: [],
+				category: null
 			},
 			createdAt: null,
 			loves: []
