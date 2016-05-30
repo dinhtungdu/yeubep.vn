@@ -787,7 +787,7 @@ aside {
       width: 31%;
       float: left;
       margin-right: 3.5%;
-      &:last-child {
+      &:nth-child(3) {
         margin-right: 0%;
       }
     }
