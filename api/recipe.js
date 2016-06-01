@@ -154,6 +154,37 @@ module.exports = function(app, passport) {
 		}
 	);
 
+	// Get all recipe
+	app.get('/api/recipes',
+		function(req, res, next) {
+			Hotpot.find({
+				type: 'recipe',
+				visible: 'public'
+			})
+				.sort({createdAt: -1})
+				.limit(20)
+			.populate({
+				path: 'userId',
+				model: 'User',
+				select: 'username name facebook.id'
+			})
+			.populate({
+				path: 'mainPhoto',
+				model: 'GFS',
+				select: 'metadata.thumbs.s320.id'
+			})
+			.exec( function(err, hotpots) {
+				if(err) return next(err);
+
+				if(!hotpots) {
+					return res.status(404).send('Recipe not found');
+				}
+
+				res.send(hotpots);
+			});
+		}
+	);
+
 	app.put('/api/recipes/:id/photo/:photoId',
 		helpers.isLoggedIn,
 		function (req, res, next) {

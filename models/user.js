@@ -9,7 +9,6 @@ var userSchema = mongoose.Schema({
 	},
 	name: String,
 	email: String,
-	avatarId: String,
 	provider: {
 		type: String,
 		enum: [ 'facebook', 'google' ]
