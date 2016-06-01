@@ -161,7 +161,7 @@ module.exports = function(app, passport) {
 				type: 'recipe',
 				visible: 'public'
 			})
-				.sort({createdAt: -1})
+				.sort({createdAt: 1})
 				.limit(20)
 			.populate({
 				path: 'userId',
