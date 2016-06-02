@@ -31,6 +31,7 @@ class AddCollectionModal extends React.Component {
 												type="text"
 												name="collectionName"
 												id="collectionName"
+												required
 											/>
 										</div>
 									</div>

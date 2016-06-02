@@ -3614,20 +3614,24 @@ var AddCollectionButton = function (_React$Component) {
 	_createClass(AddCollectionButton, [{
 		key: "render",
 		value: function render() {
-			return _react2.default.createElement(
-				"div",
-				{ className: "AddCollectionButton grid-item" },
-				this.props.currentUser == this.props.currentCook ? _react2.default.createElement(
-					"a",
-					{ href: "javascript:void(0)", className: "add-recipe-toggle", "data-toggle": "modal", "data-target": "#addCollectionModal" },
-					_react2.default.createElement("i", { className: "fa fa-plus-circle" }),
+			if (this.props.currentUser == this.props.currentCook) {
+				return _react2.default.createElement(
+					"div",
+					{ className: "AddCollectionButton grid-item" },
 					_react2.default.createElement(
-						"span",
-						null,
-						"Thêm bộ sưu tập mới"
+						"a",
+						{ href: "javascript:void(0)", className: "add-recipe-toggle", "data-toggle": "modal", "data-target": "#addCollectionModal" },
+						_react2.default.createElement("i", { className: "fa fa-plus-circle" }),
+						_react2.default.createElement(
+							"span",
+							null,
+							"Thêm bộ sưu tập mới"
+						)
 					)
-				) : null
-			);
+				);
+			} else {
+				return null;
+			}
 		}
 	}]);
 
@@ -3724,7 +3728,8 @@ var AddCollectionModal = function (_React$Component) {
 												className: "form-control",
 												type: "text",
 												name: "collectionName",
-												id: "collectionName"
+												id: "collectionName",
+												required: true
 											})
 										)
 									),
