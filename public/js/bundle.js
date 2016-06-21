@@ -4369,6 +4369,10 @@ var Collection = function (_React$Component) {
 				);
 			} else {
 				var smallImages = '';
+				var bigThumb = '/images/df-img.jpg';
+				if (this.props.collection.recipes[0] != null) {
+					bigThumb = '/file/' + this.props.collection.recipes[0].recipeId.mainPhoto.metadata.thumbs.s320.id;
+				}
 				smallImages = this.props.collection.recipes.map(function (recipe, index) {
 					if (index == 0) {
 						return;
@@ -4395,7 +4399,7 @@ var Collection = function (_React$Component) {
 						_react2.default.createElement(
 							'div',
 							{ className: 'big' },
-							_react2.default.createElement('img', { src: '/file/' + this.props.collection.recipes[0].recipeId.mainPhoto.metadata.thumbs.s320.id, height: '193', width: '193' })
+							_react2.default.createElement('img', { src: bigThumb, height: '193', width: '193' })
 						),
 						_react2.default.createElement(
 							'div',

@@ -21,6 +21,10 @@ class Collection extends React.Component {
 			);
 		} else {
 			let smallImages = '';
+			let bigThumb = '/images/df-img.jpg';
+			if(this.props.collection.recipes[0] != null) {
+				bigThumb = '/file/' + this.props.collection.recipes[0].recipeId.mainPhoto.metadata.thumbs.s320.id;
+			}
 			smallImages = this.props.collection.recipes.map((recipe, index) => {
 				if(index == 0 ) { return; }
 				let recipePhoto = '/images/df-img-sm.jpg';
@@ -36,7 +40,7 @@ class Collection extends React.Component {
 					<h2>{this.props.collection.title}</h2>
 					<div className="list">
 						<div className="big">
-							<img src={'/file/' + this.props.collection.recipes[0].recipeId.mainPhoto.metadata.thumbs.s320.id} height="193" width="193" />
+							<img src={bigThumb} height="193" width="193" />
 						</div>
 						<div className="small clearfix">
 							{smallImages}

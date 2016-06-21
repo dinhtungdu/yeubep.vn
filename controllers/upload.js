@@ -2,7 +2,7 @@
 var request = require('request');
 var mongoose = require('mongoose'),
 	_ = require('lodash');
-var gm = require('gm'), imageMagick = gm.subClass({ imageMagick: true });;
+var gm = require('gm'), imageMagick = gm.subClass({ imageMagick: true });
 var async = require('async');
 var Grid = require('gridfs-stream');
 var Busboy = require('busboy');
