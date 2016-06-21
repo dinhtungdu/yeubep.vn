@@ -4377,6 +4377,9 @@ var Collection = function (_React$Component) {
 					if (index == 0) {
 						return;
 					}
+					if (index > 3) {
+						return;
+					}
 					var recipePhoto = '/images/df-img-sm.jpg';
 					if (recipe.recipeId != null) {
 						if (recipe.recipeId.mainPhoto != null) {

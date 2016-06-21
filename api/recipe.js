@@ -223,6 +223,7 @@ module.exports = function(app, passport) {
 					hotpot.recipe.directions = req.body.directions;
 					hotpot.recipe.ingredients = req.body.ingredients;
 					hotpot.recipe.note = req.body.note;
+					hotpot.recipe.category = req.body.category;
 				if( typeof req.body.mainPhoto == 'undifined' ) {
 					hotpot.mainPhoto = '';
 				} else {
