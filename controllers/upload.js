@@ -183,6 +183,7 @@ exports.delete = function( req, res ) {
 				'metadata.userId': req.user._id
 			}, function(err) {
 				if(err) { return next(err);}
+				res.end();
 				console.log('Deleted file with ID ', s320);
 			});
 		}
