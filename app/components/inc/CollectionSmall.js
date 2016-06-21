@@ -22,7 +22,7 @@ class Collection extends React.Component {
 		} else {
 			let smallImages = '';
 			let bigThumb = '/images/df-img.jpg';
-			if(this.props.collection.recipes[0] != null) {
+			if(this.props.collection.recipes[0].recipeId.mainPhoto != null) {
 				bigThumb = '/file/' + this.props.collection.recipes[0].recipeId.mainPhoto.metadata.thumbs.s320.id;
 			}
 			smallImages = this.props.collection.recipes.map((recipe, index) => {
