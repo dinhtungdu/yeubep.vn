@@ -27,6 +27,7 @@ class Collection extends React.Component {
 			}
 			smallImages = this.props.collection.recipes.map((recipe, index) => {
 				if(index == 0 ) { return; }
+				if(index > 3 ) { return; }
 				let recipePhoto = '/images/df-img-sm.jpg';
 				if(recipe.recipeId != null) {
 					if(recipe.recipeId.mainPhoto != null) {
