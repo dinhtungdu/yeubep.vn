@@ -19,7 +19,7 @@ module.exports = function (passport) {
 	passport.use(new FacebookStrategy({
 		clientID : configAuth.facebookAuth.clientID,
 		clientSecret : configAuth.facebookAuth.clientSecret,
-		callbackURL: "/auth/facebook/callback",
+		callbackURL: configAuth.facebookAuth.callbackURL,
 		profileFields: ['id', 'displayName', 'name', 'gender', 'birthday', 'profileUrl', 'emails']
 		},
 		function(accessToken, refreshToken, profile, done) {
